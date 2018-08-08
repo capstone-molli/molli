@@ -4,8 +4,8 @@ import { createStackNavigator } from 'react-navigation';
 const App = createStackNavigator({
   // AuthenticateAccountView: { screen: AuthenticateAccountView },
   // AccountSetupView: { screen: AccountSetupView },
-  // AllStreamView: { screen: AllStreamView },
-  SingleStreamView: { screen: SingleStreamView },
+  AllStreamView: { screen: AllStreamView },
+  // SingleStreamView: { screen: SingleStreamView },
 });
 
 export default App;

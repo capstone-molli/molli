@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { FormInput, FormLabel } from "react-native-elements"
 import { styles } from "./index"
-
+const Fortnite = require("fortnite-api");
 
 export default class AllStreamView extends Component {
     constructor() {
@@ -17,6 +17,29 @@ export default class AllStreamView extends Component {
 
     }
     render() {
+
+
+        const fortniteAPI = new Fortnite(
+            [
+                "knthslai@gmail.com",
+                "mollipasswordAPI1",
+                "MzRhMDJjZjhmNDQxNGUyOWIxNTkyMTg3NmRhMzZmOWE6ZGFhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=",
+                "ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ="
+            ],
+            {
+                debug: true
+            }
+        );
+        fortniteAPI.login().then(() => {
+            fortniteAPI
+                .getStatsBR("Mirardes", "pc", "weekly")
+                .then(stats => {
+                    console.log(stats);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 2 / 20, backgroundColor: "#228B22" }}>
