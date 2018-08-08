@@ -13,8 +13,6 @@ var config = {
     messagingSenderId: "332857176669"
 };
 
-firebase.initializeApp(config);
-
 const firestore = firebase.initializeApp(config).firestore()
 firestore.settings(settings)
 export default firestore
