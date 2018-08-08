@@ -26,5 +26,37 @@ export default StyleSheet.create({
     centeredInputText: {
         textAlign: "center",
         justifyContent: 'center'
+    },
+    searchPanel: {
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        flex: 1,
+        backgroundColor: "#fff",
+    },
+    searchPanelSuper: {
+        flex: 3 / 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    searchPanelSub: {
+        flex: 7 / 10,
+        flexDirection: "column"
+    },
+    container: {
+        flex: 1,
+        backgroundColor: "#F5FCFF"
+    },
+    card: {
+        flex: 1,
+        borderRadius: 4,
+        borderWidth: 2,
+        borderColor: "#E8E8E8",
+        justifyContent: "center",
+        backgroundColor: "white"
+    },
+    text: {
+        textAlign: "center",
+        fontSize: 50,
+        backgroundColor: "transparent"
     }
 });
