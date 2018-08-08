@@ -28,8 +28,8 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     searchPanel: {
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
         flex: 1,
         backgroundColor: "#fff",
     },
@@ -44,15 +44,16 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: "#F5FCFF"
+        backgroundColor: "#F5FCFF",
+
     },
     card: {
-        flex: 1,
-        borderRadius: 4,
+        flex: 2 / 3,
+        borderRadius: 15,
         borderWidth: 2,
         borderColor: "#E8E8E8",
         justifyContent: "center",
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     text: {
         textAlign: "center",
