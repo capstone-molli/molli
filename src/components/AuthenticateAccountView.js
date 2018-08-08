@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { styles } from "./index"
-
+import Expo from "expo"
+import { facebookLogIn } from "../db/facebookAuth"
 
 export default class AuthenticateAccountView extends Component {
     constructor() {
@@ -12,9 +13,10 @@ export default class AuthenticateAccountView extends Component {
     static navigationOptions = {
         header: null
     }
+
     handlePress = () => {
         const { navigate } = this.props.navigation
-        navigate("AccountSetupView")
+        facebookLogIn()
     }
     render() {
         return (
@@ -24,7 +26,6 @@ export default class AuthenticateAccountView extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity >
-
                     <Text style={styles.text} >Connect Venmo</Text>
                 </TouchableOpacity>
             </View>
