@@ -17,7 +17,6 @@ export default class SingleStreamView extends Component {
 
     toggleView() {
         this.setState({ visible: !this.state.visible })
-
         this.refs["plusButton"].setNativeProps({
             source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/save.png"))]
         })
@@ -30,6 +29,7 @@ export default class SingleStreamView extends Component {
                 //Embed twitch stream here
                 </View>
                 <View style={{ flex: 2 / 3 }}>
+                    //insert card date here in cards prop
                     <Swiper cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']} />
                     <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
@@ -38,7 +38,6 @@ export default class SingleStreamView extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-
             </View>
         )
     }

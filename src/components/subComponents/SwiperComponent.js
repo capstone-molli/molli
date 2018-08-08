@@ -21,6 +21,7 @@ export default class SwiperComponent extends Component {
                 cardIndex={0}
                 backgroundColor={'#4FD0E9'}
                 stackSize={3}>
+
             </Swiper>
         )
     }
