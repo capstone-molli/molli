@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
+import Swiper from "./subComponents/SwiperComponent"
+import SlideUpPanel from "./subComponents/SlideUpPanel"
+import resolveAssetSource from 'resolveAssetSource';
 
-import { styles } from "./index"
 
 export default class SingleStreamView extends Component {
     constructor() {
         super()
-        this.state = { visible: false }
-        this.contract = this.constract.bind(this)
-        this.expand = this.expand.bind(this)
+        this.state = {
+            visible: false,
+            allowDragging: true,
+        }
+        this.toggleView = this.toggleView.bind(this)
     }
-    constract() {
-        this.setState({ visible: false })
+
+    toggleView() {
+        this.setState({ visible: !this.state.visible })
+
+        this.refs["plusButton"].setNativeProps({
+            source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/save.png"))]
+        })
     }
-    expand() {
-        this.setState({ visible: true })
-    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -23,10 +30,12 @@ export default class SingleStreamView extends Component {
                 //Embed twitch stream here
                 </View>
                 <View style={{ flex: 2 / 3 }}>
+                    <Swiper cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']} />
+                    <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
-                        <TouchableHighlight onPress={this.props.expand}>
-                            <Image style={{ width: 80, height: 80 }} source={require('../assets/plus.png')} />
-                        </TouchableHighlight>
+                        <TouchableOpacity onPress={this.toggleView}>
+                            <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plus.png')} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
