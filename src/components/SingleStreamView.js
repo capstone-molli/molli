@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, WebView } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
+//import ReactPlayer from 'react-player'
 
 
 export default class SingleStreamView extends Component {
@@ -26,7 +27,11 @@ export default class SingleStreamView extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
-                //Embed twitch stream here
+                    <WebView
+                        source={{uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}&muted=false`}}
+                
+                        style={{marginTop: 0}}
+                    />
                 </View>
                 <View style={{ flex: 2 / 3 }}>
                     //insert card date here in cards prop
