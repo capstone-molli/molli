@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { FormInput, FormLabel } from "react-native-elements"
 import { styles } from "./index"
+import axios from 'axios'
 
 
 export default class AllStreamView extends Component {
@@ -16,7 +17,26 @@ export default class AllStreamView extends Component {
     expandProfileCard() {
 
     }
+    fetchFortniteAPI = async () => {
+        const searchResult = await axios({
+            method: "get",
+            url: `https://api.fortnitetracker.com/v1/profile/pc/ninja`,
+            headers: {
+                "TRN-Api-Key": '06d586eb-f40e-430d-ba02-5e4716654056'
+            }
+        })
+        /*"accountId",
+        "platformId",
+        "platformName",
+        "platformNameLong",
+        "epicUserHandle",
+        "stats",
+        "lifeTimeStats",
+        "recentMatches",*/
+        console.log(searchResult.data.recentMatches[1])
+    }
     render() {
+        this.fetchFortniteAPI()
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 2 / 20, backgroundColor: "#228B22" }}>
