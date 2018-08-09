@@ -12,14 +12,6 @@ const App = createStackNavigator({
   UserSetupForm: { screen: UserSetupForm }
 });
 
-export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Stack />
-      </Provider>
-    )
-  }
-}
+export default App
 
 
