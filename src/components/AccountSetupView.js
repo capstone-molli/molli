@@ -6,8 +6,13 @@ import { styles } from "./index"
 export default class AccountSetupView extends Component {
     constructor() {
         super()
-        this.state = {}
+        this.state = {
+            userData: {}
+        }
         this.handlePress = this.handlePress.bind(this)
+    }
+    componentDidMount() {
+        this.setState({ userData: this.props.navigation.state.params.data })
     }
     static navigationOptions = {
         header: null
@@ -21,11 +26,11 @@ export default class AccountSetupView extends Component {
             <View style={styles.maxScreenView}>
                 <Image style={styles.avatar} source={{ uri: "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" }} />
                 <FormLabel labelStyle={styles.text} >Name</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
+                <FormInput inputStyle={styles.centeredInputText} defaultValue={this.state.userData.first_name + " " + this.state.userData.last_name} />
                 <FormLabel labelStyle={styles.text} >Username</FormLabel>
                 <FormInput inputStyle={styles.centeredInputText} />
                 <FormLabel labelStyle={styles.text} >Email</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
+                <FormInput inputStyle={styles.centeredInputText} defaultValue={this.state.userData.email} />
                 <FormLabel labelStyle={styles.text} >Venmo</FormLabel>
                 <FormInput inputStyle={styles.centeredInputText} />
                 < TouchableOpacity onPress={this.handlePress} >
