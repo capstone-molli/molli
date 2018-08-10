@@ -14,5 +14,6 @@ var config = {
 
 const firestore = firebase.initializeApp(config).firestore()
 firestore.settings(settings)
+// firestore.enablePersistence()
 export default firestore
 
