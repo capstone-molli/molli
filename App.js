@@ -37,13 +37,13 @@ const signedIn = createDrawerNavigator({
 })
 
 const stack = createStackNavigator({
-  // signedOut: {
-  //   screen: createAccount,
-  //   navigationOptions: {
-  //     header: null,
-  //     gesturesEnabled: false,
-  //   }
-  // },
+  signedOut: {
+    screen: createAccount,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    }
+  },
   signedIn: {
     screen: signedIn,
     navigationOptions: {
