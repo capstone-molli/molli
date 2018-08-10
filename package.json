@@ -28,6 +28,7 @@
     "react-native-deck-swiper": "^1.5.17",
     "react-native-elements": "^0.19.1",
     "react-navigation": "^2.11.2",
+    "react-player": "^1.6.4",
     "rn-sliding-up-panel": "^1.2.1"
   }
 }
