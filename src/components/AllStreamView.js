@@ -4,6 +4,7 @@ import { FormInput, FormLabel } from "react-native-elements"
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { styles, SingleStreamView } from "./index"
 import axios from 'axios'
+import { twitchData } from "../db/twitchData"
 
 export default class AllStreamView extends Component {
     constructor() {
@@ -17,70 +18,14 @@ export default class AllStreamView extends Component {
         header: null 
     }
     async componentDidMount(){
-        const searchResult = await axios({
-            method: 'get',
-            url: 'https://api.twitch.tv/helix/streams?first=20&game_id=33214&language=en',
-            headers: {
-                'Client-ID': `vhtorz83ncvg26wnz3dpt9cgzdbk94`
-            }
-        })
-       //console.log(searchResult.data)
-       let videos = searchResult.data.data
-        // this.setState({
-        //     streams: searchResult.data.data
-        // })
-        console.log('streams', videos)
-        let users;
-        users = await this.getUsers(videos)
-        console.log('users: ', users);
-        let temp = []
-        for (let i = 0; i < users.length; i++){
-            temp.push({video: videos[i], user: users[i]})
-        }
+        const streams = await twitchData()
         this.setState({
-            streams: temp
+            streams
         })
-        // this.setState({
-        //     users
-        // })
-
-       console.log('users',users)
-
     }
 
     async getUsers(streams){
         let users = []
-        let ids = ''
-        for(let i = 0; i < streams.length; i ++){
-            if(i === 0){
-                ids += ('?id='+streams[i].user_id)
-            }
-            else{
-                ids += ('&id='+streams[i].user_id)
-            } 
-        }
-        // streams.forEach(async stream=>{ 
-        //     const user = await axios({
-        //         method: 'get',
-        //         url: 'https://api.twitch.tv/helix/users?id='+stream.user_id,
-        //         headers: {
-        //             'Client-ID': `vhtorz83ncvg26wnz3dpt9cgzdbk94`
-        //         }
-        //     }).then(user =>{
-        //         users.push(user.data.data[0])
-        //         console.log(user.data.data[0])
-        //     })
-        //   //  console.log(user.data.data[0])
-        // })
-        const user = await axios({
-                    method: 'get',
-                    url: 'https://api.twitch.tv/helix/users'+ids,
-                    headers: {
-                        'Client-ID': `vhtorz83ncvg26wnz3dpt9cgzdbk94`
-                    }
-                })
-        //console.log(user.data.data)
-        return user.data.data
         //return video.data.data[0]
       //console.log('USERS', video.data.data[0])
     }

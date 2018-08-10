@@ -2,8 +2,9 @@ import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamV
 import { createStackNavigator } from 'react-navigation';
 import React, { Component } from "react"
 
+
 const App = createStackNavigator({
-  // AuthenticateAccountView: { screen: AuthenticateAccountView },
+   AuthenticateAccountView: { screen: AuthenticateAccountView },
    AccountSetupView: { screen: AccountSetupView },
   AllStreamView: { screen: AllStreamView },
   SingleStreamView: { screen: SingleStreamView },
