@@ -28,7 +28,7 @@ export default class SingleStreamView extends Component {
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
                     <WebView
-                        source={{uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}&muted=false`}}
+                        source={{uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}`}}
                 
                         style={{marginTop: 0}}
                     />
