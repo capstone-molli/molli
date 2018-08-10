@@ -27,18 +27,19 @@ export default class SingleStreamView extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
-                    <WebView 
+
+                    <WebView
                         allowsInlineMediaPlayback={true}
                         mediaPlaybackRequiresUserAction={false}
-                        source={{uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}`}}
-                
-                        style={{marginTop: 0}}
+                        source={{ uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}` }}
+
+                        style={{ marginTop: 0 }}
                     />
                 </View>
                 <View style={{ flex: 2 / 3 }}>
                     //insert card date here in cards prop
                     <Swiper cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']} />
-                    <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} id = {this.props.navigation.state.params.id} />
+                    <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} id={this.props.navigation.state.params.id} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
                         <TouchableOpacity onPress={this.toggleView}>
                             <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plus.png')} />
