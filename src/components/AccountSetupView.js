@@ -8,9 +8,9 @@ export default class AccountSetupView extends Component {
     static navigationOptions = {
         header: null
     }
-    navigateToAllStreams = () => {
+    navigateToAllStreams = (user) => {
         const { navigate } = this.props.navigation
-        navigate("AllStreamView")
+        navigate("AllStreamView", {user})
     }
     render() {
         return (

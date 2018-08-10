@@ -195,7 +195,7 @@ export default class UserSetupForm extends Component {
                                 "name": `${values.fullName}`,
                                 "picture": this.props.user.picture
                             })
-                            this.props.navigateToAllStreams()
+                            this.props.navigateToAllStreams({id : this.props.user.id})
                             postSubmit()
 
                             /* Implement the request to your server using values variable
