@@ -25,10 +25,6 @@ export default class AuthenticateAccountView extends Component {
                 <TouchableOpacity onPress={this.handlePress}>
                     <Text style={styles.text} >Connect Facebook</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity >
-                    <Text style={styles.text} >Connect Venmo</Text>
-                </TouchableOpacity>
             </View>
         )
     }

@@ -9,35 +9,33 @@ import { twitchData } from "../db/twitchData"
 export default class AllStreamView extends Component {
     constructor() {
         super()
-        this.state = {streams : []}
+        this.state = { streams: [] }
         this.expandProfileCard = this.expandProfileCard.bind(this)
         this.handlePress = this.handlePress.bind(this)
         // this.getVideos = this.getVideos.bind(this)
     }
     static navigationOptions = {
-        header: null 
+        header: null
     }
-    async componentDidMount(){
+    async componentDidMount() {
         const streams = await twitchData()
         this.setState({
             streams
         })
     }
 
-    async getUsers(streams){
+    async getUsers(streams) {
         let users = []
         //return video.data.data[0]
-      //console.log('USERS', video.data.data[0])
+        //console.log('USERS', video.data.data[0])
     }
 
     handlePress = (stream) => {
         const { navigate } = this.props.navigation
-        navigate("SingleStreamView", {display : stream.user.display_name, login: stream.user.login})
+        navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
     }
-
-
     expandProfileCard() {
-
+        this.props.navigation.openDrawer()
     }
     fetchFortniteAPI = async () => {
         const searchResult = await axios({
@@ -71,7 +69,7 @@ export default class AllStreamView extends Component {
 
                         <View style={{ flex: 8 / 10 }}>
                             <View>
-                            
+
                             </View>
 
                         </View>
@@ -80,32 +78,28 @@ export default class AllStreamView extends Component {
                 </View>
                 <View style={{ flex: 18 / 20 }}>
                     <ScrollView>
-                    
-                        <View alignItems = 'center'>
-                        {this.state.streams.map(stream =>{
-                                let url = stream.video.thumbnail_url.slice(0, stream.video.thumbnail_url.length - 20) + '200x100.jpg' 
-                                // <Image style={styles.stretch} key = {stream.id} source ={{uri: url}}  style={{width: 200, height: 100}} />
 
-                               // console.log('stream.thumbnailUrl: ', stream.thumbnail_url);
-                                //console.log('gfgf',url )
-                                return(
-                                <View key = {stream.video.id}>
-                                    <Card
-                                        title={stream.user.display_name}
-                                        image={{uri: stream.user.profile_image_url}}
-                                        imageProps = {{imageProperties: {width: 200, height: 100}}}>
-                                        <Text style={{marginBottom: 10}}>
-                                            {stream.user.display_name}
-                                        </Text>
-                                        <Button onPress={() =>{const { navigate } = this.props.navigation
-                                            navigate("SingleStreamView", {display : stream.user.display_name, login: stream.user.login})}}
-                                            icon={<Icon name='code' color='#ffffff' />}
-                                            backgroundColor='#03A9F4'
-                                            //fontFamily='Lato'
-                                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                                            title='view' />
-                                    </Card>
-                                </View>)
+                        <View >
+                            {this.state.streams.map(stream => {
+                                let url = stream.video.thumbnail_url.slice(0, stream.video.thumbnail_url.length - 20) + '200x100.jpg'
+                                return (
+                                    <View key={stream.video.id} >
+                                        <Card
+                                            title={stream.user.display_name}
+                                            image={{ uri: stream.user.profile_image_url }}
+                                            imageProps={{ imageProperties: { width: 200, height: 100 } }}
+                                            style={{ flex: 1 }}>
+                                            <Button onPress={() => {
+                                                const { navigate } = this.props.navigation
+                                                navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
+                                            }}
+                                                icon={<Icon name='code' color='#ffffff' />}
+                                                backgroundColor='#03A9F4'
+                                                //fontFamily='Lato'
+                                                buttonStyle={{ width: "100%", flex: 1 }}
+                                                title='view' />
+                                        </Card>
+                                    </View>)
                             })}
                         </View>
                     </ScrollView>
