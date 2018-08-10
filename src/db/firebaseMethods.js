@@ -6,13 +6,17 @@ function getUser(id) {
 
 function updateUser(id, obj) {
     return firestore.collection("users").doc(`${id}`).set({ obj })
-}
+} 
 
 function createNewUser(id, obj) {
     return firestore.collection("users").doc(`${id}`).set({ obj })
 }
 
-export { createNewUser, getUser, updateUser }
+function createNewBet(id, obj) {
+    return firestore.collection('bets').add({ obj })
+}
+
+export { createNewUser, getUser, updateUser, createNewBet }
 
 //Create User
 //Name, Username, Email, Venmo, authToken

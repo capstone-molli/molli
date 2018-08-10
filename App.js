@@ -8,6 +8,7 @@ const App = createStackNavigator({
    AccountSetupView: { screen: AccountSetupView },
   AllStreamView: { screen: AllStreamView },
   SingleStreamView: { screen: SingleStreamView },
+
 });
 
 export default App
