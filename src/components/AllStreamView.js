@@ -100,6 +100,7 @@ export default class AllStreamView extends Component {
                                                 title='view' />
                                         </Card>
                                     </View>)
+
                             })}
                         </View>
                     </ScrollView>
