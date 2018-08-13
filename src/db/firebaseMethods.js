@@ -16,7 +16,24 @@ function createNewBet(id, obj) {
     return firestore.collection('bets').add({ obj })
 }
 
-export { createNewUser, getUser, updateUser, createNewBet }
+function getBet(id) {
+    return firestore.collection('bets').doc(`${id}`).get().then(bet => bet.data()).catch(err => console.log(err, 'err getting the data'))
+}
+
+async function getAllBets() {
+    const arr = []
+    const bets = await firestore.collection('bets').get()
+    .then(allBets => 
+        allBets.forEach(bet => 
+            arr.push(bet.data())
+        )
+    ).catch(err => console.log(err, 'err getting the data'))
+    const filtered = arr.filter(element => element.obj.takerId === "")
+
+    return filtered
+}
+
+export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets }
 
 //Create User
 //Name, Username, Email, Venmo, authToken

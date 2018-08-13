@@ -3,6 +3,8 @@ import { View, Image, TouchableOpacity, WebView } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
+import {getBet, getAllBets} from '../db/firebaseMethods'
+// import { access } from 'fs';
 //import ReactPlayer from 'react-player'
 
 
@@ -12,18 +14,55 @@ export default class SingleStreamView extends Component {
         this.state = {
             visible: false,
             allowDragging: true,
+            bets: []
         }
         this.toggleView = this.toggleView.bind(this)
     }
 
-    toggleView() {
+    componentDidMount = async () => {
+        const bets = await getAllBets()
+        this.setState({bets})
+    }
+
+    toggleView = () => {
         this.setState({ visible: !this.state.visible })
         this.refs["plusButton"].setNativeProps({
             source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/save.png"))]
         })
     }
 
+    populatingCards = () => {
+        const bets = this.state.bets
+        let arr = [];
+
+        // if(bets.length){
+        //     bets.map(element => {
+        //         for (let key in element.obj) {
+        //             if (element.hasOwnProperty(key)) {
+        //                 arr.push(key + ':' + element[key]);
+        //             }
+        //         };
+        //     })
+        //     let result = arr.join(',');
+        //     console.log(result, 'this is the result');
+        // }
+
+        // if(bets.length){
+        //     let arr = []
+        //     for (let i = 0; i < bets.length; i++){
+        //         // console.log(bets[i].obj, 'this is the for loop')
+        //         for (let key in bets[i]){
+        //             if(bets[i].hasOwnProperty(key)){
+        //                 arr.push(key + '=' + bets[i].obj[key])
+        //             }
+        //         }
+        //         console.log(arr, 'this is the for in loop')
+        //     }
+        // }
+    }
+
     render() {
+        this.populatingCards()
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
@@ -37,7 +76,7 @@ export default class SingleStreamView extends Component {
                     />
                 </View>
                 <View style={{ flex: 2 / 3 }}>
-                    //insert card date here in cards prop
+                    {/* insert card date here in cards prop */}
                     <Swiper cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']} />
                     <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} id={this.props.navigation.state.params.id} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>

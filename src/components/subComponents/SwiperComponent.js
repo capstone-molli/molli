@@ -16,12 +16,12 @@ export default class SwiperComponent extends Component {
                         </View>
                     )
                 }}
+                onSwipedRight={(swipe) => {console.log(swipe, 'swiped left')}}
                 onSwiped={(cardIndex) => { console.log(cardIndex) }}
                 onSwipedAll={() => { console.log('onSwipedAll') }}
                 cardIndex={0}
                 backgroundColor={'#4FD0E9'}
                 stackSize={3}>
-
             </Swiper>
         )
     }
