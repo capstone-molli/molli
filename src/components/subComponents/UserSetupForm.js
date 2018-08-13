@@ -24,7 +24,7 @@ export default class UserSetupForm extends Component {
                 clearOnClose={false} // delete the values of the form when unmounted
                 defaults={{
                     fullName: this.props.user.name,
-                    username: `${this.props.user.first_name}${this.props.user.last_name}`,
+                    username: ``,
                     password: '',
                     country: 'USA',
                     birthday: new Date(((new Date()).getFullYear() - 18) + ''),
@@ -94,7 +94,7 @@ export default class UserSetupForm extends Component {
             >
                 <GiftedForm.SeparatorWidget />
                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: "#ffff", top: 10 }}>
-                    <Image style={styles.avatar} source={{ uri: `${this.props.user.picture.data.url}` }} />
+                    <Image style={styles.avatar} source={{ uri: `${this.props.user.picture}` }} />
                 </View>
                 <GiftedForm.TextInputWidget
                     name='fullName' // mandatory
@@ -187,15 +187,12 @@ export default class UserSetupForm extends Component {
                             values.birthday = moment(values.birthday).format('YYYY-MM-DD');
                             console.log("values: ", values)
                             console.log("unedited user", this.state.user)
-                            updateUser(this.props.user.id, {
+                            updateUser({
+                                ...this.props.user,
                                 "email": `${values.emailAddress}`,
-                                "first_name": this.props.user.first_name,
-                                "id": this.props.user.id,
-                                "last_name": this.props.user.last_name,
                                 "name": `${values.fullName}`,
-                                "picture": this.props.user.picture
                             })
-                            this.props.navigateToAllStreams({id : this.props.user.id})
+                            this.props.navigateToAllStreams({ id: this.props.user.id })
                             postSubmit()
 
                             /* Implement the request to your server using values variable

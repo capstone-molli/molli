@@ -4,12 +4,12 @@ function getUser(id) {
     return firestore.collection("users").doc(id).get().then(user => user.data())
 }
 
-function updateUser(id, obj) {
-    return firestore.collection("users").doc(`${id}`).set({ obj })
-} 
+function updateUser(obj) {
+    return firestore.collection("users").doc(`${obj.id}`).set({ obj })
+}
 
-function createNewUser(id, obj) {
-    return firestore.collection("users").doc(`${id}`).set({ obj })
+function createNewUser(obj) {
+    return firestore.collection("users").doc(`${obj.id}`).set({ obj })
 }
 
 function createNewBet(obj) {
