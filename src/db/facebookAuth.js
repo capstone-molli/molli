@@ -1,6 +1,9 @@
 import React from "react"
 import firestore from "./firebase"
+import * as firebase from 'firebase';
 import { createNewUser } from "./firebaseMethods"
+
+
 
 const facebookLogIn = async () => {
     let userData = {}
@@ -8,18 +11,24 @@ const facebookLogIn = async () => {
         permissions: ["public_profile", "email"],
     });
     if (type === 'success') {
-        const response = await fetch(`https://graph.facebook.com/me?fields=email,name,first_name,last_name,id,picture&access_token=${token}`)
-        const data = await response.json()
-        console.log("data", data)
-        const obj = {
-            name: data.name,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            picture: data.picture,
-            email: data.email
-        }
-        createNewUser(data.id, obj)
-        userData = data
+        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+        firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
+            console.log(error)
+        })
+
+        await firebase.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                console.log("We are authenticated now!");
+                const obj = {
+                    name: user.displayName,
+                    picture: user.photoURL,
+                    email: user.email,
+                    id: user.uid
+                }
+                userData = obj
+                createNewUser(obj)
+            }
+        });
     }
     return userData
 }

@@ -15,20 +15,10 @@ import React, { Component } from "react"
 const createAccount = createStackNavigator({
   AuthenticateAccountView: {
     screen: AuthenticateAccountView,
-
-
   },
   AccountSetupView: {
     screen: AccountSetupView,
-
-
-  },
-
-})
-
-const streamingPages = createStackNavigator({
-  AllStreamView: AllStreamView,
-  SingleStreamView: SingleStreamView
+  }
 })
 
 const signedIn = createDrawerNavigator({
