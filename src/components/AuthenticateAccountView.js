@@ -17,6 +17,7 @@ export default class AuthenticateAccountView extends Component {
     handlePress = async () => {
         const { navigate } = this.props.navigation
         const userData = await facebookLogIn()
+        console.log("user data: beans", userData)
         navigate("AccountSetupView", { data: userData })
     }
     render() {
