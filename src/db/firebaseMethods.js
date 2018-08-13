@@ -12,7 +12,7 @@ function createNewUser(obj) {
     return firestore.collection("users").doc(`${obj.id}`).set({ obj })
 }
 
-function createNewBet(id, obj) {
+function createNewBet(obj) {
     return firestore.collection('bets').add({ obj })
 }
 

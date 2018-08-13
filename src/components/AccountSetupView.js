@@ -10,7 +10,7 @@ export default class AccountSetupView extends Component {
     }
     navigateToAllStreams = (user) => {
         const { navigate } = this.props.navigation
-        navigate("signedIn")
+        navigate("signedIn", {id: user.id})
 
     }
     render() {
