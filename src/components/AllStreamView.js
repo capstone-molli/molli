@@ -37,26 +37,8 @@ export default class AllStreamView extends Component {
     expandProfileCard() {
         this.props.navigation.openDrawer()
     }
-    fetchFortniteAPI = async () => {
-        const searchResult = await axios({
-            method: "get",
-            url: `https://api.fortnitetracker.com/v1/profile/pc/ninja`,
-            headers: {
-                "TRN-Api-Key": '06d586eb-f40e-430d-ba02-5e4716654056'
-            }
-        })
-        /*"accountId",
-        "platformId",
-        "platformName",
-        "platformNameLong",
-        "epicUserHandle",
-        "stats",
-        "lifeTimeStats",
-        "recentMatches",*/
-        console.log(searchResult.data.recentMatches[1])
-    }
+
     render() {
-        this.fetchFortniteAPI()
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 2 / 20, backgroundColor: "#228B22" }}>
