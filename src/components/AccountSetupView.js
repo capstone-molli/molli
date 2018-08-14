@@ -25,6 +25,7 @@ export default class AccountSetupView extends Component {
         const newUser = await getUser(userId)
         console.log("user from Firebase", newUser)
         this.setState({ user: newUser })
+
     }
     render() {
         return this.state.user && (

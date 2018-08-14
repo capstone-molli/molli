@@ -92,7 +92,7 @@ export default class AllStreamView extends Component {
                                             style={{ flex: 1 }}>
                                             <Button onPress={() => {
                                                 const { navigate } = this.props.navigation
-                                                navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
+                                                navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login, id: this.props.navigation.state.params.id })
                                             }}
                                                 icon={<Icon name='code' color='#ffffff' />}
                                                 backgroundColor='#03A9F4'
