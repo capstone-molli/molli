@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import { styles } from "./index"
-import Expo from "expo"
 import { facebookLogIn } from "../db/facebookAuth"
+import * as firebase from "firebase"
+
 
 export default class AuthenticateAccountView extends Component {
     constructor() {
         super()
-        this.state = {}
         this.handlePress = this.handlePress.bind(this)
     }
     static navigationOptions = {
         header: null
     }
-
     handlePress = async () => {
-        const { navigate } = this.props.navigation
         const userData = await facebookLogIn()
-        console.log("user data: beans", userData)
-        navigate("AccountSetupView", { data: userData })
+        const { navigate } = this.props.navigation
+        navigate("setupAccount")
+    }
+    componentDidMount() {
+        var user = firebase.auth().currentUser;
+        if (user) {
+            const { navigate } = this.props.navigation
+            navigate("setupAccount")
+        }
     }
     render() {
         return (
@@ -27,6 +32,6 @@ export default class AuthenticateAccountView extends Component {
                     <Text style={styles.authenticate} color="#1e90ff"  >Connect Facebook</Text>
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 }

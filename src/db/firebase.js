@@ -14,6 +14,7 @@ var config = {
 
 const firestore = firebase.initializeApp(config).firestore()
 firestore.settings(settings)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
 // firestore.enablePersistence()
 export default firestore
