@@ -4,7 +4,7 @@ import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
 import {getBet, getAllBets} from '../db/firebaseMethods'
-import SwipeComp from './SwipeComp'
+import MyApp from './PanView'
 // import { access } from 'fs';
 //import ReactPlayer from 'react-player'
 
@@ -55,8 +55,9 @@ export default class SingleStreamView extends Component {
         if(bets.length){
             let arr = []
             for (let i = 0; i < bets.length; i++){
-                arr.push(<SwipeComp bet={bets[i].obj}/>)
+                arr.push(bets[i].obj)
             }
+            console.log(arr, 'this is the arr that we will pass in')
             return arr
         }
 
@@ -70,6 +71,7 @@ export default class SingleStreamView extends Component {
     }
 
     render() {
+        const cardInfo = this.populatingCards()
         if (this.state.bets.length){
             const arr = this.populatingCards()
             return (
@@ -86,7 +88,8 @@ export default class SingleStreamView extends Component {
                 </View>
                 <View style={{ flex: 2 / 3 }}>
                     //insert card date here in cards prop
-                    <Swiper cards={arr} />
+                    {/* <Swiper cards={['do', 'more']}/> */}
+                    <MyApp cards={cardInfo} /> 
                     <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props = {this.props.navigation.state.params} toggleView = {this.toggleView} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
                         <TouchableOpacity onPress={this.toggleView}>
