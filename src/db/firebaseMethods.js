@@ -1,4 +1,5 @@
 import firestore from "./firebase"
+import * as firebase from 'firebase';
 
 function getUser(id) {
     return firestore.collection("users").doc(id).get().then(user => user.data())
@@ -15,6 +16,7 @@ function createNewUser(obj) {
 function createNewBet(id, obj) {
     return firestore.collection('bets').add({ obj })
 }
+
 
 export { createNewUser, getUser, updateUser, createNewBet }
 
