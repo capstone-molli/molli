@@ -156,10 +156,12 @@ class SwipeableCardView extends Component
         { rotate: rotateCard }]}
         ]}>
  
-        <Text style = { styles.CardView_Title }> { this.props.item.betAmount } </Text>
-        <Text style = { styles.CardView_Title }> { this.props.item.betType } </Text>
-        <Text style = { styles.CardView_Title }> { this.props.item.description } </Text>
-        <Text style = { styles.CardView_Title }> { this.props.item.epicUser } </Text>
+        <Text style = { styles.CardView_Title}> 
+        Dollar Amount: { this.props.item.betAmount } 
+         Type of Bet: { this.props.item.betType } 
+         Description: { this.props.item.description } 
+         Epic Username: { this.props.item.epicUser }
+        </Text>
  
         {
  
@@ -286,7 +288,7 @@ const styles = StyleSheet.create(
   {
     color: 'blue',
     fontSize: 24,
-    backgroundColor: 'solid'
+    backgroundColor: 'red'
   },
  
   Left_Text_Style:
