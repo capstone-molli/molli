@@ -1,4 +1,5 @@
 import firestore from "./firebase"
+import * as firebase from 'firebase';
 
 function getUser(id) {
     return firestore.collection("users").doc(id).get().then(user => user.data())

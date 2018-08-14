@@ -1,41 +1,29 @@
 import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamView, UserSetupForm } from "./src/components"
-import { Text, Image } from "react-native"
-import { Container, Content, Header, Left, Body, Icon } from "native-base"
 import { createDrawerNavigator, createStackNavigator, DrawerItems } from "react-navigation"
-import Ionicons from "react-native-vector-icons/Ionicons"
 import React, { Component } from "react"
+import * as firebase from "firebase"
+import { getUser } from "./src/db/firebaseMethods"
 
-// const App = createStackNavigator({
-//   AuthenticateAccountView: { screen: AuthenticateAccountView },
-//   AccountSetupView: { screen: AccountSetupView },
-//   AllStreamView: MyNavigator,
-//   SingleStreamView: { screen: SingleStreamView },
-// });
-
-const createAccount = createStackNavigator({
-  AuthenticateAccountView: {
-    screen: AuthenticateAccountView,
-  },
-  AccountSetupView: {
-    screen: AccountSetupView,
-  }
-})
-
-const signedIn = createDrawerNavigator({
-  AllStreamView: AllStreamView,
-  SingleStreamView: SingleStreamView
-})
-
-const stack = createStackNavigator({
+const SignedOutStack = createStackNavigator({
   signedOut: {
-    screen: createAccount,
+    screen: AuthenticateAccountView,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    }
+  },
+  setupAccount: {
+    screen: AccountSetupView,
     navigationOptions: {
       header: null,
       gesturesEnabled: false,
     }
   },
   signedIn: {
-    screen: signedIn,
+    screen: createDrawerNavigator({
+      AllStreamView: AllStreamView,
+      SingleStreamView: SingleStreamView
+    }),
     navigationOptions: {
       header: null,
       gesturesEnabled: false,
@@ -43,4 +31,63 @@ const stack = createStackNavigator({
   }
 })
 
-export default stack
+const SignedInStack = createStackNavigator({
+  signedIn: {
+    screen: createDrawerNavigator({
+      AllStreamView: AllStreamView,
+      SingleStreamView: SingleStreamView
+    }),
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    }
+  }
+})
+
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      loading: true,
+      user: null,
+      newUser: null
+    };
+  }
+
+  componentDidMount() {
+    this.authSubscription = firebase.auth().onAuthStateChanged(async (user) => {
+      console.log("authSubscription checked")
+      if (user) {
+        const newUser = await getUser(user.uid)
+        if (newUser && newUser.obj.exists === true) {
+          console.log("user exists in auth and database")
+          this.setState({
+            loading: false,
+            newUser: newUser,
+            user: user
+          })
+        } else {
+          console.log("user exists only in auth")
+          this.setState({
+            loading: false,
+            user: user
+          });
+        }
+      } else {
+        this.setState({
+          loading: false,
+        })
+        console.log("no user authenticated")
+      }
+    })
+  }
+  componentWillUnmount() {
+    console.log("authSubscription ended")
+    this.authSubscription()
+  }
+  render() {
+    if (this.state.loading) return null;
+    if (this.state.user && this.state.newUser) return <SignedInStack />;
+    return (<SignedOutStack />)
+  }
+}
