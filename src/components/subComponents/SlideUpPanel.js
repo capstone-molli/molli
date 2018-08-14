@@ -5,17 +5,28 @@ import { createNewBet } from "../../db/firebaseMethods"
 import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { styles } from "../index"
 import SlidingUpPanel from 'rn-sliding-up-panel'
+import * as firebase from 'firebase'
 
 export default class BetForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: null
+            user: null,
+            epicUser: '',
+            description: '0',
+            betAmount: '',
         }
+        this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount() {
-        this.setState({ user: this.props.user })
+        this.setState({ user: firebase.auth().currentUser.uid })
     }
+
+    handleChange(value){
+        this.setState({value})
+    }
+
+
     render() {
         return (
             <SlidingUpPanel visible={this.props.visible}
@@ -30,7 +41,7 @@ export default class BetForm extends Component {
                     clearOnClose={false} // delete the values of the form when unmounted
                     defaults={{
                         betType: '',
-                        kills: '',
+                        description: '0',
                         epicUser: '',
                         betAmount: ''
 
@@ -48,16 +59,17 @@ export default class BetForm extends Component {
                                 message: 'Only numeric characters'
                             }]
                         },
-                        kills: {
+                        description: {
                             title: '# of kills',
                             validate: [{
-                                validator: 'isLength',
-                                arguments: [1, 2],
-                                message: 'Bet Amount must be between 1 and 2 characters'
-                            }, {
-                                validator: 'matches',
-                                arguments: /^[0-9]*$/,
-                                message: 'Only numeric characters'
+
+                              validator: 'isLength',
+                              arguments: [1, 2],
+                              message: '# of kills must be between 1 and 2 characters'
+                            },{
+                              validator: 'matches',
+                              arguments: /^[0-9]*$/,
+                              message: 'Only numeric characters'
                             }]
                         }
                     }}
@@ -73,6 +85,8 @@ export default class BetForm extends Component {
                     <GiftedForm.TextInputWidget
                         name='epicUser'
                         title='Epic Username'
+                        value = {this.state.epicUser}
+                        onChange = {this.handleChange}
                         // image={require('../../assets/icons/color/contact_card.png')}
                         placeholder='MollyBloom25'
                         clearButtonMode='while-editing'
@@ -90,14 +104,18 @@ export default class BetForm extends Component {
                     <GiftedForm.TextInputWidget
                         name='betAmount'
                         title='Bet Amount'
+                        value = {this.state.betAmount}
+                        onChange = {this.handleChange}
                         // image={require('../../assets/icons/color/contact_card.png')}
                         placeholder='1'
                         clearButtonMode='while-editing'
                     />
 
                     <GiftedForm.TextInputWidget
-                        name='kills'
+                        name='description'
                         title='# of kills'
+                        value = {this.state.description}
+                        onChange = {this.handleChange}
                         placeholder='only applicable if kills is selected'
                         clearButtonMode='while-editing'
                     />
@@ -119,9 +137,9 @@ export default class BetForm extends Component {
                                     console.log("values: ", values)
                                     createNewBet({
                                         'betType': `${values.betType[0]}`,
-                                        "userId": `${this.props.id}`,
+                                        "userId": `${this.state.user}`,
                                         "epicUser": `${values.epicUser}`,
-                                        "description": `${values.kills}`,
+                                        "description": `${values.description}`,
                                         'betAmount': `${values.betAmount}`,
                                         'takerId': ''
                                     })
@@ -130,7 +148,7 @@ export default class BetForm extends Component {
                                     console.log("values: ", values)
                                     createNewBet({
                                         'betType': `${values.betType[0]}`,
-                                        "userId": `${this.props.id}`,
+                                        "userId": `${this.state.user}`,
                                         "epicUser": `${values.epicUser}`,
                                         "description": `win`,
                                         'betAmount': `${values.betAmount}`,
@@ -141,7 +159,7 @@ export default class BetForm extends Component {
                                     console.log("values: ", values)
                                     createNewBet({
                                         'betType': `${values.betType[0]}`,
-                                        "userId": `${this.props.id}`,
+                                        "userId": `${this.state.user}`,
                                         "epicUser": `${values.epicUser}`,
                                         "description": `loss`,
                                         'betAmount': `${values.betAmount}`,
@@ -152,6 +170,11 @@ export default class BetForm extends Component {
 
 
                                 this.props.toggleView()
+                                this.setState({
+                                    description: '0',
+                                    betAmount: '',
+                                    epicUser: ''
+                                })
 
                                 Alert.alert(
                                     'Bet Created!',

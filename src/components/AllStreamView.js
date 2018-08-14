@@ -81,6 +81,7 @@ export default class AllStreamView extends Component {
                             <View style={{ flex: 8 / 10 }}>
                                 <View>
 
+
                                 </View>
 
                             </View>
@@ -89,7 +90,6 @@ export default class AllStreamView extends Component {
                     </View>
                     <View style={{ flex: 18 / 20 }}>
                         <ScrollView>
-
                             <View >
                                 {this.state.streams.map(stream => {
                                     let url = stream.video.thumbnail_url.slice(0, stream.video.thumbnail_url.length - 20) + '200x100.jpg'
@@ -111,6 +111,7 @@ export default class AllStreamView extends Component {
                                                     title='view' />
                                             </Card>
                                         </View>)
+
 
                                 })}
                             </View>

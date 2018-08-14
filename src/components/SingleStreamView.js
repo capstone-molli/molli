@@ -3,6 +3,9 @@ import { View, Image, TouchableOpacity, WebView } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
+import {getBet, getAllBets} from '../db/firebaseMethods'
+import MyApp from './PanView'
+// import { access } from 'fs';
 //import ReactPlayer from 'react-player'
 
 
@@ -12,42 +15,92 @@ export default class SingleStreamView extends Component {
         this.state = {
             visible: false,
             allowDragging: true,
+            bets: []
         }
         this.toggleView = this.toggleView.bind(this)
     }
 
-    toggleView() {
+    componentDidMount = async () => {
+        const bets = await getAllBets()
+        this.setState({bets})
+    }
+
+    toggleView = () => {
         this.setState({ visible: !this.state.visible })
         this.refs["plusButton"].setNativeProps({
             source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/cancel.png"))]
         })
     }
 
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
+    populatingCards = () => {
+        const bets = this.state.bets
+        let arr = [];
+        console.log(bets)
 
-                    <WebView
-                        allowsInlineMediaPlayback={true}
-                        mediaPlaybackRequiresUserAction={false}
-                        source={{ uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}` }}
+        // if(bets.length){
+        //     let arr = []
+        //     for (let i = 0; i < bets.length; i++){
+        //         let holder = ''
+        //         for (let key in bets[i].obj){
+        //             if(bets[i].obj.hasOwnProperty(key)){
+        //                 holder = holder + (key + '=' + bets[i].obj[key] + '')
+        //             }
+        //         }
+        //         arr.push(holder);
+        //         holder = ''
+        //     }
+        //     return arr
+        // }
+
+        if(bets.length){
+            let arr = []
+            for (let i = 0; i < bets.length; i++){
+                arr.push(bets[i].obj)
+            }
+            console.log(arr, 'this is the arr that we will pass in')
+            return arr
+        }
+
+        // if(bets.length){
+        //     for (let i = 0; i < bets.length; i++){
+        //         arr.push(bets[i].obj)
+        //     }
+        //     console.log(bets, 'this is line 58')
+        //     return arr
+        // }
+    }
+
+    render() {
+        const cardInfo = this.populatingCards()
+        if (this.state.bets.length){
+            const arr = this.populatingCards()
+            return (
+                <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1 / 3, backgroundColor: "#228B22" }}>
+
+                        <WebView
+                            allowsInlineMediaPlayback={true}
+                            mediaPlaybackRequiresUserAction={false}
+                            source={{ uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}` }}
 
                         style={{ marginTop: 0 }}
                     />
                 </View>
                 <View style={{ flex: 2 / 3 }}>
                     //insert card date here in cards prop
-                    <Swiper cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']} />
-                    {console.log('params', this.props.navigation.state.params)}
-                    <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} id={this.props.navigation.state.params.id} props = {this.props.navigation.state.params} toggleView = {this.toggleView} />
+                    {/* <Swiper cards={['do', 'more']}/> */}
+                    <MyApp cards={cardInfo} /> 
+                    <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props = {this.props.navigation.state.params} toggleView = {this.toggleView} />
                     <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
                         <TouchableOpacity onPress={this.toggleView}>
                             <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plus.png')} />
                         </TouchableOpacity>
                     </View>
+                    </View>
                 </View>
-            </View>
-        )
+            )
+        } else {
+            return null
+        }
     }
 }

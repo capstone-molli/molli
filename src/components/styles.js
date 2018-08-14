@@ -15,6 +15,14 @@ export default StyleSheet.create({
         textDecorationLine: "underline",
         textAlign: "center"
     },
+    authenticate: {
+        marginTop: 40,
+        color: "#1e90ff",
+        fontWeight: "bold",
+        fontSize: 30,
+        textDecorationLine: "underline",
+        textAlign: "center"
+    },
     avatar: {
         width: 130,
         height: 130,
