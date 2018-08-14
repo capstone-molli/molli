@@ -44,7 +44,7 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: "#F5FCFF",
+        backgroundColor: "#ffffff",
 
     },
     card: {
@@ -53,11 +53,25 @@ export default StyleSheet.create({
         borderWidth: 2,
         borderColor: "#E8E8E8",
         justifyContent: "center",
-        backgroundColor: "white",
+        backgroundColor: "#fff",
     },
     text: {
         textAlign: "center",
         fontSize: 50,
-        backgroundColor: "transparent"
+        // backgroundColor: "transparent"
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    drawerHeader: {
+        height: 200,
+        backgroundColor: '#fff'
+    },
+    drawerImage: {
+        height: 150,
+        width: 150,
+        borderRadius: 75
     }
 });
