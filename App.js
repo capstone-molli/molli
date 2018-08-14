@@ -1,8 +1,30 @@
 import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamView, UserSetupForm } from "./src/components"
-import { createDrawerNavigator, createStackNavigator, DrawerItems } from "react-navigation"
+import { SafeAreaView, createDrawerNavigator, createStackNavigator, DrawerItems, Dimensions, NavigationActions } from "react-navigation"
+import styles from "./src/components/styles"
+import CustomDrawerContentComponent from "./src/components/subComponents/sideBar"
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image
+} from "react-native";
 import React, { Component } from "react"
 import * as firebase from "firebase"
 import { getUser } from "./src/db/firebaseMethods"
+
+const streams = createDrawerNavigator({
+  AllStreamView: { screen: AllStreamView },
+  SingleStreamView: { screen: SingleStreamView },
+},
+  {
+    contentComponent: CustomDrawerContentComponent,
+    drawerBackgroundColor: "transparent"
+  },
+
+)
+
 
 const SignedOutStack = createStackNavigator({
   signedOut: {
@@ -20,10 +42,16 @@ const SignedOutStack = createStackNavigator({
     }
   },
   signedIn: {
-    screen: createDrawerNavigator({
-      AllStreamView: AllStreamView,
-      SingleStreamView: SingleStreamView
-    }),
+    screen: streams,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    }
+  }
+})
+const SignedInStack = createStackNavigator({
+  signedIn: {
+    screen: streams,
     navigationOptions: {
       header: null,
       gesturesEnabled: false,
@@ -31,18 +59,7 @@ const SignedOutStack = createStackNavigator({
   }
 })
 
-const SignedInStack = createStackNavigator({
-  signedIn: {
-    screen: createDrawerNavigator({
-      AllStreamView: AllStreamView,
-      SingleStreamView: SingleStreamView
-    }),
-    navigationOptions: {
-      header: null,
-      gesturesEnabled: false,
-    }
-  }
-})
+
 
 export default class App extends React.Component {
   constructor() {
