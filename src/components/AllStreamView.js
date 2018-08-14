@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, ScrollView, WebView } from 'react-native';
-import { FormInput, FormLabel } from "react-native-elements"
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
-import { styles, SingleStreamView } from "./index"
+import { Card, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
 import { twitchData } from "../db/twitchData"
+import * as firebase from "firebase"
 
 export default class AllStreamView extends Component {
     constructor() {
         super()
-        this.state = { streams: [] }
+        this.state = { streams: [], loading: true }
         this.expandProfileCard = this.expandProfileCard.bind(this)
         this.handlePress = this.handlePress.bind(this)
-        // this.getVideos = this.getVideos.bind(this)
     }
     static navigationOptions = {
         header: null
@@ -22,6 +20,9 @@ export default class AllStreamView extends Component {
         this.setState({
             streams
         })
+        var user = firebase.auth().currentUser
+        console.log("user from Firebase in AllStreamView", user)
+        setTimeout(() => this.setState({ loading: false }), 1000);
     }
 
     async getUsers(streams) {
@@ -52,6 +53,7 @@ export default class AllStreamView extends Component {
                         <View style={{ flex: 8 / 10 }}>
                             <View>
 
+
                             </View>
 
                         </View>
@@ -60,7 +62,6 @@ export default class AllStreamView extends Component {
                 </View>
                 <View style={{ flex: 18 / 20 }}>
                     <ScrollView>
-
                         <View >
                             {this.state.streams.map(stream => {
                                 let url = stream.video.thumbnail_url.slice(0, stream.video.thumbnail_url.length - 20) + '200x100.jpg'
@@ -83,6 +84,7 @@ export default class AllStreamView extends Component {
                                         </Card>
                                     </View>)
 
+
                             })}
                         </View>
                     </ScrollView>
@@ -90,4 +92,5 @@ export default class AllStreamView extends Component {
             </View>
         )
     }
+
 }

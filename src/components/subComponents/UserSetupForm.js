@@ -4,6 +4,7 @@ import moment from "moment"
 import { updateUser } from "../../db/firebaseMethods"
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { styles } from "../index"
+import * as firebase from "firebase"
 
 export default class UserSetupForm extends Component {
     constructor(props) {
@@ -13,7 +14,10 @@ export default class UserSetupForm extends Component {
         }
     }
     componentDidMount() {
-        this.setState({ user: this.props.user })
+        // this.setState({ user: this.props.user })
+        // const user = firebase.auth().currentUser
+
+        // console.log("User status: ", user)
     }
     render() {
         return (
@@ -23,12 +27,12 @@ export default class UserSetupForm extends Component {
                 openModal={() => { }}
                 clearOnClose={false} // delete the values of the form when unmounted
                 defaults={{
-                    fullName: this.props.user.name,
-                    username: `${this.props.user.first_name}${this.props.user.last_name}`,
+                    fullName: this.props.user.obj.name,
+                    username: this.props.user.obj.username || "",
                     password: '',
                     country: 'USA',
                     birthday: new Date(((new Date()).getFullYear() - 18) + ''),
-                    emailAddress: this.props.user.email
+                    emailAddress: this.props.user.obj.email
                 }}
                 validators={{
                     fullName: {
@@ -94,7 +98,7 @@ export default class UserSetupForm extends Component {
             >
                 <GiftedForm.SeparatorWidget />
                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: "#ffff", top: 10 }}>
-                    <Image style={styles.avatar} source={{ uri: `${this.props.user.picture.data.url}` }} />
+                    <Image style={styles.avatar} source={{ uri: `${this.props.user.obj.picture}` }} />
                 </View>
                 <GiftedForm.TextInputWidget
                     name='fullName' // mandatory
@@ -185,17 +189,18 @@ export default class UserSetupForm extends Component {
                         if (isValid === true) {
                             // prepare object
                             values.birthday = moment(values.birthday).format('YYYY-MM-DD');
-                            console.log("values: ", values)
-                            console.log("unedited user", this.state.user)
-                            updateUser(this.props.user.id, {
+                            // console.log("values: ", values)
+                            // console.log("unedited user", this.state.user)
+                            updateUser({
+                                "id": `${this.props.user.obj.id}`,
                                 "email": `${values.emailAddress}`,
-                                "first_name": this.props.user.first_name,
-                                "id": this.props.user.id,
-                                "last_name": this.props.user.last_name,
                                 "name": `${values.fullName}`,
-                                "picture": this.props.user.picture
+                                "picture": `${this.props.user.obj.picture}`,
+                                "username": values.username,
+                                "birthday": values.birthday,
+                                "exists": true
                             })
-                            this.props.navigateToAllStreams({id : this.props.user.id})
+                            this.props.navigateToAllStreams()
                             postSubmit()
 
                             /* Implement the request to your server using values variable
