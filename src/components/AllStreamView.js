@@ -59,11 +59,12 @@ export default class AllStreamView extends Component {
         this.fetchFortniteAPI()
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ flex: 2 / 20, backgroundColor: "#228B22" }}>
+                <View style={{ flex: 2 / 20, 
+                    backgroundColor: "#228B22" }}>
                     <View style={{ flexDirection: "row", flex: 1 }}>
                         <View style={{ flex: 2 / 10, flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}>
                             <TouchableOpacity onPress={this.expandProfileCard}>
-                                <Image style={{ width: 30, height: 30, bottom: 20 }} source={require("../assets/settings.png")} />
+                                <Image style={{ width: 30, height: 30, bottom: 20 }} source={require("../assets/menu.png")} />
                             </TouchableOpacity>
                         </View>
 
@@ -91,7 +92,7 @@ export default class AllStreamView extends Component {
                                             style={{ flex: 1 }}>
                                             <Button onPress={() => {
                                                 const { navigate } = this.props.navigation
-                                                navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login, id: this.props.navigation.state.params.id })
+                                                navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login})
                                             }}
                                                 icon={<Icon name='code' color='#ffffff' />}
                                                 backgroundColor='#03A9F4'

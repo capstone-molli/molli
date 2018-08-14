@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import { styles } from "./index"
 import Expo from "expo"
 import { facebookLogIn } from "../db/facebookAuth"
@@ -24,7 +24,7 @@ export default class AuthenticateAccountView extends Component {
         return (
             <View style={styles.maxScreenView}>
                 <TouchableOpacity onPress={this.handlePress}>
-                    <Text style={styles.text} >Connect Facebook</Text>
+                    <Text style={styles.authenticate} color="#1e90ff"  >Connect Facebook</Text>
                 </TouchableOpacity>
             </View>
         )
