@@ -10,6 +10,7 @@ export default class SwiperComponent extends Component {
             <Swiper
                 cards={this.props.cards}
                 renderCard={(card) => {
+                    console.log(card, 'this is the swiper comp')
                     return (
                         <View style={styles.card}>
                             <Text style={styles.text}>{card}</Text>
