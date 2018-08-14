@@ -19,7 +19,8 @@ const streams = createDrawerNavigator({
   SingleStreamView: { screen: SingleStreamView },
 },
   {
-    contentComponent: CustomDrawerContentComponent
+    contentComponent: CustomDrawerContentComponent,
+    drawerBackgroundColor: "transparent"
   },
 
 )
