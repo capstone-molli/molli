@@ -34,7 +34,56 @@ async function getAllBets() {
     return filtered
 }
 
-export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets }
+async function getAllBets() {
+    const arr = []
+    const bets = await firestore.collection('bets').get()
+    .then(allBets => 
+        allBets.forEach(bet => 
+            arr.push(bet.data())
+        )
+    ).catch(err => console.log(err, 'err getting the data'))
+    const filtered = arr.filter(element => element.obj.takerId === "")
+
+    return filtered
+}
+
+async function getAllBetsbyUser(id) {
+    const arr = []
+    const bets = await firestore.collection('bets').get()
+    .then(allBets => 
+        allBets.forEach(bet => 
+            arr.push(bet.data())
+        )
+    ).catch(err => console.log(err, 'err getting the data'))
+    const openBetsNoTaker = arr.filter(element => {
+        if ((element.obj.takerId === '') &&
+        (element.obj.userId === id)){
+            return true
+        }else{
+            return false
+        }
+        })
+    const openBetsWithTaker = arr.filter(element => {
+        if ((element.obj.takerId !== '') &&
+        (element.obj.userId === id) && (element.obj.timeOfCompletion === '')){
+            return true
+        }else{
+            return false
+        }
+        })
+    const closedBets = arr.filter(element => {
+        if ((element.obj.takerId !== '') &&
+        (element.obj.userId === id) && (element.obj.timeOfCompletion !== '')){
+            return true
+        }else{
+            return false
+        }
+        })
+
+    return {openBetsNoTaker, openBetsWithTaker, closedBets}
+}
+
+export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser }
 
 //Create User
 //Name, Username, Email, Venmo, authToken
