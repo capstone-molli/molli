@@ -12,7 +12,7 @@ const facebookLogIn = async () => {
     });
     if (type === 'success') {
         const credential = firebase.auth.FacebookAuthProvider.credential(token)
-        firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
+        await firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
             console.log(error)
         })
 
@@ -23,7 +23,8 @@ const facebookLogIn = async () => {
                     name: user.displayName,
                     picture: user.photoURL,
                     email: user.email,
-                    id: user.uid
+                    id: user.uid,
+                    exists: false
                 }
                 userData = obj
                 createNewUser(obj)
