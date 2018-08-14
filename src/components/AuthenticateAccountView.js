@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import { styles } from "./index"
 import { facebookLogIn } from "../db/facebookAuth"
 import * as firebase from "firebase"
@@ -28,8 +28,8 @@ export default class AuthenticateAccountView extends Component {
     render() {
         return (
             <View style={styles.maxScreenView}>
-                <TouchableOpacity onPress={this.handlePress} >
-                    <Text style={styles.text} >Connect Facebook</Text>
+                <TouchableOpacity onPress={this.handlePress}>
+                    <Text style={styles.authenticate} color="#1e90ff"  >Connect Facebook</Text>
                 </TouchableOpacity>
             </View>
         );
