@@ -1,10 +1,8 @@
 import Carousel from 'react-native-snap-carousel';
 import React, { Component } from "react"
 import { View, Text, TouchableOpacity, WebView, Dimensions, Image } from 'react-native';
-import { AccountSetupView } from "../index"
 import Cards from "./Cards"
-// import AuthenticateAccountView from '../AuthenticateAccountView';
-// import SingleStreamView from '../SingleStreamView';
+
 export default class MyCarousel extends Component {
     constructor() {
         super()
@@ -31,11 +29,11 @@ export default class MyCarousel extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
                 <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
-                    <Image style={{ height: 30, width: 30 }} source={require("../../assets/prevComp.png")} />
+                    {index != 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/prevComp.png")} />)}
                 </TouchableOpacity>
                 {item.value}
                 <TouchableOpacity onPress={() => this._carousel.snapToNext()}>
-                    <Image style={{ height: 30, width: 30 }} source={require("../../assets/nextComp.png")} />
+                    {index != 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/nextComp.png")} />)}
                 </TouchableOpacity>
             </View>
         )
