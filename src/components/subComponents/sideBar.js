@@ -42,28 +42,28 @@ class CustomDrawerContentComponent extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 7 / 10, paddingLeft: 20 }}>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')}>
+                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 20, height: 20 }} source={require("../../assets/home.png")} />
-                                <Text style={{ fontSize: 30 }}>Home</Text>
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/home.png")} />
+                                <Text style={{ fontSize: 20 }}>Home</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')}>
+                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 20, height: 20 }} source={require("../../assets/history.png")} />
-                                <Text style={{ fontSize: 30 }}>History</Text>
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/history.png")} />
+                                <Text style={{ fontSize: 20 }}>History</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')}>
+                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 20, height: 20 }} source={require("../../assets/active.png")} />
-                                <Text style={{ fontSize: 30 }}>Active</Text>
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/active.png")} />
+                                <Text style={{ fontSize: 20 }}>Active</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')}>
+                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 20, height: 20 }} source={require("../../assets/settingsImg.png")} />
-                                <Text style={{ fontSize: 30 }}>Settings</Text>
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/settingsImg.png")} />
+                                <Text style={{ fontSize: 20 }}>Settings</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
