@@ -1,4 +1,5 @@
-import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamView, UserSetupForm, SettingsView } from "./src/components"
+
+import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamView, UserSetupForm, BetHistory, ActiveBets } from "./src/components"
 import { SafeAreaView, createDrawerNavigator, createStackNavigator, DrawerItems, Dimensions, NavigationActions } from "react-navigation"
 import styles from "./src/components/styles"
 import CustomDrawerContentComponent from "./src/components/subComponents/sideBar"
@@ -18,6 +19,8 @@ const streams = createDrawerNavigator({
   AllStreamView: { screen: AllStreamView },
   SingleStreamView: { screen: SingleStreamView },
   SettingsView: { screen: SettingsView }
+  BetHistory: { screen: BetHistory },
+  ActiveBets: { screen: ActiveBets }
 },
   {
     contentComponent: CustomDrawerContentComponent,

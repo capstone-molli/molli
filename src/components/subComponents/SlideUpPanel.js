@@ -141,7 +141,14 @@ export default class BetForm extends Component {
                                         "epicUser": `${values.epicUser}`,
                                         "description": `${values.description}`,
                                         'betAmount': `${values.betAmount}`,
-                                        'takerId': ''
+                                        'takerId': '',
+                                        'timeOfCreation': Date.now(),
+                                        'timeOfMatch': null,
+                                        'timeOfCompletion': null,
+                                        'winnerId': null,
+                                        'loserId': null
+
+
                                     })
                                 }
                                 else if (values.betType[0] === 'Win') {
@@ -152,7 +159,14 @@ export default class BetForm extends Component {
                                         "epicUser": `${values.epicUser}`,
                                         "description": `win`,
                                         'betAmount': `${values.betAmount}`,
-                                        'takerId': ''
+                                        'takerId': '',
+                                        'timeOfCreation': Date.now(),
+                                        'timeOfMatch': '',
+                                        'timeOfCompletion': '',
+                                        'winnerId': null,
+                                        'loserId': null
+
+
                                     })
                                 }
                                 else {
@@ -163,7 +177,13 @@ export default class BetForm extends Component {
                                         "epicUser": `${values.epicUser}`,
                                         "description": `loss`,
                                         'betAmount': `${values.betAmount}`,
-                                        'takerId': ''
+                                        'takerId': '',
+                                        'timeOfCreation': Date.now(),
+                                        'timeOfMatch': '',
+                                        'timeOfCompletion': '',
+                                        'winnerId': null,
+                                        'loserId': null
+
                                     })
                                 }
                                 // prepare object
