@@ -179,13 +179,13 @@ export default class UserSetupForm extends Component {
                 </GiftedForm.ModalWidget>
                 <GiftedForm.ErrorsWidget />
                 <GiftedForm.SubmitWidget
-                    title= {this.props.user.obj.username ? 'Submit' : "Sign up"}
+                    title={this.props.user.obj.username ? 'Submit Changes' : "Sign up"}
                     widgetStyles={{
                         submitButton: {
                             // backgroundColor: themes.mainColor,
                         }
                     }}
-                    onSubmit={(isValid, values, validationResults, postSubmit = null, modalNavigator = null) => {
+                    onSubmit={(isValid, values, validationResults, post = null, modalNavigator = null) => {
                         if (isValid === true) {
                             // prepare object
                             values.birthday = moment(values.birthday).format('YYYY-MM-DD');
