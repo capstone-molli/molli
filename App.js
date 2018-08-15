@@ -1,3 +1,4 @@
+
 import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamView, UserSetupForm, BetHistory, ActiveBets } from "./src/components"
 import { SafeAreaView, createDrawerNavigator, createStackNavigator, DrawerItems, Dimensions, NavigationActions } from "react-navigation"
 import styles from "./src/components/styles"
@@ -17,6 +18,7 @@ import { getUser } from "./src/db/firebaseMethods"
 const streams = createDrawerNavigator({
   AllStreamView: { screen: AllStreamView },
   SingleStreamView: { screen: SingleStreamView },
+  SettingsView: { screen: SettingsView }
   BetHistory: { screen: BetHistory },
   ActiveBets: { screen: ActiveBets }
 },
