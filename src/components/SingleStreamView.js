@@ -7,6 +7,7 @@ import { getBet, getAllBets } from '../db/firebaseMethods'
 import Carousel from "./subComponents/Carousel"
 import Cards from "./subComponents/Cards"
 
+
 // import { access } from 'fs';
 //import ReactPlayer from 'react-player'
 
@@ -24,14 +25,13 @@ export default class SingleStreamView extends Component {
         const { navigate } = this.props.navigation
         navigate("AllStreamView")
     }
+
     toggleView = () => {
         this.setState({ visible: !this.state.visible })
         this.refs["plusButton"].setNativeProps({
             source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/cancel.png"))]
         })
     }
-
-
 
     // if(bets.length){
     //     for (let i = 0; i < bets.length; i++){
@@ -59,6 +59,7 @@ export default class SingleStreamView extends Component {
                             source={{ uri: `http://player.twitch.tv/?channel=${this.props.navigation.state.params.login}` }}
                             style={{ marginTop: 0 }}
                         />
+
                     </View>
                 </View>
                 <View style={{ flex: 7 / 12 }}>
