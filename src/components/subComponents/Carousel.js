@@ -11,9 +11,6 @@ export default class MyCarousel extends Component {
         this.state = {
             entries: [
                 {
-                    value: < AccountSetupView />,
-                },
-                {
                     value: < Cards />,
                 },
                 {
@@ -47,7 +44,7 @@ export default class MyCarousel extends Component {
 
     _renderItem({ item, index }) {
         return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+            <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
                 {item.value}
                 {/* <AllStreamView /> */}
                 {/* <Text style={{
@@ -90,7 +87,8 @@ export default class MyCarousel extends Component {
                 data={this.state.entries}
                 renderItem={this._renderItem}
                 sliderWidth={Dimensions.get('window').width}
-                itemWidth={300}
+                itemWidth={Dimensions.get('window').width}
+                scrollEnabled={false}
             />
         );
     }
