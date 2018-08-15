@@ -24,7 +24,6 @@ const facebookLogIn = async () => {
                     .then(res => res.json())
                     .then(r => r.data.url)
                 console.log("result: ", photo)
-
                 const obj = {
                     name: user.displayName,
                     picture: photo,

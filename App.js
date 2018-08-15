@@ -73,18 +73,15 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.authSubscription = firebase.auth().onAuthStateChanged(async (user) => {
-      console.log("authSubscription checked")
       if (user) {
         const newUser = await getUser(user.uid)
         if (newUser && newUser.obj.exists === true) {
-          console.log("user exists in auth and database")
           this.setState({
             loading: false,
             newUser: newUser,
             user: user
           })
         } else {
-          console.log("user exists only in auth")
           this.setState({
             loading: false,
             user: user
@@ -94,12 +91,10 @@ export default class App extends React.Component {
         this.setState({
           loading: false,
         })
-        console.log("no user authenticated")
       }
     })
   }
   componentWillUnmount() {
-    console.log("authSubscription ended")
     this.authSubscription()
   }
   render() {
