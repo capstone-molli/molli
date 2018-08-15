@@ -127,27 +127,27 @@ class SwipeableCardView extends Component {
   render() {
     console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
-      {
-        inputRange: [-200, 0, 200],
-        outputRange: ['-20deg', '0deg', '20deg'],
-      });
-    return (
-
-      <Animated.View {...this.panResponder.panHandlers}
-        style={[
-          styles.cardView_Style, {
-            backgroundColor: this.props.item.backgroundColor,
-            opacity: this.CardView_Opacity,
-            transform: [{ translateX: this.state.Xposition },
-            { rotate: rotateCard }]
-          }
+    {
+       inputRange: [-200, 0, 200],
+       outputRange: ['-20deg', '0deg', '20deg'],
+    });
+    return(
+ 
+      <Animated.View {...this.panResponder.panHandlers} 
+      style = {[ 
+        styles.cardView_Style, { backgroundColor: this.props.item.backgroundColor, 
+        opacity: this.CardView_Opacity, 
+        transform: [{ translateX: this.state.Xposition }, 
+        { rotate: rotateCard }]}
         ]}>
+ 
 
-        <Text style={styles.CardView_Title}> {this.props.item.betAmount} </Text>
-        <Text style={styles.CardView_Title}> {this.props.item.betType} </Text>
-        <Text style={styles.CardView_Title}> {this.props.item.description} </Text>
-        <Text style={styles.CardView_Title}> {this.props.item.epicUser} </Text>
-
+        <Text style = { styles.CardView_Title} >
+        {
+        `Dollar Amount: ${ this.props.item.betAmount }   Type of Bet: ${ this.props.item.betType }   Description: ${ this.props.item.description }   Username: ${ this.props.item.epicUser }`
+        }
+        </Text>
+ 
         {
 
           (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Left Swipe </Text>) : null
@@ -245,52 +245,52 @@ export default class MyApp extends Component {
 }
 
 const styles = StyleSheet.create(
+{
+  MainContainer:
   {
-    MainContainer:
-    {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: (Platform.OS === 'ios') ? 20 : 0
-    },
-
-    cardView_Style:
-    {
-      width: '75%',
-      height: '45%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      position: 'absolute',
-      borderRadius: 7,
-      backgroundColor: 'blue'
-    },
-
-    CardView_Title:
-    {
-      color: 'blue',
-      fontSize: 24,
-      // backgroundColor: 'solid'
-    },
-
-    Left_Text_Style:
-    {
-      top: 22,
-      right: 32,
-      position: 'absolute',
-      color: '#fff',
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: 'transparent'
-    },
-
-    Right_Text_Style:
-    {
-      top: 22,
-      left: 32,
-      position: 'absolute',
-      color: '#fff',
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: 'transparent'
-    }
-  });
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+  },
+ 
+  cardView_Style:
+  {
+    width: '75%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    borderRadius: 7,
+    backgroundColor: 'blue'
+  },
+ 
+  CardView_Title:
+  {
+    color: 'blue',
+    fontSize: 24,
+    backgroundColor: 'white'
+  },
+ 
+  Left_Text_Style:
+  {
+    top: 22,
+    right: 32,
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: 'transparent'
+  },
+ 
+  Right_Text_Style:
+  {
+    top: 22,
+    left: 32,
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: 'transparent'
+  }
+});
