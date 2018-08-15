@@ -1,0 +1,31 @@
+[debug] [2018-08-09T19:23:25.511Z] ----------------------------------------------------------------------
+[debug] [2018-08-09T19:23:25.514Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-08-09T19:23:25.515Z] CLI Version:   4.0.3
+[debug] [2018-08-09T19:23:25.515Z] Platform:      darwin
+[debug] [2018-08-09T19:23:25.515Z] Node Version:  v8.11.0
+[debug] [2018-08-09T19:23:25.515Z] Time:          Thu Aug 09 2018 15:23:25 GMT-0400 (EDT)
+[debug] [2018-08-09T19:23:25.515Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-08-09T19:23:25.537Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-08-09T19:23:25.537Z] > authorizing via signed-in user
+[debug] [2018-08-09T19:23:25.539Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/molli-e1c3f  
+  
+ Thu Aug 09 2018 15:23:25 GMT-0400 (EDT)
+[debug] [2018-08-09T19:24:25.584Z] Error: getaddrinfo ENOTFOUND admin.firebase.com admin.firebase.com:443
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[error] 
+[error] Error: Server Error. getaddrinfo ENOTFOUND admin.firebase.com admin.firebase.com:443
+[debug] [2018-08-09T19:24:38.017Z] ----------------------------------------------------------------------
+[debug] [2018-08-09T19:24:38.021Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-08-09T19:24:38.021Z] CLI Version:   4.0.3
+[debug] [2018-08-09T19:24:38.021Z] Platform:      darwin
+[debug] [2018-08-09T19:24:38.021Z] Node Version:  v8.11.0
+[debug] [2018-08-09T19:24:38.022Z] Time:          Thu Aug 09 2018 15:24:38 GMT-0400 (EDT)
+[debug] [2018-08-09T19:24:38.022Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-08-09T19:24:38.033Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-08-09T19:24:38.033Z] > authorizing via signed-in user
+[debug] [2018-08-09T19:24:38.035Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/molli-e1c3f  
+  
+ Thu Aug 09 2018 15:24:38 GMT-0400 (EDT)

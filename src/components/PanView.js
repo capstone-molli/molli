@@ -1,145 +1,130 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
- 
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
- 
-class SwipeableCardView extends Component
-{
-  constructor()
-  {
+
+class SwipeableCardView extends Component {
+  constructor() {
     super();
- 
+
     this.panResponder;
- 
-    this.state = { 
-      
-      Xposition: new Animated.Value(0), 
- 
+
+    this.state = {
+
+      Xposition: new Animated.Value(0),
+
       RightText: false,
- 
-      LeftText: false, 
-    
-  }
- 
+
+      LeftText: false,
+
+    }
+
     this.CardView_Opacity = new Animated.Value(1);
   }
- 
-  componentWillMount()
-  {
+
+  componentWillMount() {
     this.panResponder = PanResponder.create(
-    {
-      onStartShouldSetPanResponder: (evt, gestureState) => false,
- 
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
- 
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
- 
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
- 
-      onPanResponderMove: (evt, gestureState) =>
       {
-        this.state.Xposition.setValue(gestureState.dx);
- 
-        if( gestureState.dx > SCREEN_WIDTH - 250 )
-        {
- 
-          this.setState({ 
-            
-            RightText: true, 
- 
-            LeftText: false 
-          });
- 
-        }
-        else if( gestureState.dx < -SCREEN_WIDTH + 250 )
-        {
- 
-          this.setState({ 
- 
-            LeftText: true, 
- 
-            RightText: false 
- 
-          });
- 
-        }
-      },
- 
-      onPanResponderRelease: (evt, gestureState) =>
-      {
-        if( gestureState.dx < SCREEN_WIDTH - 150 && gestureState.dx > -SCREEN_WIDTH + 150 )
-        {
-          
-          this.setState({ 
- 
-            LeftText: false,
- 
-            RightText: false 
-            
-          });
- 
-          Animated.spring( this.state.Xposition,
-          {
-            toValue: 0,
-            speed: 5,
-            bounciness: 10,
-          }, { useNativeDriver: true }).start();
-        }
- 
-        else if( gestureState.dx > SCREEN_WIDTH - 150 )
-        {
- 
-          Animated.parallel(
-          [          
-            Animated.timing( this.state.Xposition,
-            {
-              toValue: SCREEN_WIDTH,
-              duration: 200
-            }),
- 
-            Animated.timing( this.CardView_Opacity,
-            {
-              toValue: 0,
-              duration: 200
-            })
-          ], { useNativeDriver: true }).start(() =>
-          {
-            this.setState({ LeftText: false, RightText: false }, () =>
-            {
-              this.props.removeCardView();
+        onStartShouldSetPanResponder: (evt, gestureState) => false,
+
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+
+        onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
+
+        onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+
+        onPanResponderMove: (evt, gestureState) => {
+          this.state.Xposition.setValue(gestureState.dx);
+
+          if (gestureState.dx > SCREEN_WIDTH - 250) {
+
+            this.setState({
+
+              RightText: true,
+
+              LeftText: false
             });
-          }); 
- 
-        }
-        else if( gestureState.dx < -SCREEN_WIDTH + 150 )
-        {
-          Animated.parallel(
-          [          
-            Animated.timing( this.state.Xposition,
-            {
-              toValue: -SCREEN_WIDTH,
-              duration: 200
-            }),
- 
-            Animated.timing( this.CardView_Opacity,
-            {
-              toValue: 0,
-              duration: 200
-            })
-          ], { useNativeDriver: true }).start(() =>
-          {
-            this.setState({ LeftText: false, RightText: false }, () =>
-            {
-              this.props.removeCardView();
+
+          }
+          else if (gestureState.dx < -SCREEN_WIDTH + 250) {
+
+            this.setState({
+
+              LeftText: true,
+
+              RightText: false
+
             });
-          });          
+
+          }
+        },
+
+        onPanResponderRelease: (evt, gestureState) => {
+          if (gestureState.dx < SCREEN_WIDTH - 150 && gestureState.dx > -SCREEN_WIDTH + 150) {
+
+            this.setState({
+
+              LeftText: false,
+
+              RightText: false
+
+            });
+
+            Animated.spring(this.state.Xposition,
+              {
+                toValue: 0,
+                speed: 5,
+                bounciness: 10,
+              }, { useNativeDriver: true }).start();
+          }
+
+          else if (gestureState.dx > SCREEN_WIDTH - 150) {
+
+            Animated.parallel(
+              [
+                Animated.timing(this.state.Xposition,
+                  {
+                    toValue: SCREEN_WIDTH,
+                    duration: 200
+                  }),
+
+                Animated.timing(this.CardView_Opacity,
+                  {
+                    toValue: 0,
+                    duration: 200
+                  })
+              ], { useNativeDriver: true }).start(() => {
+                this.setState({ LeftText: false, RightText: false }, () => {
+                  this.props.removeCardView();
+                });
+              });
+
+          }
+          else if (gestureState.dx < -SCREEN_WIDTH + 150) {
+            Animated.parallel(
+              [
+                Animated.timing(this.state.Xposition,
+                  {
+                    toValue: -SCREEN_WIDTH,
+                    duration: 200
+                  }),
+
+                Animated.timing(this.CardView_Opacity,
+                  {
+                    toValue: 0,
+                    duration: 200
+                  })
+              ], { useNativeDriver: true }).start(() => {
+                this.setState({ LeftText: false, RightText: false }, () => {
+                  this.props.removeCardView();
+                });
+              });
+          }
         }
-      }
-    });
+      });
   }
- 
-  render()
-  {
+
+  render() {
     console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
     {
@@ -168,97 +153,93 @@ class SwipeableCardView extends Component
         </Text>
  
         {
- 
-          ( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> Left Swipe </Text>) : null
- 
+
+          (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Left Swipe </Text>) : null
+
         }
-        
+
         {
- 
-          ( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Right Swipe </Text>) : null 
-        
+
+          (this.state.RightText) ? (<Text style={styles.Right_Text_Style}> Right Swipe </Text>) : null
+
         }
-      
+
       </Animated.View>
     );
   }
 }
- 
-export default class MyApp extends Component
-{
-  constructor()
-  {
+
+export default class MyApp extends Component {
+  constructor() {
     super();
- 
-    this.state = { Sample_CardView_Items_Array:
-    [
-      {
-        id: '1',
-        cardView_Title: 'CardView 1',
-        backgroundColor: '#4CAF50'
-      },
- 
-      {
-        id: '2',
-        cardView_Title: 'CardView 2',
-        backgroundColor: '#607D8B'
-      },
- 
-      {
-        id: '3',
-        cardView_Title: 'CardView 3',
-        backgroundColor: '#9C27B0'
-      },
- 
-      {
-        id: '4',
-        cardView_Title: 'CardView 4',
-        backgroundColor: '#00BCD4'
-      },
- 
-      {
-        id: '5',
-        cardView_Title: 'CardView 5',
-        backgroundColor: '#FFC107'
-      },
- 
-    ], No_More_CardView: false };
+
+    this.state = {
+      Sample_CardView_Items_Array:
+        [
+          {
+            id: '1',
+            cardView_Title: 'CardView 1',
+            backgroundColor: '#4CAF50'
+          },
+
+          {
+            id: '2',
+            cardView_Title: 'CardView 2',
+            backgroundColor: '#607D8B'
+          },
+
+          {
+            id: '3',
+            cardView_Title: 'CardView 3',
+            backgroundColor: '#9C27B0'
+          },
+
+          {
+            id: '4',
+            cardView_Title: 'CardView 4',
+            backgroundColor: '#00BCD4'
+          },
+
+          {
+            id: '5',
+            cardView_Title: 'CardView 5',
+            backgroundColor: '#FFC107'
+          },
+
+        ], No_More_CardView: false
+    };
   }
- 
-  componentDidMount(){
+
+  componentDidMount() {
     this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array.reverse() });
-    
-    if( this.state.Sample_CardView_Items_Array.length == 0 )
-    {
+
+    if (this.state.Sample_CardView_Items_Array.length == 0) {
       this.setState({ No_More_CardView: true });
     }
   }
- 
-  removeCardView =(id)=>{
-    this.state.Sample_CardView_Items_Array.splice( this.state.Sample_CardView_Items_Array.findIndex( x => x.id == id ), 1 );
- 
-    this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array }, () =>
-    {
-      if( this.state.Sample_CardView_Items_Array.length == 0 )
-      {
+
+  removeCardView = (id) => {
+    this.state.Sample_CardView_Items_Array.splice(this.state.Sample_CardView_Items_Array.findIndex(x => x.id == id), 1);
+
+    this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array }, () => {
+      if (this.state.Sample_CardView_Items_Array.length == 0) {
         this.setState({ No_More_CardView: true });
       }
     });
   }
- 
-  render()
-  {
+
+  render() {
     console.log(this.props.cards, 'pan viewer')
-    if (this.props.cards.length){
+    if (this.props.cards.length) {
       console.log('truthy')
-      return(
-        <View style = { styles.MainContainer }>
-        {
-          this.props.cards.map(( item, key ) => (
-            // console.log(item, 'this is being mapped')
-            <SwipeableCardView key = { key } item = { item } removeCardView = { this.removeCardView.bind( this,item.id ) }/>
-          ))
-        }
+      return (
+        <View style={styles.MainContainer}>
+          {
+            this.props.cards.map((item, key) => (
+              // console.log(item, 'this is being mapped')
+              <SwipeableCardView key={key} item={item} removeCardView={this.removeCardView.bind(this, item.id)} />
+            ))
+          }
         </View>
       );
     } else {
@@ -266,7 +247,7 @@ export default class MyApp extends Component
     }
   }
 }
- 
+
 const styles = StyleSheet.create(
 {
   MainContainer:

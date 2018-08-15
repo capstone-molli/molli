@@ -30,12 +30,12 @@ export default class BetForm extends Component {
     render() {
         return (
             <SlidingUpPanel visible={this.props.visible}
-            allowDragging={this.props.allowDragging}
-            showBackdrop={true}
-            draggableRange={{ top: 750, bottom: 0 }}
-            onRequestClose={this.props.contract}>
+                allowDragging={this.props.allowDragging}
+                showBackdrop={true}
+                draggableRange={{ top: 750, bottom: 0 }}
+                onRequestClose={this.props.contract}>
 
-                <GiftedForm style = {{flex: 1}}
+                <GiftedForm style={{ flex: 1 }}
                     formName='betForm' // GiftedForm instances that use the same name will also share the same states
                     openModal={() => { }}
                     clearOnClose={false} // delete the values of the form when unmounted
@@ -44,24 +44,25 @@ export default class BetForm extends Component {
                         description: '0',
                         epicUser: '',
                         betAmount: ''
-                        
+
                     }}
                     validators={{
                         betAmount: {
-                          title: 'Bet Amount',
-                          validate: [{
-                            validator: 'isLength',
-                            arguments: [1, 3],
-                            message: 'Bet Amount must be between 1 and 3 characters'
-                          },{
-                            validator: 'matches',
-                            arguments: /^[0-9]*$/,
-                            message: 'Only numeric characters'
-                          }]
+                            title: 'Bet Amount',
+                            validate: [{
+                                validator: 'isLength',
+                                arguments: [1, 3],
+                                message: 'Bet Amount must be between 1 and 3 characters'
+                            }, {
+                                validator: 'matches',
+                                arguments: /^[0-9]*$/,
+                                message: 'Only numeric characters'
+                            }]
                         },
                         description: {
                             title: '# of kills',
                             validate: [{
+
                               validator: 'isLength',
                               arguments: [1, 2],
                               message: '# of kills must be between 1 and 2 characters'
@@ -70,15 +71,16 @@ export default class BetForm extends Component {
                               arguments: /^[0-9]*$/,
                               message: 'Only numeric characters'
                             }]
-                          }}}
+                        }
+                    }}
                 >
                     <GiftedForm.SeparatorWidget />
-                    
-                        <GiftedForm.SelectWidget  name='betType' title='Bet Type' multiple={false}>
-                            <GiftedForm.OptionWidget  name='Win' title='Win' value='Win'/>
-                            <GiftedForm.OptionWidget  name='Loss' title='Loss' value='Loss'/>
-                            <GiftedForm.OptionWidget  name='Kills' title='Kill Total' value='Kills'/>
-                        </GiftedForm.SelectWidget>
+
+                    <GiftedForm.SelectWidget name='betType' title='Bet Type' multiple={false}>
+                        <GiftedForm.OptionWidget name='Win' title='Win' value='Win' />
+                        <GiftedForm.OptionWidget name='Loss' title='Loss' value='Loss' />
+                        <GiftedForm.OptionWidget name='Kills' title='Kill Total' value='Kills' />
+                    </GiftedForm.SelectWidget>
 
                     <GiftedForm.TextInputWidget
                         name='epicUser'
@@ -117,8 +119,8 @@ export default class BetForm extends Component {
                         placeholder='only applicable if kills is selected'
                         clearButtonMode='while-editing'
                     />
-                    
-                
+
+
                     <GiftedForm.SeparatorWidget />
                     <GiftedForm.ErrorsWidget />
                     <GiftedForm.SubmitWidget
@@ -129,9 +131,9 @@ export default class BetForm extends Component {
                             }
                         }}
                         onSubmit={(isValid, values, postSubmit = null) => {
-                            if(isValid === true) {
-                                if (values.betType[0] === 'Kills'){
-                                    console.log('props',this.props)
+                            if (isValid === true) {
+                                if (values.betType[0] === 'Kills') {
+                                    console.log('props', this.props)
                                     console.log("values: ", values)
                                     createNewBet({
                                         'betType': `${values.betType[0]}`,
@@ -142,7 +144,7 @@ export default class BetForm extends Component {
                                         'takerId': ''
                                     })
                                 }
-                                else if(values.betType[0] === 'Win'){
+                                else if (values.betType[0] === 'Win') {
                                     console.log("values: ", values)
                                     createNewBet({
                                         'betType': `${values.betType[0]}`,
@@ -165,7 +167,7 @@ export default class BetForm extends Component {
                                     })
                                 }
                                 // prepare object
-                                
+
 
                                 this.props.toggleView()
                                 this.setState({
@@ -178,11 +180,11 @@ export default class BetForm extends Component {
                                     'Bet Created!',
                                     'Press OK to dismiss',
                                     [
-                                      {text: 'OK', onPress: () => values = {}},
+                                        { text: 'OK', onPress: () => values = {} },
                                     ],
                                     { cancelable: false }
-                                  )
-                                
+                                )
+
                                 //postSubmit()
 
                                 /* Implement the request to your server using values variable
