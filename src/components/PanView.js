@@ -135,7 +135,7 @@ class SwipeableCardView extends Component {
  
       <Animated.View {...this.panResponder.panHandlers} 
       style = {[ 
-        styles.cardView_Style, { backgroundColor: this.props.item.backgroundColor, 
+        styles.cardView_Style, { backgroundColor: 'lightgrey', 
         opacity: this.CardView_Opacity, 
         transform: [{ translateX: this.state.Xposition }, 
         { rotate: rotateCard }]}
@@ -143,9 +143,19 @@ class SwipeableCardView extends Component {
  
 
         <Text style = { styles.CardView_Title} >
-        {
-        `Dollar Amount: ${ this.props.item.betAmount }   Type of Bet: ${ this.props.item.betType }   Description: ${ this.props.item.description }   Username: ${ this.props.item.epicUser }`
-        }
+          Dollar Amount: {this.props.item.betAmount} 
+        </Text>
+        
+        <Text style = { styles.CardView_Title} >
+          Type of Bet: { this.props.item.betType }
+        </Text>
+
+        <Text style = { styles.CardView_Title} >
+          Description: { this.props.item.description }
+        </Text>
+
+        <Text style = { styles.CardView_Title} >
+          Username: { this.props.item.epicUser }
         </Text>
  
         {
@@ -261,15 +271,20 @@ const styles = StyleSheet.create(
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    borderRadius: 7,
+    borderRadius: 2,
+    margin: 10,
+    marginTop: 100,
+    marginBottom: 100,
+    borderWidth: 1,
+    borderColor: 'lightgrey',
     backgroundColor: 'blue'
   },
  
   CardView_Title:
   {
-    color: 'blue',
+    color: 'black',
     fontSize: 24,
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   },
  
   Left_Text_Style:
