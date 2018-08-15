@@ -21,7 +21,6 @@ export default class AllStreamView extends Component {
             streams
         })
         var user = firebase.auth().currentUser
-        console.log("user from Firebase in AllStreamView", user)
         setTimeout(() => this.setState({ loading: false }), 1000);
     }
 
@@ -40,6 +39,7 @@ export default class AllStreamView extends Component {
     }
 
     render() {
+
         return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading.gif")} />
         </View>) : (

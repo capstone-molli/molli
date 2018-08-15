@@ -20,9 +20,13 @@ const facebookLogIn = async () => {
             if (user != null) {
                 console.log("We are authenticated now!");
                 console.log("the user: ", user)
+                const photo = await fetch(`https://graph.facebook.com/${user.providerData[0].uid}/picture?redirect=0&height=300&width=300`)
+                    .then(res => res.json())
+                    .then(r => r.data.url)
+                console.log("result: ", photo)
                 const obj = {
                     name: user.displayName,
-                    picture: user.photoURL,
+                    picture: photo,
                     email: user.email,
                     id: user.uid,
                     exists: false

@@ -21,7 +21,7 @@ function getBet(id) {
     return firestore.collection('bets').doc(`${id}`).get().then(bet => bet.data()).catch(err => console.log(err, 'err getting the data'))
 }
 
-async function getAllBets() {
+async function getAllBets(id) {
     const arr = []
     const bets = await firestore.collection('bets').get()
     .then(allBets => 
@@ -29,7 +29,7 @@ async function getAllBets() {
             arr.push(bet.data())
         )
     ).catch(err => console.log(err, 'err getting the data'))
-    const filtered = arr.filter(element => element.obj.takerId === "")
+    const filtered = arr.filter(element => element.obj.takerId === "" && element.obj.userId !== id)
 
     return filtered
 }
