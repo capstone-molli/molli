@@ -3,7 +3,8 @@ import { View, Image, TouchableOpacity, WebView } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
-import { getBet, getAllBets } from '../db/firebaseMethods'
+import * as firebase from "firebase"
+import { getBet, getAllBets, getUser } from '../db/firebaseMethods'
 import MyApp from './PanView'
 // import { access } from 'fs';
 //import ReactPlayer from 'react-player'
@@ -25,7 +26,9 @@ export default class SingleStreamView extends Component {
     }
 
     componentDidMount = async () => {
-        const bets = await getAllBets()
+        let user = firebase.auth().currentUser
+        const userId = user.uid
+        const bets = await getAllBets(userId)
         this.setState({ bets })
     }
 
