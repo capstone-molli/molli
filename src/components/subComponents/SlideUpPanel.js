@@ -90,15 +90,15 @@ export default class BetForm extends Component {
                         // image={require('../../assets/icons/color/contact_card.png')}
                         placeholder='MollyBloom25'
                         clearButtonMode='while-editing'
-                        onTextInputFocus={(currentText = '') => {
-                            if (!currentText) {
-                                let fullName = GiftedFormManager.getValue('signupForm', 'fullName');
-                                if (fullName) {
-                                    return fullName.replace(/[^a-zA-Z0-9-_]/g, '');
-                                }
-                            }
-                            return currentText;
-                        }}
+                        // onTextInputFocus={(currentText = '') => {
+                        //     if (!currentText) {
+                        //         let fullName = GiftedFormManager.getValue('signupForm', 'fullName');
+                        //         if (fullName) {
+                        //             return fullName.replace(/[^a-zA-Z0-9-_]/g, '');
+                        //         }
+                        //     }
+                        //     return currentText;
+                        // }}
                     />
 
                     <GiftedForm.TextInputWidget
