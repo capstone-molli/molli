@@ -142,9 +142,12 @@ export default class BetForm extends Component {
                                         "description": `${values.description}`,
                                         'betAmount': `${values.betAmount}`,
                                         'takerId': '',
-                                        'timeOfCreation': `${Date.now()}`,
-                                        'timeOfMatch': '',
-                                        'timeOfCompletion': ''
+                                        'timeOfCreation': Date.now(),
+                                        'timeOfMatch': null,
+                                        'timeOfCompletion': null,
+                                        'winnerId': null,
+                                        'loserId': null
+
 
                                     })
                                 }
@@ -157,9 +160,11 @@ export default class BetForm extends Component {
                                         "description": `win`,
                                         'betAmount': `${values.betAmount}`,
                                         'takerId': '',
-                                        'timeOfCreation': `${Date.now()}`,
+                                        'timeOfCreation': Date.now(),
                                         'timeOfMatch': '',
-                                        'timeOfCompletion': ''
+                                        'timeOfCompletion': '',
+                                        'winnerId': null,
+                                        'loserId': null
 
 
                                     })
@@ -173,9 +178,11 @@ export default class BetForm extends Component {
                                         "description": `loss`,
                                         'betAmount': `${values.betAmount}`,
                                         'takerId': '',
-                                        'timeOfCreation': `${Date.now()}`,
+                                        'timeOfCreation': Date.now(),
                                         'timeOfMatch': '',
-                                        'timeOfCompletion': ''
+                                        'timeOfCompletion': '',
+                                        'winnerId': null,
+                                        'loserId': null
 
                                     })
                                 }

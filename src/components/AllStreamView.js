@@ -51,15 +51,10 @@ export default class AllStreamView extends Component {
                                     <Image style={{ width: 30, height: 30, bottom: 20 }} source={require("../assets/settings.png")} />
                                 </TouchableOpacity>
                             </View>
-
                             <View style={{ flex: 8 / 10 }}>
                                 <View>
-
-
                                 </View>
-
                             </View>
-
                         </View>
                     </View>
                     <View style={{ flex: 18 / 20 }}>
@@ -85,8 +80,6 @@ export default class AllStreamView extends Component {
                                                     title='view' />
                                             </Card>
                                         </View>)
-
-
                                 })}
                             </View>
                         </ScrollView>
