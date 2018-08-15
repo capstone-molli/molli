@@ -23,6 +23,12 @@ export default StyleSheet.create({
         textDecorationLine: "underline",
         textAlign: "center"
     },
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     avatar: {
         width: 130,
         height: 130,

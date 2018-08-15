@@ -48,13 +48,13 @@ class CustomDrawerContentComponent extends Component {
                                 <Text style={{ fontSize: 20 }}>Home</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
+                        <TouchableOpacity onPress={this.navigateToScreen('BetHistory')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <Image style={{ width: 25, height: 25 }} source={require("../../assets/history.png")} />
                                 <Text style={{ fontSize: 20 }}>History</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
+                        <TouchableOpacity onPress={this.navigateToScreen('ActiveBets')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <Image style={{ width: 25, height: 25 }} source={require("../../assets/active.png")} />
                                 <Text style={{ fontSize: 20 }}>Active</Text>
