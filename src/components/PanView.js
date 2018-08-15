@@ -149,18 +149,22 @@ class SwipeableCardView extends Component
     return(
  
       <Animated.View {...this.panResponder.panHandlers} 
-      style = {[ 
-        styles.cardView_Style, { backgroundColor: this.props.item.backgroundColor, 
+      style = { 
+        styles.cardView_Style
+        }>
+ 
+
+ {/*, { backgroundColor: this.props.item.backgroundColor, 
         opacity: this.CardView_Opacity, 
         transform: [{ translateX: this.state.Xposition }, 
-        { rotate: rotateCard }]}
-        ]}>
- 
-        <Text style = { styles.CardView_Title}> 
-        Dollar Amount: { this.props.item.betAmount } 
-         Type of Bet: { this.props.item.betType } 
-         Description: { this.props.item.description } 
-         Epic Username: { this.props.item.epicUser }
+        { rotate: rotateCard }]}*/}
+        <Text style = { styles.CardView_Title}>
+        {
+        `Dollar Amount: ${ this.props.item.betAmount } 
+        Type of Bet: ${ this.props.item.betType } 
+        Description: ${ this.props.item.description } 
+        Epic Username: ${ this.props.item.epicUser }`
+        }
         </Text>
  
         {
@@ -276,7 +280,7 @@ const styles = StyleSheet.create(
   cardView_Style:
   {
     width: '75%',
-    height: '45%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
