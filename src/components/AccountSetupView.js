@@ -20,12 +20,12 @@ export default class AccountSetupView extends Component {
         navigate("signedIn")
     }
     async componentDidMount() {
-        let user = firebase.auth().currentUser
+        var user = firebase.auth().currentUser
         const userId = user.uid
         const newUser = await getUser(userId)
         console.log("user from Firebase", newUser)
         this.setState({ user: newUser })
-        userId(userId)
+
     }
     render() {
         return this.state.user && (
