@@ -3,7 +3,8 @@ import { View, Image, TouchableOpacity, WebView } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
-import { getBet, getAllBets } from '../db/firebaseMethods'
+import * as firebase from "firebase"
+import { getBet, getAllBets, getUser } from '../db/firebaseMethods'
 import MyApp from './PanView'
 // import { access } from 'fs';
 //import ReactPlayer from 'react-player'
@@ -25,7 +26,9 @@ export default class SingleStreamView extends Component {
     }
 
     componentDidMount = async () => {
-        const bets = await getAllBets()
+        let user = firebase.auth().currentUser
+        const userId = user.uid
+        const bets = await getAllBets(userId)
         this.setState({ bets })
     }
 
@@ -38,23 +41,7 @@ export default class SingleStreamView extends Component {
 
     populatingCards = () => {
         const bets = this.state.bets
-        let arr = [];
-        console.log(bets)
-
-        // if(bets.length){
-        //     let arr = []
-        //     for (let i = 0; i < bets.length; i++){
-        //         let holder = ''
-        //         for (let key in bets[i].obj){
-        //             if(bets[i].obj.hasOwnProperty(key)){
-        //                 holder = holder + (key + '=' + bets[i].obj[key] + '')
-        //             }
-        //         }
-        //         arr.push(holder);
-        //         holder = ''
-        //     }
-        //     return arr
-        // }
+        let arr = []
 
         if (bets.length) {
             let arr = []
@@ -65,13 +52,6 @@ export default class SingleStreamView extends Component {
             return arr
         }
 
-        // if(bets.length){
-        //     for (let i = 0; i < bets.length; i++){
-        //         arr.push(bets[i].obj)
-        //     }
-        //     console.log(bets, 'this is line 58')
-        //     return arr
-        // }
     }
 
     render() {
@@ -97,8 +77,7 @@ export default class SingleStreamView extends Component {
                         </View>
                     </View>
                     <View style={{ flex: 7 / 12 }}>
-                        //insert card date here in cards prop
-                        {/* <Swiper cards={['do', 'more']}/> */}
+
                         <MyApp cards={cardInfo} />
                         <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props={this.props.navigation.state.params} toggleView={this.toggleView} />
                         <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
