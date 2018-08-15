@@ -44,7 +44,7 @@ const SignedOutStack = createStackNavigator({
   signedIn: {
     screen: streams,
     navigationOptions: {
-      header: null,
+      // header: null,
       gesturesEnabled: false,
     }
   }
