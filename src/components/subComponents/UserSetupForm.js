@@ -179,7 +179,7 @@ export default class UserSetupForm extends Component {
                 </GiftedForm.ModalWidget>
                 <GiftedForm.ErrorsWidget />
                 <GiftedForm.SubmitWidget
-                    title='Sign up'
+                    title= {this.props.user.obj.username ? 'Submit' : "Sign up"}
                     widgetStyles={{
                         submitButton: {
                             // backgroundColor: themes.mainColor,

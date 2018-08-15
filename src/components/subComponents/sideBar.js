@@ -37,7 +37,7 @@ class CustomDrawerContentComponent extends Component {
             <ScrollView style={{ borderBottomRightRadius: 30, borderTopRightRadius: 30, backgroundColor: "#fff" }}>
                 <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
                     <View style={{ flex: 3 / 10, alignItems: "center" }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.navigateToScreen('SettingsView')}>
                             <Image style={styles.avatar} source={{ uri: this.state.user.obj.picture || "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Default_profile_picture_%28male%29_on_Facebook.jpg/600px-Default_profile_picture_%28male%29_on_Facebook.jpg" }} />
                         </TouchableOpacity>
                     </View>
@@ -60,7 +60,7 @@ class CustomDrawerContentComponent extends Component {
                                 <Text style={{ fontSize: 20 }}>Active</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
+                        <TouchableOpacity onPress={this.navigateToScreen('SettingsView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <Image style={{ width: 25, height: 25 }} source={require("../../assets/settingsImg.png")} />
                                 <Text style={{ fontSize: 20 }}>Settings</Text>
