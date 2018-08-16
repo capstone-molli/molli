@@ -23,6 +23,7 @@ export default class SingleStreamView extends Component {
     }
     goBack = () => {
         const { navigate } = this.props.navigation
+        // this.props.navigation.goBack()
         navigate("AllStreamView")
     }
 

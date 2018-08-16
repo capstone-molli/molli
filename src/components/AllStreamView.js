@@ -38,10 +38,6 @@ export default class AllStreamView extends Component {
         console.log("streams properties:", this.state.streams[0])
     }
 
-    async getUsers(streams) {
-        let users = []
-
-    }
     disableScroll() {
         this.setState({ scroll: !this.state.scroll });
     }
@@ -74,7 +70,7 @@ export default class AllStreamView extends Component {
                     </View>
                     <ScrollView scrollEnabled={this.state.scroll} style={{
                         flex: 1,
-                        backgroundColor: '#ddd',
+                        backgroundColor: '#FFF',
                         paddingTop: 20,
                         flex: 18 / 20
                     }}>

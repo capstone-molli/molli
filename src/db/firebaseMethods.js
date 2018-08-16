@@ -1,5 +1,6 @@
 import firestore from "./firebase"
 import * as firebase from 'firebase';
+import { NavigationActions } from "react-navigation"
 
 function getUser(id) {
     return firestore.collection("users").doc(id).get().then(user => user.data())
@@ -24,11 +25,11 @@ function getBet(id) {
 async function getAllBets(id) {
     const arr = []
     const bets = await firestore.collection('bets').get()
-    .then(allBets => 
-        allBets.forEach(bet => 
-            arr.push(bet.data())
-        )
-    ).catch(err => console.log(err, 'err getting the data'))
+        .then(allBets =>
+            allBets.forEach(bet =>
+                arr.push(bet.data())
+            )
+        ).catch(err => console.log(err, 'err getting the data'))
     const filtered = arr.filter(element => element.obj.takerId === "" && element.obj.userId !== id)
 
     return filtered
@@ -37,11 +38,11 @@ async function getAllBets(id) {
 async function getAllBets() {
     const arr = []
     const bets = await firestore.collection('bets').get()
-    .then(allBets => 
-        allBets.forEach(bet => 
-            arr.push(bet.data())
-        )
-    ).catch(err => console.log(err, 'err getting the data'))
+        .then(allBets =>
+            allBets.forEach(bet =>
+                arr.push(bet.data())
+            )
+        ).catch(err => console.log(err, 'err getting the data'))
     const filtered = arr.filter(element => element.obj.takerId === "")
 
     return filtered
@@ -50,40 +51,56 @@ async function getAllBets() {
 async function getAllBetsbyUser(id) {
     const arr = []
     const bets = await firestore.collection('bets').get()
-    .then(allBets => 
-        allBets.forEach(bet => 
-            arr.push(bet.data())
-        )
-    ).catch(err => console.log(err, 'err getting the data'))
+        .then(allBets =>
+            allBets.forEach(bet =>
+                arr.push(bet.data())
+            )
+        ).catch(err => console.log(err, 'err getting the data'))
     const openBetsNoTaker = arr.filter(element => {
         if ((element.obj.takerId === '') &&
-        (element.obj.userId === id)){
+            (element.obj.userId === id)) {
             return true
-        }else{
+        } else {
             return false
         }
-        })
+    })
     const openBetsWithTaker = arr.filter(element => {
         if ((element.obj.takerId !== '') &&
-        (element.obj.userId === id) && (element.obj.timeOfCompletion === '')){
+            (element.obj.userId === id) && (element.obj.timeOfCompletion === '')) {
             return true
-        }else{
+        } else {
             return false
         }
-        })
+    })
     const closedBets = arr.filter(element => {
         if ((element.obj.takerId !== '') &&
-        (element.obj.userId === id) && (element.obj.timeOfCompletion !== '')){
+            (element.obj.userId === id) && (element.obj.timeOfCompletion !== '')) {
             return true
-        }else{
+        } else {
             return false
         }
-        })
+    })
 
-    return {openBetsNoTaker, openBetsWithTaker, closedBets}
+    return { openBetsNoTaker, openBetsWithTaker, closedBets }
+}
+async function logOut() {
+    //get current user id
+    const userId = firebase.auth().currentUser.uid
+    //get current user 
+    const currentUser = await getUser(userId)
+    //update logged in property of user object to false
+    currentUser.obj.loggedIn = false
+    //update user object in firestore
+    await updateUser(currentUser.obj)
+    //navigate to authenticate account view
+
+    //create logic to prevent user from navigating to allstreams view without (1) facebook oath and (2) logged in property set to "true"
 }
 
-export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser }
+
+
+
+export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser, logOut }
 
 //Create User
 //Name, Username, Email, Venmo, authToken
