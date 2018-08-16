@@ -44,12 +44,12 @@ export default class UserSetupForm extends Component {
                     openModal={() => { }}
                     clearOnClose={false} // delete the values of the form when unmounted
                     defaults={{
-                        fullName: this.props.user.obj.name,
-                        username: this.props.user.obj.username || "",
+                        fullName: this.props.user.name,
+                        username: this.props.user.username || "",
                         password: '',
                         // country: 'USA',
                         // birthday: new Date(((new Date()).getFullYear() - 18) + ''),
-                        emailAddress: this.props.user.obj.email
+                        emailAddress: this.props.user.email
                     }}
                     validators={{
                         fullName: {
@@ -93,7 +93,7 @@ export default class UserSetupForm extends Component {
                 >
                     <GiftedForm.SeparatorWidget />
                     <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: "#ffff", padding: 15 }}>
-                        <Image style={styles.avatar} source={{ uri: `${this.props.user.obj.picture}` }} />
+                        <Image style={styles.avatar} source={{ uri: `${this.props.user.picture}` }} />
                     </View>
                     <GiftedForm.TextInputWidget
                         keyboardType="default"
@@ -174,7 +174,7 @@ export default class UserSetupForm extends Component {
 
                     <GiftedForm.ErrorsWidget />
                     <GiftedForm.SubmitWidget
-                        title={this.props.user.obj.username ? 'Submit Changes' : "Sign up"}
+                        title={this.props.user.username ? 'Submit Changes' : "Sign up"}
                         widgetStyles={{
                             submitButton: {
                                 backgroundColor: "#00aa9e"
@@ -186,10 +186,10 @@ export default class UserSetupForm extends Component {
                                 // prepare object
                                 values.birthday = moment(values.birthday).format('YYYY-MM-DD');
                                 updateUser({
-                                    "id": `${this.props.user.obj.id}`,
+                                    "id": `${this.props.user.id}`,
                                     "email": `${values.emailAddress}`,
                                     "name": `${values.fullName}`,
-                                    "picture": `${this.props.user.obj.picture}`,
+                                    "picture": `${this.props.user.picture}`,
                                     "username": values.username,
                                     "exists": true,
                                     "loggedIn": true

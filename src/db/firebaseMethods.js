@@ -7,15 +7,15 @@ function getUser(id) {
 }
 
 function updateUser(obj) {
-    return firestore.collection("users").doc(`${obj.id}`).set({ obj })
+    return firestore.collection("users").doc(`${obj.id}`).set(obj)
 }
 
 function createNewUser(obj) {
-    return firestore.collection("users").doc(`${obj.id}`).set({ obj })
+    return firestore.collection("users").doc(`${obj.id}`).set(obj)
 }
 
 function createNewBet(obj) {
-    return firestore.collection('bets').add({ obj })
+    return firestore.collection('bets').add(obj)
 }
 
 function getBet(id) {
@@ -30,7 +30,7 @@ async function getAllBets(id) {
                 arr.push(bet.data())
             )
         ).catch(err => console.log(err, 'err getting the data'))
-    const filtered = arr.filter(element => element.obj.takerId === "" && element.obj.userId !== id)
+    const filtered = arr.filter(element => element.takerId === "" && element.userId !== id)
 
     return filtered
 }
@@ -43,7 +43,7 @@ async function getAllBets() {
                 arr.push(bet.data())
             )
         ).catch(err => console.log(err, 'err getting the data'))
-    const filtered = arr.filter(element => element.obj.takerId === "")
+    const filtered = arr.filter(element => element.takerId === "")
 
     return filtered
 }
@@ -57,24 +57,24 @@ async function getAllBetsbyUser(id) {
             )
         ).catch(err => console.log(err, 'err getting the data'))
     const openBetsNoTaker = arr.filter(element => {
-        if ((element.obj.takerId === '') &&
-            (element.obj.userId === id)) {
+        if ((element.takerId === '') &&
+            (element.userId === id)) {
             return true
         } else {
             return false
         }
     })
     const openBetsWithTaker = arr.filter(element => {
-        if ((element.obj.takerId !== '') &&
-            (element.obj.userId === id) && (element.obj.timeOfCompletion === '')) {
+        if ((element.takerId !== '') &&
+            (element.userId === id) && (element.timeOfCompletion === '')) {
             return true
         } else {
             return false
         }
     })
     const closedBets = arr.filter(element => {
-        if ((element.obj.takerId !== '') &&
-            (element.obj.userId === id) && (element.obj.timeOfCompletion !== '')) {
+        if ((element.takerId !== '') &&
+            (element.userId === id) && (element.timeOfCompletion !== '')) {
             return true
         } else {
             return false
@@ -89,9 +89,9 @@ async function logOut() {
     //get current user 
     const currentUser = await getUser(userId)
     //update logged in property of user object to false
-    currentUser.obj.loggedIn = false
+    currentUser.loggedIn = false
     //update user object in firestore
-    await updateUser(currentUser.obj)
+    await updateUser(currentUser)
     //navigate to authenticate account view
 
     //create logic to prevent user from navigating to allstreams view without (1) facebook oath and (2) logged in property set to "true"

@@ -86,7 +86,7 @@ export default class App extends React.Component {
     this.authSubscription = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         const newUser = await getUser(user.uid)
-        if (newUser && newUser.obj.exists === true) {
+        if (newUser && newUser.exists === true) {
           this.setState({
             loading: false,
             newUser: newUser,
