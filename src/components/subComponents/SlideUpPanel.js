@@ -12,7 +12,7 @@ export default class BetForm extends Component {
         super(props)
         this.state = {
             user: null,
-            epicUser: '',
+            epicUser: this.props.props.display,
             description: '0',
             betAmount: '',
         }
@@ -22,8 +22,8 @@ export default class BetForm extends Component {
         this.setState({ user: firebase.auth().currentUser.uid })
     }
 
-    handleChange(value){
-        this.setState({value})
+    handleChange(value) {
+        this.setState({ value })
     }
 
 
@@ -42,8 +42,8 @@ export default class BetForm extends Component {
                     defaults={{
                         betType: '',
                         description: '0',
-                        epicUser: '',
-                        betAmount: ''
+                        epicUser: this.props.props.display,
+                        betAmount: '1'
 
                     }}
                     validators={{
@@ -63,13 +63,13 @@ export default class BetForm extends Component {
                             title: '# of kills',
                             validate: [{
 
-                              validator: 'isLength',
-                              arguments: [1, 2],
-                              message: '# of kills must be between 1 and 2 characters'
-                            },{
-                              validator: 'matches',
-                              arguments: /^[0-9]*$/,
-                              message: 'Only numeric characters'
+                                validator: 'isLength',
+                                arguments: [1, 2],
+                                message: '# of kills must be between 1 and 2 characters'
+                            }, {
+                                validator: 'matches',
+                                arguments: /^[0-9]*$/,
+                                message: 'Only numeric characters'
                             }]
                         }
                     }}
@@ -85,10 +85,10 @@ export default class BetForm extends Component {
                     <GiftedForm.TextInputWidget
                         name='epicUser'
                         title='Epic Username'
-                        value = {this.state.epicUser}
-                        onChange = {this.handleChange}
+                        value={this.state.epicUser}
+                        onChange={this.handleChange}
                         // image={require('../../assets/icons/color/contact_card.png')}
-                        placeholder='MollyBloom25'
+                        placeholder={this.props.props.display}
                         clearButtonMode='while-editing'
                         onTextInputFocus={(currentText = '') => {
                             if (!currentText) {
@@ -104,8 +104,8 @@ export default class BetForm extends Component {
                     <GiftedForm.TextInputWidget
                         name='betAmount'
                         title='Bet Amount'
-                        value = {this.state.betAmount}
-                        onChange = {this.handleChange}
+                        value={this.state.betAmount}
+                        onChange={this.handleChange}
                         // image={require('../../assets/icons/color/contact_card.png')}
                         placeholder='1'
                         clearButtonMode='while-editing'
@@ -114,8 +114,8 @@ export default class BetForm extends Component {
                     <GiftedForm.TextInputWidget
                         name='description'
                         title='# of kills'
-                        value = {this.state.description}
-                        onChange = {this.handleChange}
+                        value={this.state.description}
+                        onChange={this.handleChange}
                         placeholder='only applicable if kills is selected'
                         clearButtonMode='while-editing'
                     />
@@ -193,7 +193,7 @@ export default class BetForm extends Component {
                                 this.setState({
                                     description: '0',
                                     betAmount: '',
-                                    epicUser: ''
+                                    epicUser: this.props.props.display
                                 })
 
                                 Alert.alert(

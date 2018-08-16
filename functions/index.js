@@ -9,12 +9,18 @@ var db = admin.firestore();
 db.settings({ timestampsInSnapshots: true })
 
 exports.betUpdate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
-  console.log('context', context);
-  const newBet = snap.data().obj;
-  console.log('newBet', newBet);
-
+  const betId = context.params.betId
+  const betInfo = snap.data().obj;
+  db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
+    if (betInfo.epicUser.length) {
+      request({
+        method: "GET",
+        url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${betInfo.epicUser}`,
+      }).catch(e => console.error(e))
+    }
+  }).catch(e => console.error(e))
+  return null
 });
-
 exports.conFetFortniteAPI = functions.https.onRequest((req, res) => {
   let player = req.query.player
   db.collection("players").doc(player).get().then(playerInfo => {
@@ -149,14 +155,6 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
             const matchCount = result.lifetimeStats.matches
             // console.log('matchCount', matchCount);
             const wins = result.lifetimeStats.wins
-            const bet = {
-
-              betAmount: "12",
-              betType: "Win",
-              description: "win",
-              epicUser: "DominicSmorraJr",
-              timePlaced: `2018-08-14T16:32:30.19`
-            }
 
             if (playerInfo.exists) {
               oldMatchCount = playerStatus.lifetimeStats.matches
@@ -189,8 +187,19 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
             } else {
 
               if (matchCount > oldMatchCount) {
+                // console.log('oldMatchCount', oldMatchCount);
+                // console.log('matchCount', matchCount);
                 let newResult;
-                if (wins > oldWins && bet.betType === 'Win') {
+
+                db.collection('bets').get().then(allBets => {
+                  allBets.forEach(bet =>
+                    arr.push(bet.data())
+                  )
+                }).catch(err => console.log(err, 'err getting the data'))
+
+                if (wins > oldWins) {
+                  // console.log('oldWins', oldWins);
+                  // console.log('wins', wins);
                   console.log(`Result for ${player}: Player wins the bet!`)
                   newResult = 'win'
                 } else {
