@@ -1,9 +1,11 @@
 import React from "react"
 import firestore from "./firebase"
 import * as firebase from 'firebase';
-import { createNewUser } from "./firebaseMethods"
+import { createNewUser, getUser } from "./firebaseMethods"
 
-
+const facebookLogOut = () => {
+    firebase.auth().signOut()
+}
 
 const facebookLogIn = async () => {
     let userData = {}
@@ -23,15 +25,18 @@ const facebookLogIn = async () => {
                 const photo = await fetch(`https://graph.facebook.com/${user.providerData[0].uid}/picture?redirect=0&height=300&width=300`)
                     .then(res => res.json())
                     .then(r => r.data.url)
-                console.log("result: ", photo)
                 const obj = {
                     name: user.displayName,
                     picture: photo,
                     email: user.email,
                     id: user.uid,
-                    exists: false
+                    exists: false,
+                    facebookId: user.providerData[0].uid
                 }
                 userData = obj
+
+                //search through user database
+                //if user exists, return its data. otherwise, return the newly created object.
                 createNewUser(obj)
             }
         });
@@ -40,4 +45,4 @@ const facebookLogIn = async () => {
 }
 
 
-export { facebookLogIn }
+export { facebookLogIn, facebookLogOut }

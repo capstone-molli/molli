@@ -12,6 +12,7 @@ import {
     ScrollView,
     Image
 } from "react-native";
+import { logOut } from "../../db/firebaseMethods"
 
 
 class CustomDrawerContentComponent extends Component {
@@ -20,10 +21,10 @@ class CustomDrawerContentComponent extends Component {
         this.state = {}
     }
     navigateToScreen = (route) => () => {
-        const navigateAction = NavigationActions.navigate({
+        const Action = NavigationActions.navigate({
             routeName: route
         });
-        this.props.navigation.dispatch(navigateAction);
+        this.props.navigation.dispatch(Action);
     }
     async componentDidMount() {
         var user = firebase.auth().currentUser
@@ -64,6 +65,15 @@ class CustomDrawerContentComponent extends Component {
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <Image style={{ width: 25, height: 25 }} source={require("../../assets/settingsImg.png")} />
                                 <Text style={{ fontSize: 20 }}>Settings</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            logOut()
+                            this.navigateToScreen("AuthenticateAccountView")
+                        }} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/logout.png")} />
+                                <Text style={{ fontSize: 20 }}>Log Out</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

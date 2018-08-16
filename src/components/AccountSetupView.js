@@ -27,11 +27,20 @@ export default class AccountSetupView extends Component {
         this.setState({ user: newUser })
     }
     render() {
-        return this.state.user && (
-            <View style={styles.maxScreenView}>
-                <UserSetupForm user={this.state.user} navigateToAllStreams={this.navigateToAllStreams} />
-            </View>
-        )
+        return !this.state.user ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
+            <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
+        </View>) : (
+                <View style={{
+                    backgroundColor: "#00aa9e", flex: 1,
+                    alignItems: 'center',
+                    flexDirection: "row",
+                    justifyContent: 'center',
+
+                }
+                }>
+                    <UserSetupForm user={this.state.user} navigateToAllStreams={this.navigateToAllStreams} />
+                </View>
+            )
     }
 }
 

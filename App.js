@@ -14,17 +14,23 @@ import {
 import React, { Component } from "react"
 import * as firebase from "firebase"
 import { getUser } from "./src/db/firebaseMethods"
+import { Font } from 'expo';
+const SUPRRG = require("./src/assets/SUPRRG.ttf")
+const MPR = require("./src/assets/MPR.ttf")
+
+
 
 const streams = createDrawerNavigator({
   AllStreamView: { screen: AllStreamView },
   SingleStreamView: { screen: SingleStreamView },
   SettingsView: { screen: SettingsView },
   BetHistory: { screen: BetHistory },
-  ActiveBets: { screen: ActiveBets }
+  ActiveBets: { screen: ActiveBets },
 },
   {
     contentComponent: CustomDrawerContentComponent,
-    drawerBackgroundColor: "transparent"
+    drawerBackgroundColor: "transparent",
+
   },
 
 )
@@ -48,7 +54,7 @@ const SignedOutStack = createStackNavigator({
   signedIn: {
     screen: streams,
     navigationOptions: {
-      // header: null,
+      header: null,
       gesturesEnabled: false,
     }
   }
@@ -71,11 +77,12 @@ export default class App extends React.Component {
     this.state = {
       loading: true,
       user: null,
-      newUser: null
+      newUser: null,
+      fontLoaded: false
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.authSubscription = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         const newUser = await getUser(user.uid)
@@ -97,13 +104,20 @@ export default class App extends React.Component {
         })
       }
     })
+    await Font.loadAsync({
+      'SUPRRG': SUPRRG,
+      "MPR": MPR
+    });
+    this.setState({ fontLoaded: true })
   }
   componentWillUnmount() {
     this.authSubscription()
   }
   render() {
     if (this.state.loading) return null;
-    if (this.state.user && this.state.newUser) return <SignedInStack />;
+    if (this.state.user && this.state.newUser && this.state.fontLoaded) return <SignedInStack />;
     return (<SignedOutStack />)
   }
+
 }
+

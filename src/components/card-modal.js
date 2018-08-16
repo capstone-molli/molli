@@ -271,7 +271,7 @@ export default class CardModal extends Component {
                     <Text style={{ color: 'white' }}><Image style={{
                         width: 40,
                         height: 40,
-                    }} source={require("../assets/backBlue.png")} /></Text>
+                    }} source={require("../assets/blueback.png")} /></Text>
                 </Animated.View>
             </TouchableOpacity>
             : <View />;
@@ -355,7 +355,7 @@ export default class CardModal extends Component {
         return (
             <Animated.View style={{
                 opacity: this.state.content_opac, marginTop: 40, width: width, height: this.state.content_height, zIndex: -1,
-                backgroundColor: '#ddd', transform: this.state.content_pan.getTranslateTransform()
+                backgroundColor: '#FFF', transform: this.state.content_pan.getTranslateTransform()
             }}>
 
                 {this.props.content && <View style={{ backgroundColor: 'white', flex: 1, margin: 16, padding: 16 }}>
