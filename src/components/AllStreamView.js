@@ -4,47 +4,62 @@ import { Card, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
 import { twitchData } from "../db/twitchData"
 import * as firebase from "firebase"
+import CardModal from './card-modal';
+import { getAllBets } from "../db/firebaseMethods"
 
 export default class AllStreamView extends Component {
     constructor() {
         super()
-        this.state = { streams: [], loading: true }
+        this.state = {
+            streams: [], loading: true, scroll: true, bets: {}
+        }
         this.expandProfileCard = this.expandProfileCard.bind(this)
-        this.handlePress = this.handlePress.bind(this)
+        this.navigateToSingleStream = this.navigateToSingleStream.bind(this)
     }
     static navigationOptions = {
         header: null
     }
     async componentDidMount() {
         const streams = await twitchData()
+        let stateBets = {}
+
+        for (var i = 0; i < streams.length; i++) {
+            const bets = await getAllBets(streams[i].user.id)
+            stateBets[streams[i].user.id] = bets.length
+            console.log("stateBets(1):", stateBets)
+        }
+        console.log("stateBets(2):", stateBets)
         this.setState({
-            streams
+            streams,
+            bets: stateBets
         })
-        var user = firebase.auth().currentUser
-        setTimeout(() => this.setState({ loading: false }), 1000);
+        console.log("bets on state,", this.state.bets)
+        this.setState({ loading: false })
+        console.log("streams properties:", this.state.streams[0])
     }
 
     async getUsers(streams) {
         let users = []
-        //return video.data.data[0]
-        //console.log('USERS', video.data.data[0])
+
+    }
+    disableScroll() {
+        this.setState({ scroll: !this.state.scroll });
     }
 
-    handlePress = (stream) => {
-        const { navigate } = this.props.navigation
-        navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
-    }
     expandProfileCard() {
         this.props.navigation.openDrawer()
     }
+    navigateToSingleStream(stream) {
+        const { navigate } = this.props.navigation
+        navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
+    }
 
     render() {
-
-        return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <Image style={{ width: 300, height: 300 }} source={require("../assets/loading.gif")} />
+        return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
+            <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
                 <View style={{ flex: 1 }}>
-                    <View style={{ flex: 2 / 20, backgroundColor: "#228B22" }}>
+                    <View style={{ flex: 2 / 20, backgroundColor: "#FFF" }}>
                         <View style={{ flexDirection: "row", flex: 1 }}>
                             <View style={{ flex: 2 / 10, flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}>
                                 <TouchableOpacity onPress={this.expandProfileCard}>
@@ -57,33 +72,29 @@ export default class AllStreamView extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 18 / 20 }}>
-                        <ScrollView>
-                            <View >
-                                {this.state.streams.map(stream => {
-                                    let url = stream.video.thumbnail_url.slice(0, stream.video.thumbnail_url.length - 20) + '200x100.jpg'
-                                    return (
-                                        <View key={stream.video.id} >
-                                            <Card
-                                                title={stream.user.display_name}
-                                                image={{ uri: stream.user.profile_image_url }}
-                                                imageProps={{ imageProperties: { width: 200, height: 100 } }}
-                                                style={{ flex: 1 }}>
-                                                <Button onPress={() => {
-                                                    const { navigate } = this.props.navigation
-                                                    navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
-                                                }}
-                                                    icon={<Icon name='code' color='#ffffff' />}
-                                                    backgroundColor='#03A9F4'
-                                                    //fontFamily='Lato'
-                                                    buttonStyle={{ width: "100%", flex: 1 }}
-                                                    title='view' />
-                                            </Card>
-                                        </View>)
-                                })}
-                            </View>
-                        </ScrollView>
-                    </View>
+                    <ScrollView scrollEnabled={this.state.scroll} style={{
+                        flex: 1,
+                        backgroundColor: '#ddd',
+                        paddingTop: 20,
+                        flex: 18 / 20
+                    }}>
+                        {this.state.streams.map(stream => {
+                            return (
+                                <CardModal
+                                    key={stream.user.display_name}
+                                    title={stream.user.display_name}
+                                    description={stream.video.title}
+                                    image={{ uri: stream.user.profile_image_url }}
+                                    color={"#8b9dc3"}
+                                    content={stream.user.description}
+                                    onClick={() => this.disableScroll()}
+                                    navigateToSingleStream={this.navigateToSingleStream}
+                                    stream={stream}
+                                    bets={this.state.bets[stream.user.id]}
+                                />
+                            )
+                        })}
+                    </ScrollView>
                 </View>
             )
     }
