@@ -37,7 +37,7 @@ export default class UserSetupForm extends Component {
                     scrollEnabled={false}
 
                     style={{
-                        backgroundColor: "#00aa9e",
+                        backgroundColor: "#FFF",
                     }
                     }
                     formName='signupForm' // GiftedForm instances that use the same name will also share the same states
@@ -177,6 +177,7 @@ export default class UserSetupForm extends Component {
                         title={this.props.user.obj.username ? 'Submit Changes' : "Sign up"}
                         widgetStyles={{
                             submitButton: {
+                                backgroundColor: "#00aa9e"
                                 // backgroundColor: themes.mainColor,
                             }
                         }}
