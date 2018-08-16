@@ -2,35 +2,34 @@ import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { FormInput, FormLabel } from "react-native-elements"
 import { styles } from "./index"
+import UserSetupForm from "./subComponents/UserSetupForm"
+import * as firebase from "firebase"
+import { getUser } from '../db/firebaseMethods';
 
 export default class AccountSetupView extends Component {
     constructor() {
         super()
-        this.state = {}
-        this.handlePress = this.handlePress.bind(this)
+        this.state = { user: null }
+        this.navigateToAllStreams = this.navigateToAllStreams.bind(this)
     }
     static navigationOptions = {
         header: null
     }
-    handlePress = () => {
+    navigateToAllStreams = () => {
         const { navigate } = this.props.navigation
-        navigate("AllStreamView")
+        navigate("signedIn")
+    }
+    async componentDidMount() {
+        var user = firebase.auth().currentUser
+        const userId = user.uid
+        const newUser = await getUser(userId)
+
+        this.setState({ user: newUser })
     }
     render() {
-        return (
+        return this.state.user && (
             <View style={styles.maxScreenView}>
-                <Image style={styles.avatar} source={{ uri: "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" }} />
-                <FormLabel labelStyle={styles.text} >Name</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
-                <FormLabel labelStyle={styles.text} >Username</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
-                <FormLabel labelStyle={styles.text} >Email</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
-                <FormLabel labelStyle={styles.text} >Venmo</FormLabel>
-                <FormInput inputStyle={styles.centeredInputText} />
-                < TouchableOpacity onPress={this.handlePress} >
-                    <Text style={styles.text} >Confirm</Text>
-                </TouchableOpacity>
+                <UserSetupForm user={this.state.user} navigateToAllStreams={this.navigateToAllStreams} />
             </View>
         )
     }

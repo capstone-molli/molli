@@ -1,6 +1,5 @@
 import * as firebase from 'firebase';
-
-require("firebase/firestore")
+import 'firebase/firestore';
 
 const settings = { timestampsInSnapshots: true };
 
@@ -13,9 +12,10 @@ var config = {
     messagingSenderId: "332857176669"
 };
 
-firebase.initializeApp(config);
-
 const firestore = firebase.initializeApp(config).firestore()
 firestore.settings(settings)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
+// firestore.enablePersistence()
 export default firestore
 
