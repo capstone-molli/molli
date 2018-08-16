@@ -10,7 +10,7 @@ db.settings({ timestampsInSnapshots: true })
 
 exports.betUpdate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
   const betId = context.params.betId
-  const betInfo = snap.data().obj;
+  const betInfo = snap.data();
   db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
     if (betInfo.epicUser.length) {
       request({

@@ -20,7 +20,7 @@ export default class Cards extends Component {
         if (bets.length) {
             let arr = []
             for (let i = 0; i < bets.length; i++) {
-                arr.push(bets[i].obj)
+                arr.push(bets[i])
             }
             console.log(arr, 'this is the arr that we will pass in')
             return arr

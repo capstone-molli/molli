@@ -65,12 +65,12 @@ export default class ActiveBets extends Component {
                                 {this.state.bets.openBetsWithTaker.length !== 0 ? this.state.bets.openBetsWithTaker.map(bet => {
                                     return (
                                         <Card
-                                            title={'User Bet Was Placed On: ' + bet.obj.epicUser}>
+                                            title={'User Bet Was Placed On: ' + bet.epicUser}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.obj.betType}
+                                                {'Bet Type: '}{bet.betType}
                                             </Text>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.obj.betAmount}
+                                                {'Bet Amount: $'}{bet.betAmount}
                                             </Text>
                                         </Card>
                                     )
@@ -85,13 +85,13 @@ export default class ActiveBets extends Component {
                                 </Text>
                                 {this.state.bets.openBetsNoTaker.length !== 0 ? this.state.bets.openBetsNoTaker.map(bet => {
                                     return (
-                                        <Card key={bet.obj.epicUser}
-                                            title={'User Bet Was Placed On: ' + bet.obj.epicUser}>
+                                        <Card key={bet.epicUser}
+                                            title={'User Bet Was Placed On: ' + bet.epicUser}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.obj.betType}
+                                                {'Bet Type: '}{bet.betType}
                                             </Text>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.obj.betAmount}
+                                                {'Bet Amount: $'}{bet.betAmount}
                                             </Text>
                                         </Card>
                                     )

@@ -39,7 +39,7 @@ class CustomDrawerContentComponent extends Component {
                 <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
                     <View style={{ flex: 3 / 10, alignItems: "center" }}>
                         <TouchableOpacity onPress={this.navigateToScreen('SettingsView')}>
-                            <Image style={styles.avatar} source={{ uri: this.state.user.obj.picture || "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Default_profile_picture_%28male%29_on_Facebook.jpg/600px-Default_profile_picture_%28male%29_on_Facebook.jpg" }} />
+                            <Image style={styles.avatar} source={{ uri: this.state.user.picture || "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Default_profile_picture_%28male%29_on_Facebook.jpg/600px-Default_profile_picture_%28male%29_on_Facebook.jpg" }} />
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 7 / 10, paddingLeft: 20 }}>

@@ -61,12 +61,12 @@ export default class BetHistory extends Component {
                                 {this.state.bets.closedBets.length !== 0 ? this.state.bets.closedBets.map(bet => {
                                     return (
                                         <Card
-                                            title={'Closed Bets: ' + bet.obj.epicUser}>
+                                            title={'Closed Bets: ' + bet.epicUser}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.obj.betType}
+                                                {'Bet Type: '}{bet.betType}
                                             </Text>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.obj.betAmount}
+                                                {'Bet Amount: $'}{bet.betAmount}
                                             </Text>
                                         </Card>
                                     )
