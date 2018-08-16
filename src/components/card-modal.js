@@ -1,3 +1,6 @@
+/**
+ * Created by ggoma on 2016. 11. 22..
+ */
 import React, { Component } from 'react';
 import {
     Animated,

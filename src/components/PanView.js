@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder, Image } from 'react-native';
+import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -74,7 +74,7 @@ class SwipeableCardView extends Component {
               {
                 toValue: 0,
                 speed: 5,
-                bounciness: 5,
+                bounciness: 10,
               }, { useNativeDriver: true }).start();
           }
 
@@ -127,42 +127,46 @@ class SwipeableCardView extends Component {
   render() {
     console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
-      {
-        inputRange: [-200, 0, 200],
-        outputRange: ['-20deg', '0deg', '20deg'],
-      });
-    return (
-
-      <Animated.View {...this.panResponder.panHandlers}
-        style={[
-          styles.cardView_Style, {
-            backgroundColor: '#8b9dc3',
-            opacity: this.CardView_Opacity,
-            transform: [{ translateX: this.state.Xposition },
-            { rotate: rotateCard }]
-          }
+    {
+       inputRange: [-200, 0, 200],
+       outputRange: ['-20deg', '0deg', '20deg'],
+    });
+    return(
+ 
+      <Animated.View {...this.panResponder.panHandlers} 
+      style = {[ 
+        styles.cardView_Style, { backgroundColor: 'lightgrey', 
+        opacity: this.CardView_Opacity, 
+        transform: [{ translateX: this.state.Xposition }, 
+        { rotate: rotateCard }]}
         ]}>
+ 
 
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 / 3, flexDirection: "row" }}>
-            <Text style={styles.CardView_Title} >
-              {this.props.item.epicUser} predicts a {<Image style={{ width: 50, height: 50 }} source={this.props.item.betType === "Win" ? require("../assets/win.png") : require("../assets/lose.png")} />}
-            </Text>
-          </View>
+        <Text style = { styles.CardView_Title} >
+          Dollar Amount: {this.props.item.betAmount} 
+        </Text>
+        
+        <Text style = { styles.CardView_Title} >
+          Type of Bet: { this.props.item.betType }
+        </Text>
 
-          <Text style={styles.CardView_Title} >
-            ${this.props.item.betAmount} on the table.
-            </Text>
-        </View>
+        <Text style = { styles.CardView_Title} >
+          Description: { this.props.item.description }
+        </Text>
+
+        <Text style = { styles.CardView_Title} >
+          Username: { this.props.item.epicUser }
+        </Text>
+ 
         {
 
-          (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Pass </Text>) : null
+          (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Left Swipe </Text>) : null
 
         }
 
         {
 
-          (this.state.RightText) ? (<Text style={styles.Right_Text_Style}> Bet Against </Text>) : null
+          (this.state.RightText) ? (<Text style={styles.Right_Text_Style}> Right Swipe </Text>) : null
 
         }
 
@@ -251,57 +255,57 @@ export default class MyApp extends Component {
 }
 
 const styles = StyleSheet.create(
+{
+  MainContainer:
   {
-    MainContainer:
-    {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: (Platform.OS === 'ios') ? 20 : 0
-    },
-
-    cardView_Style:
-    {
-      width: '75%',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      position: 'absolute',
-      borderRadius: 15,
-      margin: 10,
-      marginTop: 100,
-      marginBottom: 100,
-      borderWidth: 1,
-      borderColor: '#FFF',
-      backgroundColor: '#8b9dc3'
-    },
-
-    CardView_Title:
-    {
-      color: '#FFF',
-      fontSize: 24,
-      backgroundColor: 'transparent'
-    },
-
-    Left_Text_Style:
-    {
-      top: 22,
-      right: 32,
-      position: 'absolute',
-      color: '#fff',
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: 'transparent'
-    },
-
-    Right_Text_Style:
-    {
-      top: 22,
-      left: 32,
-      position: 'absolute',
-      color: '#fff',
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: 'transparent'
-    }
-  });
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+  },
+ 
+  cardView_Style:
+  {
+    width: '75%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    borderRadius: 2,
+    margin: 10,
+    marginTop: 100,
+    marginBottom: 100,
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    backgroundColor: 'blue'
+  },
+ 
+  CardView_Title:
+  {
+    color: 'black',
+    fontSize: 24,
+    backgroundColor: 'transparent'
+  },
+ 
+  Left_Text_Style:
+  {
+    top: 22,
+    right: 32,
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: 'transparent'
+  },
+ 
+  Right_Text_Style:
+  {
+    top: 22,
+    left: 32,
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: 'transparent'
+  }
+});
