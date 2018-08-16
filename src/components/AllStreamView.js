@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { FormInput, FormLabel } from "react-native-elements"
-import { styles } from "./index"
-const Fortnite = require("fortnite-api");
-=======
 import { Text, View, Image, TouchableOpacity, ScrollView, WebView } from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
@@ -12,7 +6,6 @@ import { twitchData } from "../db/twitchData"
 import * as firebase from "firebase"
 import CardModal from './card-modal';
 import { getAllBets } from "../db/firebaseMethods"
->>>>>>> master
 
 export default class AllStreamView extends Component {
     constructor() {
