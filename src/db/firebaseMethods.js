@@ -35,19 +35,6 @@ async function getAllBets(id) {
     return filtered
 }
 
-async function getAllBets() {
-    const arr = []
-    const bets = await firestore.collection('bets').get()
-        .then(allBets =>
-            allBets.forEach(bet =>
-                arr.push(bet.data())
-            )
-        ).catch(err => console.log(err, 'err getting the data'))
-    const filtered = arr.filter(element => element.obj.takerId === "")
-
-    return filtered
-}
-
 async function getAllBetsbyUser(id) {
     const arr = []
     const bets = await firestore.collection('bets').get()

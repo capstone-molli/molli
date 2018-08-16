@@ -27,7 +27,9 @@ export default class Cards extends Component {
         }
     }
     async componentDidMount() {
-        const bets = await getAllBets()
+        let user = firebase.auth().currentUser
+        const userId = user.uid
+        const bets = await getAllBets(userId)
         this.setState({ bets })
         this.populatingCards()
     }

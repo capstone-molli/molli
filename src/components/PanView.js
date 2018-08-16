@@ -62,6 +62,9 @@ class SwipeableCardView extends Component {
         onPanResponderRelease: (evt, gestureState) => {
           if (gestureState.dx < SCREEN_WIDTH - 150 && gestureState.dx > -SCREEN_WIDTH + 150) {
 
+            let user = firebase.auth().currentUser
+            const userId = user.uid
+
             this.setState({
 
               LeftText: false,
@@ -235,9 +238,7 @@ export default class MyApp extends Component {
   }
 
   render() {
-    console.log(this.props.cards, 'pan viewer')
     if (this.props.cards.length) {
-      console.log('truthy')
       return (
         <View style={styles.MainContainer}>
           {
