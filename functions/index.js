@@ -10,7 +10,7 @@ db.settings({ timestampsInSnapshots: true })
 
 exports.betUpdate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
   console.log('context', context);
-  const newBet = snap.data;
+  const newBet = snap.data().obj;
   console.log('newBet', newBet);
 
 
