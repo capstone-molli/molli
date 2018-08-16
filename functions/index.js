@@ -212,8 +212,7 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
                     method: "GET",
                     url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${player}&time=${betDate}&status=continue`,
                   })
-                }, 15000)
-
+                }, 8000)
               }
             }
           }).catch(e => console.error(e))
