@@ -301,7 +301,7 @@ export default class CardModal extends Component {
             ?
             <TouchableOpacity onPress={this.activate}>
                 <Animated.View style={{
-                    opacity: this.state.button_opac, backgroundColor: this.props.color,
+                    opacity: this.state.button_opac, backgroundColor: "#00aa9e",
                     marginTop: 10, borderRadius: 10, width: width - 64, height: 50,
                     alignItems: 'center', justifyContent: 'center'
                 }}>
@@ -315,11 +315,11 @@ export default class CardModal extends Component {
         var plusButton = !this.state.activated
             ?
             <Animated.View style={{ opacity: this.state.plus, justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name='plus-circle' style={{ fontSize: 24, color: this.props.color }} />
+                <Icon name='plus-circle' style={{ fontSize: 24, color: "#00aa9e" }} />
             </Animated.View>
             :
             <Animated.View style={{ opacity: this.state.plus, justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name='check-circle' style={{ fontSize: 24, color: this.props.color }} />
+                <Icon name='check-circle' style={{ fontSize: 24, color: "#00aa9e" }} />
             </Animated.View>
 
         return (

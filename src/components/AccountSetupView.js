@@ -31,7 +31,7 @@ export default class AccountSetupView extends Component {
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
                 <View style={{
-                    backgroundColor: "#00aa9e", flex: 1,
+                    backgroundColor: "#FFF", flex: 1,
                     alignItems: 'center',
                     flexDirection: "row",
                     justifyContent: 'center',
