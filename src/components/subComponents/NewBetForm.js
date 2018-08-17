@@ -150,7 +150,6 @@ export default class BetForm extends Component {
             'winnerId': null,
             'loserId': null
         })
-        console.log("FormValues", formValues)
         Alert.alert(
             'Bet Created!',
             'Press OK to dismiss',

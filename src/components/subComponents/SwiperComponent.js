@@ -10,14 +10,13 @@ export default class SwiperComponent extends Component {
             <Swiper
                 cards={this.props.cards}
                 renderCard={(card) => {
-                    console.log(card, 'this is the swiper comp')
                     return (
                         <View style={styles.card}>
                             <Text style={styles.text}>{card}</Text>
                         </View>
                     )
                 }}
-                onSwipedRight={(swipe) => {console.log(swipe, 'swiped left')}}
+                onSwipedRight={(swipe) => { console.log(swipe, 'swiped left') }}
                 onSwiped={(cardIndex) => { console.log(cardIndex) }}
                 onSwipedAll={() => { console.log('onSwipedAll') }}
                 cardIndex={0}

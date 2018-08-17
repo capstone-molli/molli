@@ -20,15 +20,12 @@ export default class ActiveBets extends Component {
 
     async componentDidMount() {
         const user = firebase.auth().currentUser.uid
-        console.log('user : ', user);
         this.setState({
             user
         })
-        console.log(this.state.user)
         this.setState({
             bets: await getAllBetsbyUser(user)
         })
-        //console.log(this.state.bets)
         setTimeout(() => this.setState({ loading: false }), 1000);
     }
 
@@ -38,7 +35,6 @@ export default class ActiveBets extends Component {
 
 
     render() {
-        console.log('bets', this.state.bets)
         return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (

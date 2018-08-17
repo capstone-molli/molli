@@ -29,7 +29,6 @@ export default class UserSetupForm extends Component {
         // this.setState({ user: this.props.user })
         // const user = firebase.auth().currentUser
 
-        // console.log("User status: ", user)
     }
     render() {
         return (

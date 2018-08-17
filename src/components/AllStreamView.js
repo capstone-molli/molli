@@ -26,16 +26,12 @@ export default class AllStreamView extends Component {
         for (var i = 0; i < streams.length; i++) {
             const bets = await getAllBets(streams[i].user.id)
             stateBets[streams[i].user.id] = bets.length
-            console.log("stateBets(1):", stateBets)
         }
-        console.log("stateBets(2):", stateBets)
         this.setState({
             streams,
             bets: stateBets
         })
-        console.log("bets on state,", this.state.bets)
         this.setState({ loading: false })
-        console.log("streams properties:", this.state.streams[0])
     }
 
     disableScroll() {

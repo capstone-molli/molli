@@ -125,7 +125,6 @@ class SwipeableCardView extends Component {
   }
 
   render() {
-    console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
       {
         inputRange: [-200, 0, 200],
@@ -237,14 +236,11 @@ export default class MyApp extends Component {
   }
 
   render() {
-    console.log(this.props.cards, 'pan viewer')
     if (this.props.cards.length) {
-      console.log('truthy')
       return (
         <View style={styles.MainContainer}>
           {
             this.props.cards.map((item, key) => (
-              // console.log(item, 'this is being mapped')
               <SwipeableCardView key={key} item={item} removeCardView={this.removeCardView.bind(this, item.id)} />
             ))
           }
