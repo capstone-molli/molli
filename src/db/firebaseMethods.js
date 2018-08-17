@@ -147,7 +147,7 @@ async function logOut() {
 
 
 
-export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats }
+export { createNewUser, getUser, updateUser, createNewBet, takeBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats }
 
 
 //Create User
