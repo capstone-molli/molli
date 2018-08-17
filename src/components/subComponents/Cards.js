@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import MyApp from '../PanView'
-import { getBet, getAllBets } from '../../db/firebaseMethods'
+import { getAllBets } from '../../db/firebaseMethods'
 import * as firebase from 'firebase';
 
 
