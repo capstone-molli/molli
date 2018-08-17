@@ -66,7 +66,7 @@ export default class ActiveBets extends Component {
                                                 {'Bet Type: '}{bet.betType}
                                             </Text>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.betAmount}
+                                                {'Bet Amount: '}{bet.betAmount}
                                             </Text>
                                         </Card>
                                     )
@@ -87,7 +87,7 @@ export default class ActiveBets extends Component {
                                                 {'Bet Type: '}{bet.betType}
                                             </Text>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.betAmount}
+                                                {'Bet Amount: '}{bet.betAmount}
                                             </Text>
                                         </Card>
                                     )
