@@ -19,14 +19,7 @@ function createNewBet(obj) {
 }
 
 function takeBet(betObj, userId) {
-    //  const matchedBet = await firestore.collection('bets')
-    //  const query = await matchedBet.where('userId', '==', betObj.userId)/*.where('betType', '==', betObj.betType).where('timeOfCreation', '==', betObj.timeOfCreation)*/
-    // //  const updateTakenId = query.update({
-    // //      takerId: userId
-    // //  })
-    //  console.log(bets, 'this are the bets')
-
-    var db = firebase.firestore();
+    let db = firebase.firestore();
 
     firebase.firestore().collection("bets")
     .where('userId', '==', betObj.userId)

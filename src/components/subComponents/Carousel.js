@@ -40,7 +40,6 @@ export default class MyCarousel extends Component {
     }
     componentDidMount() {
         const { width } = Dimensions.get('window')
-        console.log("screen width:", width)
     }
     render() {
         return (

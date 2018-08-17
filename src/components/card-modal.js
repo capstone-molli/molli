@@ -71,7 +71,6 @@ export default class CardModal extends Component {
         this.props.onClick();
         this.setState({ pressed: !this.state.pressed });
         this.calculateOffset();
-        console.log("view stream")
     }
 
 
@@ -239,10 +238,8 @@ export default class CardModal extends Component {
             this.refs.container.measure((fx, fy, width, height, px, py) => {
                 this.setState({ offset: py }, () => {
                     if (this.state.pressed) {
-                        console.log('growing with offset', this.state.offset);
                         this.grow();
                     } else {
-                        console.log('shrinking with offset', this.state.offset);
                         this.shrink();
                     }
 
