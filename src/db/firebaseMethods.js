@@ -65,8 +65,21 @@ function createNewBet(obj) {
     return firestore.collection('bets').add(obj)
 }
 
-function getBet(id) {
-    return firestore.collection('bets').doc(`${id}`).get().then(bet => bet.data()).catch(err => console.log(err, 'err getting the data'))
+function takeBet(betObj, userId) {
+    let db = firebase.firestore();
+
+    firebase.firestore().collection("bets")
+    .where('userId', '==', betObj.userId)
+    .where('betType', '==', betObj.betType)
+    .where('betAmount', '==', betObj.betAmount)
+    .where('timeOfCreation', '==', betObj.timeOfCreation)
+    .get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // Build doc ref from doc.id
+            db.collection("bets").doc(doc.id).update({takerId: userId});
+        });
+    })
 }
 
 async function getAllBets(id) {
@@ -78,19 +91,6 @@ async function getAllBets(id) {
             )
         ).catch(err => console.log(err, 'err getting the data'))
     const filtered = arr.filter(element => element.takerId === "" && element.userId !== id)
-
-    return filtered
-}
-
-async function getAllBets() {
-    const arr = []
-    const bets = await firestore.collection('bets').get()
-        .then(allBets =>
-            allBets.forEach(bet =>
-                arr.push(bet.data())
-            )
-        ).catch(err => console.log(err, 'err getting the data'))
-    const filtered = arr.filter(element => element.takerId === "")
 
     return filtered
 }
@@ -148,6 +148,7 @@ async function logOut() {
 
 
 export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats }
+
 
 //Create User
 //Name, Username, Email, Venmo, authToken

@@ -27,6 +27,7 @@ export default class AllStreamView extends Component {
             const bets = await getAllBets(streams[i].user.id)
             stateBets[streams[i].user.id] = bets.length
         }
+
         this.setState({
             streams,
             bets: stateBets

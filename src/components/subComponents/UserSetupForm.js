@@ -30,6 +30,7 @@ export default class UserSetupForm extends Component {
         // const user = firebase.auth().currentUser
 
     }
+
     render() {
         return (
             this.props.user &&

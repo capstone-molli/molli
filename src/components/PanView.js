@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
+import * as firebase from 'firebase';
+import {takeBet} from '../db/firebaseMethods'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -37,6 +39,9 @@ class SwipeableCardView extends Component {
           this.state.Xposition.setValue(gestureState.dx);
 
           if (gestureState.dx > SCREEN_WIDTH - 250) {
+            let user = firebase.auth().currentUser
+            const userId = user.uid
+            takeBet(this.props.item, userId)
 
             this.setState({
 
