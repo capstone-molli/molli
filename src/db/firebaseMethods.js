@@ -113,7 +113,7 @@ async function getAllBetsbyUser(id) {
     })
     const openBetsWithTaker = arr.filter(element => {
         if ((element.takerId !== '') &&
-            (element.userId === id) && (element.timeOfCompletion === '')) {
+            (element.userId === id || element.takerId === id) && (element.timeOfCompletion === '')) {
             return true
         } else {
             return false
@@ -121,7 +121,7 @@ async function getAllBetsbyUser(id) {
     })
     const closedBets = arr.filter(element => {
         if ((element.takerId !== '') &&
-            (element.userId === id) && (element.timeOfCompletion !== '')) {
+            (element.userId === id || element.takerId === id) && (element.timeOfCompletion !== '')) {
             return true
         } else {
             return false
