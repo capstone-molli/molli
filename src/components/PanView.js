@@ -164,13 +164,13 @@ class SwipeableCardView extends Component {
 
         {
 
-          (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Left Swipe </Text>) : null
+          (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Pass on Bet </Text>) : null
 
         }
 
         {
 
-          (this.state.RightText) ? (<Text style={styles.Right_Text_Style}> Right Swipe </Text>) : null
+          (this.state.RightText) ? (<Text style={styles.Right_Text_Style}> Bet Against </Text>) : null
 
         }
 
@@ -319,6 +319,7 @@ const styles = StyleSheet.create(
 
     Right_Text_Style:
     {
+      fontFamily: "SUPRRG",
       top: 22,
       left: 32,
       position: 'absolute',
