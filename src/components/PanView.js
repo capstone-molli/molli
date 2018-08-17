@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
+import * as firebase from 'firebase';
+import {takeBet} from '../db/firebaseMethods'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -35,8 +37,12 @@ class SwipeableCardView extends Component {
 
         onPanResponderMove: (evt, gestureState) => {
           this.state.Xposition.setValue(gestureState.dx);
+          console.log(this.props.item)
 
           if (gestureState.dx > SCREEN_WIDTH - 250) {
+            let user = firebase.auth().currentUser
+            const userId = user.uid
+            takeBet(this.props.item, userId)
 
             this.setState({
 
@@ -237,9 +243,7 @@ export default class MyApp extends Component {
   }
 
   render() {
-    console.log(this.props.cards, 'pan viewer')
     if (this.props.cards.length) {
-      console.log('truthy')
       return (
         <View style={styles.MainContainer}>
           {

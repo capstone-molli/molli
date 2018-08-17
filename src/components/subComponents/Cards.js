@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import MyApp from '../PanView'
 import { getBet, getAllBets } from '../../db/firebaseMethods'
+import * as firebase from 'firebase';
 
 
 export default class Cards extends Component {
@@ -27,7 +28,9 @@ export default class Cards extends Component {
         }
     }
     async componentDidMount() {
-        const bets = await getAllBets()
+        let user = firebase.auth().currentUser
+        const userId = user.uid
+        const bets = await getAllBets(userId)
         this.setState({ bets })
         this.populatingCards()
     }
