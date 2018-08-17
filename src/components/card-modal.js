@@ -253,7 +253,6 @@ export default class CardModal extends Component {
         setTimeout(() => {
             this.setState({ activate: <Text>Activated  <Icon name='check' /></Text>, activated: true })
         }, 1500)
-        console.log("yeah boi")
         this.props.navigateToSingleStream(this.props.stream)
     }
 

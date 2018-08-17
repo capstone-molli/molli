@@ -23,6 +23,11 @@ export default class AllStreamView extends Component {
         const streams = await twitchData()
         let stateBets = {}
 
+        for (var i = 0; i < streams.length; i++) {
+            const bets = await getAllBets(streams[i].user.id)
+            stateBets[streams[i].user.id] = bets.length
+        }
+
         this.setState({
             streams,
             bets: stateBets

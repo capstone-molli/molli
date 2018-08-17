@@ -2,6 +2,7 @@ import Carousel from 'react-native-snap-carousel';
 import React, { Component } from "react"
 import { View, Text, TouchableOpacity, WebView, Dimensions, Image } from 'react-native';
 import Cards from "./Cards"
+import ChatRoom from "./ChatRoom"
 
 export default class MyCarousel extends Component {
     constructor() {
@@ -10,9 +11,7 @@ export default class MyCarousel extends Component {
         this.state = {
             entries: [
                 {
-                    title: 'Earlier this morning, NYC',
-                    subtitle: 'Lorem ipsum dolor sit amet',
-                    illustration: 'https://i.imgur.com/UPrs1EWl.jpg'
+                    value: <ChatRoom />
                 },
                 {
                     value: < Cards />,

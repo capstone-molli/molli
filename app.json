@@ -7,6 +7,7 @@
     "description": "",
     "facebookScheme": "fb1926350514326999",
     "facebookAppId": "1926350514326999",
-    "facebookDisplayName": "molli"
+    "facebookDisplayName": "molli",
+    "orientation": "portrait"
   }
 }

@@ -24,7 +24,13 @@ export default class UserSetupForm extends Component {
     focusNextField(key) {
         this.inputs[key].focus();
     }
-    
+    componentDidMount() {
+
+        // this.setState({ user: this.props.user })
+        // const user = firebase.auth().currentUser
+
+    }
+
     render() {
         return (
             this.props.user &&
