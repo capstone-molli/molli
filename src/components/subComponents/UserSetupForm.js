@@ -3,6 +3,8 @@ import { GiftedForm, GiftedFormManager } from "react-native-gifted-form"
 import moment from "moment"
 import { updateUser } from "../../db/firebaseMethods"
 import { Text, View, Image, TouchableOpacity } from 'react-native';
+
+
 import { styles } from "../index"
 import * as firebase from "firebase"
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';

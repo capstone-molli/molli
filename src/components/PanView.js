@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
+import * as firebase from 'firebase';
+import {takeBet} from '../db/firebaseMethods'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -35,8 +37,12 @@ class SwipeableCardView extends Component {
 
         onPanResponderMove: (evt, gestureState) => {
           this.state.Xposition.setValue(gestureState.dx);
+          console.log(this.props.item)
 
           if (gestureState.dx > SCREEN_WIDTH - 250) {
+            let user = firebase.auth().currentUser
+            const userId = user.uid
+            takeBet(this.props.item, userId)
 
             this.setState({
 
@@ -61,9 +67,6 @@ class SwipeableCardView extends Component {
 
         onPanResponderRelease: (evt, gestureState) => {
           if (gestureState.dx < SCREEN_WIDTH - 150 && gestureState.dx > -SCREEN_WIDTH + 150) {
-
-            let user = firebase.auth().currentUser
-            const userId = user.uid
 
             this.setState({
 
@@ -130,37 +133,39 @@ class SwipeableCardView extends Component {
   render() {
     console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
-    {
-       inputRange: [-200, 0, 200],
-       outputRange: ['-20deg', '0deg', '20deg'],
-    });
-    return(
- 
-      <Animated.View {...this.panResponder.panHandlers} 
-      style = {[ 
-        styles.cardView_Style, { backgroundColor: 'lightgrey', 
-        opacity: this.CardView_Opacity, 
-        transform: [{ translateX: this.state.Xposition }, 
-        { rotate: rotateCard }]}
+      {
+        inputRange: [-200, 0, 200],
+        outputRange: ['-20deg', '0deg', '20deg'],
+      });
+    return (
+
+      <Animated.View {...this.panResponder.panHandlers}
+        style={[
+          styles.cardView_Style, {
+            backgroundColor: 'lightgrey',
+            opacity: this.CardView_Opacity,
+            transform: [{ translateX: this.state.Xposition },
+            { rotate: rotateCard }]
+          }
         ]}>
- 
 
-        <Text style = { styles.CardView_Title} >
-          Dollar Amount: {this.props.item.betAmount} 
-        </Text>
-        
-        <Text style = { styles.CardView_Title} >
-          Type of Bet: { this.props.item.betType }
+
+        <Text style={styles.CardView_Title} >
+          Dollar Amount: {this.props.item.betAmount}
         </Text>
 
-        <Text style = { styles.CardView_Title} >
-          Description: { this.props.item.description }
+        <Text style={styles.CardView_Title} >
+          Type of Bet: {this.props.item.betType}
         </Text>
 
-        <Text style = { styles.CardView_Title} >
-          Username: { this.props.item.epicUser }
+        <Text style={styles.CardView_Title} >
+          Description: {this.props.item.description}
         </Text>
- 
+
+        <Text style={styles.CardView_Title} >
+          Username: {this.props.item.epicUser}
+        </Text>
+
         {
 
           (this.state.LeftText) ? (<Text style={styles.Left_Text_Style}> Left Swipe </Text>) : null
@@ -256,57 +261,57 @@ export default class MyApp extends Component {
 }
 
 const styles = StyleSheet.create(
-{
-  MainContainer:
   {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
-  },
- 
-  cardView_Style:
-  {
-    width: '75%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    borderRadius: 2,
-    margin: 10,
-    marginTop: 100,
-    marginBottom: 100,
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    backgroundColor: 'blue'
-  },
- 
-  CardView_Title:
-  {
-    color: 'black',
-    fontSize: 24,
-    backgroundColor: 'transparent'
-  },
- 
-  Left_Text_Style:
-  {
-    top: 22,
-    right: 32,
-    position: 'absolute',
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent'
-  },
- 
-  Right_Text_Style:
-  {
-    top: 22,
-    left: 32,
-    position: 'absolute',
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent'
-  }
-});
+    MainContainer:
+    {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: (Platform.OS === 'ios') ? 20 : 0
+    },
+
+    cardView_Style:
+    {
+      width: '75%',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      borderRadius: 2,
+      margin: 10,
+      marginTop: 100,
+      marginBottom: 100,
+      borderWidth: 1,
+      borderColor: 'lightgrey',
+      backgroundColor: 'blue'
+    },
+
+    CardView_Title:
+    {
+      color: 'black',
+      fontSize: 24,
+      backgroundColor: 'transparent'
+    },
+
+    Left_Text_Style:
+    {
+      top: 22,
+      right: 32,
+      position: 'absolute',
+      color: '#fff',
+      fontSize: 20,
+      fontWeight: 'bold',
+      backgroundColor: 'transparent'
+    },
+
+    Right_Text_Style:
+    {
+      top: 22,
+      left: 32,
+      position: 'absolute',
+      color: '#fff',
+      fontSize: 20,
+      fontWeight: 'bold',
+      backgroundColor: 'transparent'
+    }
+  });

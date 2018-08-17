@@ -18,8 +18,28 @@ function createNewBet(obj) {
     return firestore.collection('bets').add(obj)
 }
 
-function getBet(id) {
-    return firestore.collection('bets').doc(`${id}`).get().then(bet => bet.data()).catch(err => console.log(err, 'err getting the data'))
+function takeBet(betObj, userId) {
+    //  const matchedBet = await firestore.collection('bets')
+    //  const query = await matchedBet.where('userId', '==', betObj.userId)/*.where('betType', '==', betObj.betType).where('timeOfCreation', '==', betObj.timeOfCreation)*/
+    // //  const updateTakenId = query.update({
+    // //      takerId: userId
+    // //  })
+    //  console.log(bets, 'this are the bets')
+
+    var db = firebase.firestore();
+
+    firebase.firestore().collection("bets")
+    .where('userId', '==', betObj.userId)
+    .where('betType', '==', betObj.betType)
+    .where('betAmount', '==', betObj.betAmount)
+    .where('timeOfCreation', '==', betObj.timeOfCreation)
+    .get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // Build doc ref from doc.id
+            db.collection("bets").doc(doc.id).update({takerId: userId});
+        });
+    })
 }
 
 async function getAllBets(id) {
@@ -87,7 +107,7 @@ async function logOut() {
 
 
 
-export { createNewUser, getUser, updateUser, createNewBet, getBet, getAllBets, getAllBetsbyUser, logOut }
+export { createNewUser, getUser, updateUser, createNewBet, takeBet, getAllBets, getAllBetsbyUser, logOut }
 
 //Create User
 //Name, Username, Email, Venmo, authToken
