@@ -69,17 +69,17 @@ function takeBet(betObj, userId) {
     let db = firebase.firestore();
 
     firebase.firestore().collection("bets")
-    .where('userId', '==', betObj.userId)
-    .where('betType', '==', betObj.betType)
-    .where('betAmount', '==', betObj.betAmount)
-    .where('timeOfCreation', '==', betObj.timeOfCreation)
-    .get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // Build doc ref from doc.id
-            db.collection("bets").doc(doc.id).update({takerId: userId});
-        });
-    })
+        .where('userId', '==', betObj.userId)
+        .where('betType', '==', betObj.betType)
+        .where('betAmount', '==', betObj.betAmount)
+        .where('timeOfCreation', '==', betObj.timeOfCreation)
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // Build doc ref from doc.id
+                db.collection("bets").doc(doc.id).update({ takerId: userId });
+            });
+        })
 }
 
 async function getAllBets(id) {
@@ -147,7 +147,9 @@ async function logOut() {
 
 
 
+
 export { createNewUser, getUser, updateUser, createNewBet, takeBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats }
+
 
 
 //Create User
