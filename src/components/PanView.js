@@ -141,27 +141,25 @@ class SwipeableCardView extends Component {
         style={[
           styles.cardView_Style, {
             backgroundColor: 'lightgrey',
+            borderRadius: 15,
             opacity: this.CardView_Opacity,
             transform: [{ translateX: this.state.Xposition },
             { rotate: rotateCard }]
           }
         ]}>
 
-
-        <Text style={styles.CardView_Title} >
-          Dollar Amount: {this.props.item.betAmount}
+        <Text style={styles.LeftC_Text_Style} >
+          {this.props.item.betAmount}
         </Text>
 
-        <Text style={styles.CardView_Title} >
-          Type of Bet: {this.props.item.betType}
+        <Text style={styles.LeftB_Text_Style} >
+          {this.props.item.betType === "Win" ? "on" : "against"}
         </Text>
 
-        <Text style={styles.CardView_Title} >
-          Description: {this.props.item.description}
-        </Text>
-
-        <Text style={styles.CardView_Title} >
-          Username: {this.props.item.epicUser}
+        <Text style={styles.LeftC_Text_Style} >
+          {this.props.item.epicUser}
+          {/* Description: {this.props.item.description}
+          Username: {this.props.item.epicUser} */}
         </Text>
 
         {
@@ -287,15 +285,33 @@ const styles = StyleSheet.create(
     {
       color: 'black',
       fontSize: 24,
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      // fontFamily: "SUPRRG"
     },
 
     Left_Text_Style:
     {
+      fontFamily: "SUPRRG",
       top: 22,
       right: 32,
       position: 'absolute',
       color: '#fff',
+      fontSize: 20,
+      fontWeight: 'bold',
+      backgroundColor: 'transparent'
+    },
+    LeftB_Text_Style:
+    {
+      fontFamily: "SUPRRG",
+      color: 'black',
+      fontSize: 20,
+      fontWeight: 'bold',
+      backgroundColor: 'transparent'
+    },
+    LeftC_Text_Style:
+    {
+      fontFamily: "SUPRRG",
+      color: '#FFF',
       fontSize: 20,
       fontWeight: 'bold',
       backgroundColor: 'transparent'
