@@ -37,7 +37,6 @@ class SwipeableCardView extends Component {
 
         onPanResponderMove: (evt, gestureState) => {
           this.state.Xposition.setValue(gestureState.dx);
-          console.log(this.props.item)
 
           if (gestureState.dx > SCREEN_WIDTH - 250) {
             let user = firebase.auth().currentUser
@@ -131,7 +130,6 @@ class SwipeableCardView extends Component {
   }
 
   render() {
-    console.log(this.props.item, 'line 148')
     const rotateCard = this.state.Xposition.interpolate(
       {
         inputRange: [-200, 0, 200],
@@ -248,7 +246,6 @@ export default class MyApp extends Component {
         <View style={styles.MainContainer}>
           {
             this.props.cards.map((item, key) => (
-              // console.log(item, 'this is being mapped')
               <SwipeableCardView key={key} item={item} removeCardView={this.removeCardView.bind(this, item.id)} />
             ))
           }
