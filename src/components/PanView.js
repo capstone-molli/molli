@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, StyleSheet, View, Text, Dimensions, Animated, PanResponder } from 'react-native';
 import * as firebase from 'firebase';
-import {takeBet} from '../db/firebaseMethods'
+import { takeBet } from '../db/firebaseMethods'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

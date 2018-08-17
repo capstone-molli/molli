@@ -44,7 +44,7 @@ export default class SingleStreamView extends Component {
                     <View style={{ flex: 5 / 12, backgroundColor: "#FFF" }}>
                         <View style={{ flex: 2 / 10, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                             <TouchableOpacity onPress={this.goBack}>
-                                <Image style={{ width: 40, height: 40 }} source={require("../assets/blueback.png")} />
+                                <Image style={{ width: 40, height: 40 }} source={require("../assets/blueback1.png")} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 8 / 10 }}>

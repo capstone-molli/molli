@@ -267,7 +267,7 @@ export default class CardModal extends Component {
                     <Text style={{ color: 'white' }}><Image style={{
                         width: 40,
                         height: 40,
-                    }} source={require("../assets/blueback.png")} /></Text>
+                    }} source={require("../assets/blueback1.png")} /></Text>
                 </Animated.View>
             </TouchableOpacity>
             : <View />;
