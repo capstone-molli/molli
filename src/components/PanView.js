@@ -303,7 +303,7 @@ const styles = StyleSheet.create(
     LeftB_Text_Style:
     {
       fontFamily: "SUPRRG",
-      color: 'black',
+      color: '#FFF',
       fontSize: 20,
       fontWeight: 'bold',
       backgroundColor: 'transparent'
@@ -311,7 +311,7 @@ const styles = StyleSheet.create(
     LeftC_Text_Style:
     {
       fontFamily: "SUPRRG",
-      color: '#FFF',
+      color: 'black',
       fontSize: 20,
       fontWeight: 'bold',
       backgroundColor: 'transparent'

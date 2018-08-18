@@ -23,16 +23,19 @@ const fields = [
         name: 'BetType',
         mode: 'dropdown',
         label: 'The streamer is going to...',
-        defaultValue: 'Win',
-        options: ['Win', 'Lose'],
+        defaultValue: '???',
+        options: ['???', 'Win', 'Lose'],
+        props: { mode: "dropdown" }
     },
     {
         type: 'picker',
         name: 'BetValue',
         mode: 'dropdown',
         label: 'How much do you wanna bet?',
-        defaultValue: "$0",
-        options: ['$0',
+        defaultValue: "???",
+        options: [
+            "???",
+            '$0',
             '$1',
             '$2',
             '$3',
@@ -137,6 +140,7 @@ const fields = [
 export default class BetForm extends Component {
     submit() {
         const formValues = this.formGenerator.getValues();
+        if (formValues.BetType === "???" || formValues.BetValue === "???") return
         createNewBet({
             'betType': `${formValues.BetType}`,
             "userId": `${this.props.user}`,
@@ -160,6 +164,20 @@ export default class BetForm extends Component {
         )
         this.props.toggleView()
     }
+    validate(field) {
+        let error = false;
+        let errorMsg = '';
+        if (field.name === 'BetType' && (field.value === "???")) {
+            error = true;
+            errorMsg = 'select a bet type';
+        }
+        if (field.name === 'BetValue' && (field.value === "???")) {
+            error = true;
+            errorMsg = 'select a bet amount';
+        }
+        return { error, errorMsg };
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -170,6 +188,8 @@ export default class BetForm extends Component {
                         }}
                         fields={fields}
                         scrollViewProps={{ scrollEnabled: false, bounces: false }}
+                        customValidation={this.validate}
+
                     />
                 </View>
                 <View style={styles.submitButton}>
