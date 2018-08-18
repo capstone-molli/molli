@@ -38,7 +38,7 @@ class SwipeableCardView extends Component {
         onPanResponderMove: (evt, gestureState) => {
           this.state.Xposition.setValue(gestureState.dx);
 
-          if (gestureState.dx > SCREEN_WIDTH - 250) {
+          if (gestureState.dx > SCREEN_WIDTH - 150) {
             let user = firebase.auth().currentUser
             const userId = user.uid
             takeBet(this.props.item, userId)
@@ -158,8 +158,6 @@ class SwipeableCardView extends Component {
 
         <Text style={styles.LeftC_Text_Style} >
           {this.props.item.epicUser}
-          {/* Description: {this.props.item.description}
-          Username: {this.props.item.epicUser} */}
         </Text>
 
         {
