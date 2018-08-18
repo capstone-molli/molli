@@ -36,15 +36,6 @@ export default class MyCarousel extends Component {
                     {index === 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cards.png")} />)}
                     {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/payments.png")} />)}
                 </TouchableOpacity>
-
-
-
-
-
-
-
-
-
             </View>
         )
     }
