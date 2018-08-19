@@ -194,7 +194,8 @@ export default class UserSetupForm extends Component {
                                     "picture": `${this.props.user.picture}`,
                                     "username": values.username,
                                     "exists": true,
-                                    "loggedIn": true
+                                    "loggedIn": true,
+                                    "balance": this.props.user.balance
                                 })
                                 this.props.navigateToAllStreams()
                                 postSubmit()

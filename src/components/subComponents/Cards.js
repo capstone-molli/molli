@@ -1,15 +1,14 @@
 import React, { Component } from "react"
 import MyApp from '../PanView'
-import { getAllBets } from '../../db/firebaseMethods'
+import { getAllBets, retrieveUserInfo } from '../../db/firebaseMethods'
 import * as firebase from 'firebase';
+
 
 
 export default class Cards extends Component {
     constructor() {
         super()
         this.state = {
-            visible: false,
-            allowDragging: true,
             bets: []
         }
     }

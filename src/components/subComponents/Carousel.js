@@ -2,6 +2,7 @@ import Carousel from 'react-native-snap-carousel';
 import React, { Component } from "react"
 import { View, Text, TouchableOpacity, WebView, Dimensions, Image } from 'react-native';
 import Cards from "./Cards"
+import TinderCards from "./TinderCards"
 import ChatRoom from "./ChatRoom"
 
 export default class MyCarousel extends Component {
@@ -14,7 +15,7 @@ export default class MyCarousel extends Component {
                     value: <ChatRoom />
                 },
                 {
-                    value: < Cards />,
+                    value: < TinderCards />,
                 },
                 {
                     title: 'White Pocket Sunset',

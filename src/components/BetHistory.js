@@ -53,20 +53,17 @@ export default class BetHistory extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 18 / 20 }}>
+                    <View style={{ flex: 18 / 20, backgroundColor: "#FFF" }}>
                         <ScrollView>
                             <View > <Text style={styles.titleText} onPress={this.onPressTitle}>
                                 Closed Bets
                                 </Text>
                                 {this.state.bets.closedBets.length !== 0 ? this.state.bets.closedBets.map(bet => {
                                     return (
-                                        <Card
-                                            title={'Closed Bets: ' + bet.epicUser}>
+                                        <Card key={bet.epicUser}
+                                            title={`${new Date(bet.timeOfCreation.seconds * 1000).toLocaleString()}`}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.betType}
-                                            </Text>
-                                            <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: $'}{bet.betAmount}
+                                                {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
                                             </Text>
                                         </Card>
                                     )
