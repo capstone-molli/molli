@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { GiftedForm, GiftedFormManager } from "react-native-gifted-form"
 import moment from "moment"
 import { updateUser } from "../../db/firebaseMethods"
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 
 
 import { styles } from "../index"
@@ -197,8 +197,22 @@ export default class UserSetupForm extends Component {
                                     "loggedIn": true,
                                     "balance": this.props.user.balance
                                 })
-                                this.props.navigateToAllStreams()
-                                postSubmit()
+                                setTimeout(() => postSubmit(), 1000);
+                                if (!this.props.user.username) {
+                                    this.props.navigateToAllStreams()
+                                } else {
+                                    setTimeout(() => Alert.alert(
+                                        'Changes Saved!',
+                                        'Press OK to dismiss',
+                                        [
+                                            { text: 'OK', onPress: () => values = {} },
+                                        ],
+                                        { cancelable: false }
+                                    ), 1000)
+
+                                }
+
+
 
                                 /* Implement the request to your server using values variable
                                 ** then you can do:
