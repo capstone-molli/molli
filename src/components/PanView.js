@@ -78,7 +78,7 @@ class SwipeableCardView extends Component {
             Animated.spring(this.state.Xposition,
               {
                 toValue: 0,
-                speed: 5,
+                speed: 10,
                 bounciness: 10,
               }, { useNativeDriver: true }).start();
           }
@@ -90,13 +90,13 @@ class SwipeableCardView extends Component {
                 Animated.timing(this.state.Xposition,
                   {
                     toValue: SCREEN_WIDTH,
-                    duration: 200
+                    duration: 100
                   }),
 
                 Animated.timing(this.CardView_Opacity,
                   {
                     toValue: 0,
-                    duration: 200
+                    duration: 100
                   })
               ], { useNativeDriver: true }).start(() => {
                 this.setState({ LeftText: false, RightText: false }, () => {

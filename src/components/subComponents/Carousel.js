@@ -14,7 +14,7 @@ export default class MyCarousel extends Component {
                     value: <ChatRoom />
                 },
                 {
-                    value: < Cards />,
+                    value: <Cards />,
                 },
                 {
                     title: 'White Pocket Sunset',
