@@ -331,7 +331,7 @@ export default class CardModal extends Component {
                     <View style={{ flex: 4 }}>
                         <Text style={{ fontSize: 24, fontWeight: '700', paddingBottom: 8 }}>{this.props.title}</Text>
                         <Text style={{ fontSize: 12, fontWeight: '500', color: 'gray', paddingBottom: 10 }}>{this.props.description}</Text>
-                        <Text style={{ fontSize: 12, fontWeight: '500', color: 'gray', fontStyle: "italic" }}> {this.props.stream.video.viewer_count} Viewers  ||  {this.props.bets} Wagers</Text>
+                        <Text style={{ fontSize: 12, fontWeight: '500', color: 'gray', fontStyle: "italic" }}> {this.props.stream.video.viewer_count} Viewers </Text>
                     </View>
 
                     {plusButton}

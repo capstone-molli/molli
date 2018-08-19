@@ -97,6 +97,7 @@ export default class TinderCards extends Component {
                     backgroundColor={"#FFF"}
                     disableTopSwipe={true}
                     disableBottomSwipe={true}
+                    infinite={true}
                     overlayLabels={{
                         left: {
                             title: 'Pass',

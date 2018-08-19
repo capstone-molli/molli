@@ -91,7 +91,6 @@ async function getAllBets(id) {
             )
         ).catch(err => console.log(err, 'err getting the data'))
     const filtered = arr.filter(element => element.takerId === "" && element.userId !== id)
-
     return filtered
 }
 

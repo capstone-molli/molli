@@ -39,6 +39,7 @@
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.11.2",
     "react-player": "^1.6.4",
+    "rn-popup": "^1.0.4",
     "rn-sliding-up-panel": "^1.2.1"
   }
 }

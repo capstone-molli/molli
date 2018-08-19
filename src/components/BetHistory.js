@@ -61,7 +61,7 @@ export default class BetHistory extends Component {
                                 {this.state.bets.closedBets.length !== 0 ? this.state.bets.closedBets.map(bet => {
                                     return (
                                         <Card key={bet.epicUser}
-                                            title={`${new Date(bet.timeOfCreation.seconds * 1000).toLocaleString()}`}>
+                                            title={`${new Date().toLocaleString()}`}>
                                             <Text style={{ marginBottom: 10 }}>
                                                 {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
                                             </Text>

@@ -11,7 +11,7 @@ export default class AllStreamView extends Component {
     constructor() {
         super()
         this.state = {
-            streams: [], loading: true, scroll: true, bets: {}
+            streams: [], loading: true, scroll: true
         }
         this.expandProfileCard = this.expandProfileCard.bind(this)
         this.navigateToSingleStream = this.navigateToSingleStream.bind(this)
@@ -21,16 +21,10 @@ export default class AllStreamView extends Component {
     }
     async componentDidMount() {
         const streams = await twitchData()
-        let stateBets = {}
 
-        for (var i = 0; i < streams.length; i++) {
-            const bets = await getAllBets(streams[i].user.id)
-            stateBets[streams[i].user.id] = bets.length
-        }
 
         this.setState({
             streams,
-            bets: stateBets
         })
         this.setState({ loading: false })
     }
@@ -83,7 +77,6 @@ export default class AllStreamView extends Component {
                                     onClick={() => this.disableScroll()}
                                     navigateToSingleStream={this.navigateToSingleStream}
                                     stream={stream}
-                                    bets={this.state.bets[stream.user.id]}
                                 />
                             )
                         })}
