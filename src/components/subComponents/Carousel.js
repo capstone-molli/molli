@@ -16,6 +16,7 @@ export default class MyCarousel extends Component {
                 },
                 {
                     value: < TinderCards />,
+
                 },
                 {
                     title: 'White Pocket Sunset',
