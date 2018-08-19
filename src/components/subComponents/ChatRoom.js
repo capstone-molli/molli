@@ -46,7 +46,7 @@ export default class ChatRoom extends React.Component {
                     user: {
                         _id: 2,
                         name: "raven",
-                        avatar: require("../../assets/raven.gif")
+                        avatar: "https://cdn.dribbble.com/users/749365/screenshots/4459885/raven-best-mates.gif"
                     }
                 })
             }
