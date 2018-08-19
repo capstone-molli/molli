@@ -30,7 +30,8 @@ const facebookLogIn = async () => {
                     email: user.email,
                     id: user.uid,
                     exists: false,
-                    facebookId: user.providerData[0].uid
+                    facebookId: user.providerData[0].uid,
+                    balance: 0
                 }
                 userData = obj
 

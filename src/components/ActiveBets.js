@@ -4,7 +4,7 @@ import { Card, Button, Icon, Header, Divider } from 'react-native-elements'
 import styles from './styles'
 import axios from 'axios'
 import { twitchData } from "../db/twitchData"
-import { getAllBetsbyUser } from '../db/firebaseMethods'
+import { getAllBetsbyUser, getUser } from '../db/firebaseMethods'
 import * as firebase from "firebase"
 
 export default class ActiveBets extends Component {
@@ -20,12 +20,15 @@ export default class ActiveBets extends Component {
 
     async componentDidMount() {
         const user = firebase.auth().currentUser.uid
+        const userData = await getUser(user)
+        console.log("user Data", userData)
         this.setState({
             user
         })
         this.setState({
             bets: await getAllBetsbyUser(user)
         })
+        console.log(this.state.bets)
         setTimeout(() => this.setState({ loading: false }), 1000);
     }
 
@@ -52,47 +55,41 @@ export default class ActiveBets extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 18 / 20 }}>
+                    <View style={{ flex: 18 / 20, backgroundColor: "#FFF" }}>
                         <ScrollView>
 
                             <View > <Text style={styles.titleText} onPress={this.onPressTitle}>
-                                Open Bets With A taker
+                                Matched Bets
                                 </Text>
                                 {this.state.bets.openBetsWithTaker.length !== 0 ? this.state.bets.openBetsWithTaker.map(bet => {
                                     return (
                                         <Card
-                                            title={'User Bet Was Placed On: ' + bet.epicUser}>
+                                            title={`${new Date(bet.timeOfCreation.seconds * 1000).toLocaleString()}`}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.betType}
-                                            </Text>
-                                            <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: '}{bet.betAmount}
+                                                {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
                                             </Text>
                                         </Card>
                                     )
 
-                                }) : <View><Text>No open bets with takers right now</Text></View>}
+                                }) : <View><Text>No Matched Bets Right Now</Text></View>}
                             </View>
-                            <Divider style={{ backgroundColor: 'grey' }} />
-                            <Divider style={{ backgroundColor: 'grey' }} />
-                            <Divider style={{ backgroundColor: 'grey' }} />
+                            <Divider style={{ backgroundColor: "#FFF" }} />
+                            <Divider style={{ backgroundColor: "#FFF" }} />
+                            <Divider style={{ backgroundColor: "#FFF" }} />
                             <View > <Text style={styles.titleText} onPress={this.onPressTitle}>
-                                Open Bets Without A taker
+                                Pending Bets
                                 </Text>
                                 {this.state.bets.openBetsNoTaker.length !== 0 ? this.state.bets.openBetsNoTaker.map(bet => {
                                     return (
                                         <Card key={bet.epicUser}
-                                            title={'User Bet Was Placed On: ' + bet.epicUser}>
+                                            title={`${new Date(bet.timeOfCreation.seconds * 1000).toLocaleString()}`}>
                                             <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Type: '}{bet.betType}
-                                            </Text>
-                                            <Text style={{ marginBottom: 10 }}>
-                                                {'Bet Amount: '}{bet.betAmount}
+                                                {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
                                             </Text>
                                         </Card>
                                     )
 
-                                }) : <Text>No open bets with no takers right now</Text>}
+                                }) : <Text>No Pending Bets</Text>}
                             </View>
                         </ScrollView>
                     </View>
