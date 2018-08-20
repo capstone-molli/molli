@@ -45,31 +45,31 @@ class CustomDrawerContentComponent extends Component {
                     <View style={{ flex: 7 / 10, paddingLeft: 20 }}>
                         <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/account.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
                                 <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/home.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueHome.png")} />
                                 <Text style={{ fontSize: 20 }}>Home</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.navigateToScreen('BetHistory')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/history.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueHistory.png")} />
                                 <Text style={{ fontSize: 20 }}>History</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.navigateToScreen('ActiveBets')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/active.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/activeBlue.png")} />
                                 <Text style={{ fontSize: 20 }}>Active</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.navigateToScreen('SettingsView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/settingsImg.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/settingsBlue.png")} />
                                 <Text style={{ fontSize: 20 }}>Settings</Text>
                             </View>
                         </TouchableOpacity>
@@ -78,7 +78,7 @@ class CustomDrawerContentComponent extends Component {
                             this.navigateToScreen("AuthenticateAccountView")
                         }} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/logout.png")} />
+                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/logoutBlue.png")} />
                                 <Text style={{ fontSize: 20 }}>Log Out</Text>
                             </View>
                         </TouchableOpacity>
