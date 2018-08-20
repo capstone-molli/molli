@@ -22,6 +22,8 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
   }).catch(e => console.error(e))
   return null
 });
+
+
 // exports.importCSV = functions.https.onRequest((req, res) => {
 //   const fs = require('fs')
 //   const csvSync = require('csv-parse/lib/sync')
@@ -52,8 +54,21 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
 //     console.log('Failed', error)
 //   })
 // })
-
+// exports.testDBAPI = functions.https.onRequest((req, res) => {
+//   const betsBatch = db.batch()
+//   const batchFunc = (toUpdateStats) => {
+//     db.collection("bets").where("epicUser", "==", "Ninja").where("status", "==", "testing").get().then((snap) => {
+//       console.log('snap', snap);
+//       snap.forEach(doc => {
+//         betsBatch.update(doc.ref, toUpdateStats)
+//       })
+//       return betsBatch.commit()
+//     }).catch(e => console.error(e))
+//   }
+//   batchFunc({ status: "it Worked" })
+// })
 exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
+
   const beta = functions.config().betafortniteapi
   let fortniteAPI = new Fortnite(
     [
@@ -64,14 +79,22 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
     ]
   )
   const playerTwitch = req.query.player
+  // console.log('playerTwitch', playerTwitch);
 
   db.collection("players2").doc(playerTwitch).get().then(playerInfo => {
-    const betsRef = db.collection("bets").where("epicUser", "==", playerTwitch)
     const playerStatus = playerInfo.data()
     db.collection("twitch").doc(playerTwitch).get().then(epicInfo => {
       const betsBatch = db.batch()
       const epicPlayerName = epicInfo.data().epicName
-      // console.log('epicPlayerName', epicPlayerName);
+      const batchFunc = (toUpdateStats) => {
+        db.collection("bets").where("epicUser", "==", playerTwitch).where("status", "==", "watching").get().then((snap) => {
+          snap.forEach(doc => {
+            betsBatch.update(doc.ref, toUpdateStats)
+          })
+          return betsBatch.commit()
+        }).catch(e => console.error(e))
+      }
+
 
       if (!playerInfo.exists || playerStatus.status !== 'watching' || req.query.status === 'continue') {
         fortniteAPI.login().then(() => {
@@ -109,7 +132,7 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
               const nowDate = new Date()
               if (nowDate - betDate >= 20 * 60 * 1000) {
                 console.log("Bet Expired")
-                betsBatch.update(betsRef.where("status", "==", "watching"), { status: `expired` })
+                batchFunc({ status: "Expired" })
                 db.collection("players2").doc(playerTwitch).update({ status: `expired` })
                 res.status(200).end()
               } else {
@@ -117,16 +140,18 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
                 if (matchCount > oldMatchCount) {
                   let newResult;
 
+
                   if (wins > oldWins) {
                     newResult = 'win'
                   } else {
                     newResult = 'lost'
                   }
                   console.log(`Result for ${player}: Player ${newResult} the bet!`)
-                  betsBatch.update(betsRef.where("status", "==", "watching"), { status: newResult }).then(() => res.status(204).send())
+                  batchFunc({ status: newResult })
                   db.collection("players2").doc(playerTwitch).get().then(() => {
                     db.collection("players2").doc(playerTwitch).update(result)
                     db.collection("players2").doc(playerTwitch).update({ status: `finished`, lastResult: newResult })
+                    res.status(204).end()
                   })
 
                 } else {
@@ -134,7 +159,7 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
 
                     request({
                       method: "GET",
-                      url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${player}&time=${betDate}&status=continue`,
+                      url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${playerTwitch}&time=${betDate}&status=continue`,
                     })
                     res.status(201).end()
                   }, 8000)
@@ -142,8 +167,7 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
               }
             }).catch(e => {
               console.error(e)
-              const betErrored = betsRef.where("status", "==", "watching")
-              betsBatch.update(betErrored, { status: "Player not found" })
+              batchFunc({ status: "Player not found" })
               res.send("Player doesn't Exist")
             })
         }).catch(e => console.error(e))
