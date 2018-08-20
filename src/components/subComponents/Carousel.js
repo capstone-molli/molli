@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity, WebView, Dimensions, Image } from 'react-
 import Cards from "./Cards"
 import TinderCards from "./TinderCards"
 import ChatRoom from "./ChatRoom"
+import AccountBalance from './AccountBalance'
+
 
 export default class MyCarousel extends Component {
     constructor() {
@@ -19,9 +21,10 @@ export default class MyCarousel extends Component {
 
                 },
                 {
-                    title: 'White Pocket Sunset',
-                    subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-                    illustration: 'https://i.imgur.com/MABUbpDl.jpg'
+                    // title: 'White Pocket Sunset',
+                    // subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
+                    // illustration: 'https://i.imgur.com/MABUbpDl.jpg'
+                    value: <AccountBalance />
                 },
             ]
         }
