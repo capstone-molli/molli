@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { GiftedForm, GiftedFormManager } from "react-native-gifted-form"
 import moment from "moment"
 import { updateUser } from "../../db/firebaseMethods"
-import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Alert, Dimensions } from 'react-native';
 
 
 import { styles } from "../index"
@@ -179,8 +179,12 @@ export default class UserSetupForm extends Component {
                         title={this.props.user.username ? 'Submit Changes' : "Sign up"}
                         widgetStyles={{
                             submitButton: {
-                                backgroundColor: "#00aa9e"
-                                // backgroundColor: themes.mainColor,
+                                backgroundColor: "#00aa9e",
+                                marginTop: 10,
+                                borderRadius: 10,
+                                width: Dimensions.get("window").width - 64,
+                                height: 50,
+                                alignSelf: "center"
                             }
                         }}
                         onSubmit={(isValid, values, validationResults, postSubmit = null, modalNavigator = null) => {
