@@ -185,6 +185,9 @@ export default class UserSetupForm extends Component {
                                 width: Dimensions.get("window").width - 64,
                                 height: 50,
                                 alignSelf: "center"
+                            },
+                            textSubmitButton: {
+                                color: 'white', fontWeight: '800', fontSize: 18
                             }
                         }}
                         onSubmit={(isValid, values, validationResults, postSubmit = null, modalNavigator = null) => {
