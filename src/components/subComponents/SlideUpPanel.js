@@ -15,7 +15,7 @@ export default class BetForm extends Component {
         super(props)
         this.state = {
             user: null,
-            epicUser: this.props.props.display,
+            epicUser: this.props.props.login,
             description: '0',
             betAmount: '',
         }
@@ -39,7 +39,7 @@ export default class BetForm extends Component {
                 onRequestClose={this.props.contract}
                 style={{ backgroundColor: "#FFF" }}>
                 <View style={{ flex: 1, backgroundColor: "#FFF", borderTopLeftRadius: 15, borderTopRightRadius: 15 }}>
-                    <NewBetForm user={this.state.user} epicUser={this.props.props.display} toggleView={this.props.toggleView} />
+                    <NewBetForm user={this.state.user} epicUser={this.props.props.login} toggleView={this.props.toggleView} />
                 </View>
             </SlidingUpPanel>
         );

@@ -8,9 +8,9 @@ import { Alert } from "react-native"
 const styles = {
     wrapper: {
         flex: 1,
-        // marginTop: 200
+        // marginTop: 200,
         justifyContent: "flex-end",
-        marginBottom: 300
+        marginBottom: 450
     },
     submitButton: {
         paddingHorizontal: 10,
