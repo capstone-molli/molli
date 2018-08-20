@@ -102,7 +102,7 @@ export default class UserSetupForm extends Component {
                             returnKeyType="next"
                             name='fullName'
                             title='Full name'
-                            autoFocus={true}
+                            autoFocus={this.props.user.username ? false : true}
                             blurOnSubmit={false}
 
                             image={require('../../assets/user.png')}
@@ -202,7 +202,8 @@ export default class UserSetupForm extends Component {
                                         "username": values.username,
                                         "exists": true,
                                         "loggedIn": true,
-                                        "balance": this.props.user.balance
+                                        "balance": this.props.user.balance,
+                                        // "password": values.password
                                     })
                                     setTimeout(() => postSubmit(), 1000);
                                     if (!this.props.user.username) {
@@ -233,7 +234,7 @@ export default class UserSetupForm extends Component {
                         />
 
                         <GiftedForm.NoticeWidget
-                            title='By signing up, you agree to the Terms of Service and Privacy Policity.'
+                            title={this.props.user.username ? "" : 'By signing up, you agree to the Terms of Service and Privacy Policity.'}
                             style={{ color: "black", fontFamily: "MPR" }}
                         />
                         <GiftedForm.HiddenWidget name='tos' value={true} />
