@@ -5,7 +5,7 @@ import axios from 'axios'
 import { twitchData } from "../db/twitchData"
 import * as firebase from "firebase"
 import CardModal from './card-modal';
-import { getAllBets } from "../db/firebaseMethods"
+import { getAllBets, listenForBets } from "../db/firebaseMethods"
 
 export default class AllStreamView extends Component {
     constructor() {
@@ -21,8 +21,7 @@ export default class AllStreamView extends Component {
     }
     async componentDidMount() {
         const streams = await twitchData()
-
-
+        listenForBets()
         this.setState({
             streams,
         })
