@@ -41,7 +41,7 @@ export default class SingleStreamView extends Component {
         this.setState({ visible: false })
         this.refs["plusButton"].setNativeProps({
 
-            source: [resolveAssetSource(require("../assets/plusBlueInverted.png"))]
+            source: [resolveAssetSource(require("../assets/plus.png"))]
         })
 
 
@@ -57,9 +57,10 @@ export default class SingleStreamView extends Component {
                     <View style={{ flex: 5 / 12, backgroundColor: "#FFF" }}>
                         <View style={{ flex: 2 / 10, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                             <TouchableOpacity onPress={this.goBack}>
-                                <Image style={{ width: 40, height: 40 }} source={require("../assets/back.png")} />
+                                <Image style={{ width: 40, height: 40, left: 10 }} source={require("../assets/back.png")} />
                             </TouchableOpacity>
                         </View>
+
                         <View style={{ flex: 8 / 10 }}>
                             <WebView
                                 allowsInlineMediaPlayback={true}
@@ -75,7 +76,7 @@ export default class SingleStreamView extends Component {
                         <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props={this.props.navigation.state.params} viewDown={this.viewDown} />
                         <View style={{ flexDirection: "row", justifyContent: "flex-start", right: 15, top: 15, position: "absolute" }}>
                             <TouchableOpacity activeOpacity={this.state.visible ? 1 : 0.5} onPress={this.viewUp}>
-                                <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plusBlueInverted.png')} />
+                                <Image ref="plusButton" style={{ width: 80, height: 80, zIndex: 1 }} source={require('../assets/plus.png')} />
                             </TouchableOpacity>
                         </View>
                     </View>

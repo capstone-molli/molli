@@ -40,7 +40,7 @@ export default class AuthenticateAccountView extends Component {
                 <Text style={{ fontSize: 30, color: "#00aa9e", fontFamily: 'SUPRRG', position: "absolute", top: 150 }}>Molli.</Text>
                 <TouchableOpacity onPress={this.handlePress}>
                     <SocialIcon
-                        title='Continue With Facebook'
+                        title='Sign Up With Facebook'
                         button
                         type='facebook'
                         style={{ width: 325, borderColor: "#FFF", borderWidth: 3 }}
