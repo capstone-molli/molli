@@ -25,6 +25,8 @@ class CustomDrawerContentComponent extends Component {
             routeName: route
         });
         this.props.navigation.dispatch(Action);
+        this.props.navigation.closeDrawer()
+
     }
     async componentDidMount() {
         var user = firebase.auth().currentUser
