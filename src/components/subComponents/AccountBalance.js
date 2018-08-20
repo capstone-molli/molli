@@ -203,7 +203,7 @@ class AccountBalance extends Component {
                             </View>
                             <View style={styles.submitButton}>
                                 <Button block onPress={() => this.submit()} style={{ backgroundColor: "#00aa9e" }}>
-                                    <Text style={{ color: 'white', fontWeight: '800', fontSize: 18 }}>Submit Bet</Text>;
+                                    <Text style={{ color: 'white', fontWeight: '800', fontSize: 18 }}>Submit</Text>;
                                 </Button>
                             </View>
                     </TouchableOpacity>
