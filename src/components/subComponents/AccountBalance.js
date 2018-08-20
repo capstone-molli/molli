@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import {Button} from 'native-base'
+import { Button } from 'native-base'
 import * as firebase from "firebase"
 import { getUser, updateUserCredits } from "../../db/firebaseMethods"
 import GenerateForm from 'react-native-form-builder';
+import Popup from "./Popup"
+import CreditCard from 'react-native-credit-card';
+import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
+
+
 
 
 const styles = {
@@ -133,29 +138,35 @@ const fields = [
 ]
 
 class AccountBalance extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             user: {},
-            userId: ''
+            userId: '',
+            visible: false
         }
+        this._openPopUp = this._openPopUp.bind(this)
+        this._closePopUp = this._closePopUp.bind(this)
+        this._onChange = this._onChange.bind(this)
     };
 
     async componentDidMount() {
         var user = firebase.auth().currentUser
         const userId = user.uid
         const newUser = await getUser(userId)
-        this.setState({ 
+        this.setState({
             user: newUser,
             userId
         })
         console.log("user:", newUser)
     }
+    _onChange = form => console.log(form);
+
 
     submit = () => {
         const formValues = this.formGenerator.getValues();
         if (formValues.Credits === "???") return
-            updateUserCredits(this.state.userId, formValues.Credits)
+        updateUserCredits(this.state.userId, formValues.Credits)
         Alert.alert(
             'Credits Added',
             'Press OK to dismiss',
@@ -165,59 +176,54 @@ class AccountBalance extends Component {
             { cancelable: false }
         )
     }
+    _openPopUp() {
+        this.setState({
+            isVisible: true
+        });
+    }
 
-    validate(field){
+    _closePopUp() {
+        this.setState({
+            isVisible: false
+        });
+    }
+
+    validate(field) {
         let error = false;
         let errorMsg = '';
         if (field.name === 'Credits' && (field.value === "???")) {
             error = true;
             errorMsg = 'select an amount';
         }
-        return {error, errorMsg}
+        return { error, errorMsg }
     }
 
-    render(){
+    render() {
         return (
-            <View>
-                <View>
-                    <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                            <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
-                            <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
-                        </View>
+            <View style={{ flex: 1, backgroundColor: "#FFF", justifyContent: "center", alignItems: "center" }}>
+                <View style={{ flex: 1, backgroundColor: "#FFF", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                        <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
+                        <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
                     </TouchableOpacity>
-                </View>
 
-                <View>
-                    <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
-                            <View>
-                                <GenerateForm
-                                    ref={(c) => {
-                                        this.formGenerator = c;
-                                    }}
-                                    fields={fields}
-                                    scrollViewProps={{ scrollEnabled: false, bounces: false }}
-                                    customValidation={this.validate}
-
-                                />
-                            </View>
-                            <View style={styles.submitButton}>
-                                <Button block onPress={() => this.submit()} style={{ backgroundColor: "#00aa9e" }}>
-                                    <Text style={{ color: 'white', fontWeight: '800', fontSize: 18 }}>Submit</Text>;
-                                </Button>
-                            </View>
+                    <TouchableOpacity onPress={this._openPopUp} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                        <Image style={{ width: 25, height: 25 }} source={require("../../assets/handDollar.png")} />
+                        <Text style={{ fontSize: 20 }}>Add Credits</Text>
                     </TouchableOpacity>
-                </View>
 
-                <View>
-                    <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
-                            <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                <Image style={{ width: 25, height: 25 }} source={require("../../assets/handDollar.png")} />
-                                <Text style={{ fontSize: 20 }}>Donate To Streamer</Text>
-                            </View>
+                    <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                        <Image style={{ width: 25, height: 25 }} source={require("../../assets/handDollar.png")} />
+                        <Text style={{ fontSize: 20 }}>Donate To Streamer</Text>
                     </TouchableOpacity>
+
                 </View>
+                <Popup style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center" }} isVisible={this.state.isVisible} duration={400} entry={'bottom'} exit={'top'}>
+                    <CreditCardInput onChange={this._onChange} />
+                    <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this._closePopUp()} buttonType='primary'>Close</Text>
+                </Popup>
             </View>
+
         )
     }
 }
