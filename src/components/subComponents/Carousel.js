@@ -30,13 +30,13 @@ export default class MyCarousel extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
                 <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
-                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/chat.png")} />)}
-                    {index === 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cards.png")} />)}
+                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/chatBlue.png")} />)}
+                    {index === 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cardsBlue.png")} />)}
                 </TouchableOpacity>
                 {item.value}
                 <TouchableOpacity onPress={() => this._carousel.snapToNext()}>
-                    {index === 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cards.png")} />)}
-                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/payments.png")} />)}
+                    {index === 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cardsBlue.png")} />)}
+                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/paymentsBlue.png")} />)}
                 </TouchableOpacity>
             </View>
         )
