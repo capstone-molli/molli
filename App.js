@@ -9,7 +9,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Image
+  Image,
+  StatusBar
 } from "react-native";
 import React, { Component } from "react"
 import * as firebase from "firebase"
@@ -115,8 +116,8 @@ export default class App extends React.Component {
   }
   render() {
     if (this.state.loading) return null;
-    if (this.state.user && this.state.newUser && this.state.fontLoaded) return <SignedInStack />;
-    return (<SignedOutStack />)
+    if (this.state.user && this.state.newUser && this.state.fontLoaded) return (<React.Fragment> <StatusBar hidden={true} /> <SignedInStack /></React.Fragment>)
+    return (<React.Fragment><StatusBar hidden={true} /> <SignedOutStack /></React.Fragment>)
   }
 
 }

@@ -38,7 +38,7 @@ class SwipeableCardView extends Component {
         onPanResponderMove: (evt, gestureState) => {
           this.state.Xposition.setValue(gestureState.dx);
 
-          if (gestureState.dx > SCREEN_WIDTH - 250) {
+          if (gestureState.dx > SCREEN_WIDTH - 150) {
             let user = firebase.auth().currentUser
             const userId = user.uid
             takeBet(this.props.item, userId)
@@ -78,7 +78,7 @@ class SwipeableCardView extends Component {
             Animated.spring(this.state.Xposition,
               {
                 toValue: 0,
-                speed: 5,
+                speed: 10,
                 bounciness: 10,
               }, { useNativeDriver: true }).start();
           }
@@ -90,13 +90,13 @@ class SwipeableCardView extends Component {
                 Animated.timing(this.state.Xposition,
                   {
                     toValue: SCREEN_WIDTH,
-                    duration: 200
+                    duration: 100
                   }),
 
                 Animated.timing(this.CardView_Opacity,
                   {
                     toValue: 0,
-                    duration: 200
+                    duration: 100
                   })
               ], { useNativeDriver: true }).start(() => {
                 this.setState({ LeftText: false, RightText: false }, () => {
@@ -158,8 +158,6 @@ class SwipeableCardView extends Component {
 
         <Text style={styles.LeftC_Text_Style} >
           {this.props.item.epicUser}
-          {/* Description: {this.props.item.description}
-          Username: {this.props.item.epicUser} */}
         </Text>
 
         {
@@ -303,7 +301,7 @@ const styles = StyleSheet.create(
     LeftB_Text_Style:
     {
       fontFamily: "SUPRRG",
-      color: 'black',
+      color: '#FFF',
       fontSize: 20,
       fontWeight: 'bold',
       backgroundColor: 'transparent'
@@ -311,7 +309,7 @@ const styles = StyleSheet.create(
     LeftC_Text_Style:
     {
       fontFamily: "SUPRRG",
-      color: '#FFF',
+      color: 'black',
       fontSize: 20,
       fontWeight: 'bold',
       backgroundColor: 'transparent'

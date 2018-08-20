@@ -19,7 +19,8 @@ export default class SingleStreamView extends Component {
             allowDragging: true,
             loading: true
         }
-        this.toggleView = this.toggleView.bind(this)
+        this.viewUp = this.viewUp.bind(this)
+        this.viewDown = this.viewDown.bind(this)
     }
     goBack = () => {
         const { navigate } = this.props.navigation
@@ -27,11 +28,23 @@ export default class SingleStreamView extends Component {
         navigate("AllStreamView")
     }
 
-    toggleView = () => {
-        this.setState({ visible: !this.state.visible })
+    viewUp = () => {
+        this.setState({ visible: true })
         this.refs["plusButton"].setNativeProps({
-            source: [this.state.visible ? resolveAssetSource(require("../assets/plus.png")) : resolveAssetSource(require("../assets/cancel.png"))]
+
+            source: [resolveAssetSource(require("../assets/empty.png"))]
         })
+
+
+    }
+    viewDown = () => {
+        this.setState({ visible: false })
+        this.refs["plusButton"].setNativeProps({
+
+            source: [resolveAssetSource(require("../assets/plusBlueInverted.png"))]
+        })
+
+
     }
     componentDidMount() {
         setTimeout(() => this.setState({ loading: false }), 1000);
@@ -44,7 +57,7 @@ export default class SingleStreamView extends Component {
                     <View style={{ flex: 5 / 12, backgroundColor: "#FFF" }}>
                         <View style={{ flex: 2 / 10, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                             <TouchableOpacity onPress={this.goBack}>
-                                <Image style={{ width: 40, height: 40 }} source={require("../assets/blueback1.png")} />
+                                <Image style={{ width: 40, height: 40 }} source={require("../assets/back.png")} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 8 / 10 }}>
@@ -59,15 +72,14 @@ export default class SingleStreamView extends Component {
                     </View>
                     <View style={{ flex: 7 / 12 }}>
                         <Carousel />
-                        <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props={this.props.navigation.state.params} toggleView={this.toggleView} />
-                        <View style={{ flexDirection: "row", justifyContent: "flex-end", right: 15, bottom: 15, position: "absolute" }}>
-                            <TouchableOpacity onPress={this.toggleView}>
-                                <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plus.png')} />
+                        <SlideUpPanel visible={this.state.visible} allowDragging={this.state.allowDragging} props={this.props.navigation.state.params} viewDown={this.viewDown} />
+                        <View style={{ flexDirection: "row", justifyContent: "flex-start", right: 15, top: 15, position: "absolute" }}>
+                            <TouchableOpacity activeOpacity={this.state.visible ? 1 : 0.5} onPress={this.viewUp}>
+                                <Image ref="plusButton" style={{ width: 80, height: 80 }} source={require('../assets/plusBlueInverted.png')} />
                             </TouchableOpacity>
                         </View>
                     </View>
-                </View>
+                </View >
             )
-
     }
 }

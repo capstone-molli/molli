@@ -2,6 +2,7 @@ import Carousel from 'react-native-snap-carousel';
 import React, { Component } from "react"
 import { View, Text, TouchableOpacity, WebView, Dimensions, Image } from 'react-native';
 import Cards from "./Cards"
+import TinderCards from "./TinderCards"
 import ChatRoom from "./ChatRoom"
 
 export default class MyCarousel extends Component {
@@ -14,7 +15,8 @@ export default class MyCarousel extends Component {
                     value: <ChatRoom />
                 },
                 {
-                    value: < Cards />,
+                    value: < TinderCards />,
+
                 },
                 {
                     title: 'White Pocket Sunset',
@@ -28,11 +30,13 @@ export default class MyCarousel extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
                 <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
-                    {index != 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/prevComp.png")} />)}
+                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/chatBlueInverted.png")} />)}
+                    {index === 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cardsBlueInverted.png")} />)}
                 </TouchableOpacity>
                 {item.value}
                 <TouchableOpacity onPress={() => this._carousel.snapToNext()}>
-                    {index != 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/nextComp.png")} />)}
+                    {index === 0 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cardsBlueInverted.png")} />)}
+                    {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/paymentsBlue.png")} />)}
                 </TouchableOpacity>
             </View>
         )

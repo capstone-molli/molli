@@ -20,6 +20,7 @@ export default class BetForm extends Component {
             betAmount: '',
         }
         this.handleChange = this.handleChange.bind(this)
+        this.submit = this.submit.bind(this)
     }
     componentDidMount() {
         this.setState({ user: firebase.auth().currentUser.uid })
@@ -27,6 +28,9 @@ export default class BetForm extends Component {
 
     handleChange(value) {
         this.setState({ value })
+    }
+    submit() {
+        this.props.viewDown()
     }
 
 
@@ -38,8 +42,11 @@ export default class BetForm extends Component {
                 draggableRange={{ top: 750, bottom: 0 }}
                 onRequestClose={this.props.contract}
                 style={{ backgroundColor: "#FFF" }}>
-                <View style={{ flex: 1, backgroundColor: "#FFF", borderTopLeftRadius: 15, borderTopRightRadius: 15 }}>
-                    <NewBetForm user={this.state.user} epicUser={this.props.props.login} toggleView={this.props.toggleView} />
+                <View style={{ flex: 1, backgroundColor: "#FFF", borderTopLeftRadius: 15, borderTopRightRadius: 15, justifyContent: "center" }}>
+                    <TouchableOpacity onPress={this.submit}>
+                        <Image source={require("../../assets/down.png")} style={{ top: 3, alignSelf: "center", width: 50, height: 50 }} />
+                    </TouchableOpacity>
+                    <NewBetForm user={this.state.user} epicUser={this.props.props.login} toggleView={this.props.viewDown} />
                 </View>
             </SlidingUpPanel>
         );
