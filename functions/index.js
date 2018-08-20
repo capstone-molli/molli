@@ -10,6 +10,7 @@ db.settings({ timestampsInSnapshots: true })
 
 exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
   const betId = context.params.betId
+  console.log('betId', betId);
   const betInfo = snap.data();
   // console.log('betInfo', betInfo);
   db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
@@ -54,19 +55,19 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
 //     console.log('Failed', error)
 //   })
 // })
-// exports.testDBAPI = functions.https.onRequest((req, res) => {
-//   const betsBatch = db.batch()
-//   const batchFunc = (toUpdateStats) => {
-//     db.collection("bets").where("epicUser", "==", "Ninja").where("status", "==", "testing").get().then((snap) => {
-//       console.log('snap', snap);
-//       snap.forEach(doc => {
-//         betsBatch.update(doc.ref, toUpdateStats)
-//       })
-//       return betsBatch.commit()
-//     }).catch(e => console.error(e))
-//   }
-//   batchFunc({ status: "it Worked" })
-// })
+exports.testDBAPI = functions.https.onRequest((req, res) => {
+  const betsBatch = db.batch()
+  const batchFunc = (toUpdateStats) => {
+    db.collection("bets").where("status", "==", "watching").get().then((snap) => {
+      // console.log('snap', snap);
+      snap.forEach(doc => {
+        betsBatch.update(doc.ref, toUpdateStats)
+      })
+      return betsBatch.commit()
+    }).catch(e => console.error(e))
+  }
+  batchFunc({ status: "expired" })
+})
 exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
 
   const beta = functions.config().betafortniteapi
@@ -142,11 +143,11 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
 
 
                   if (wins > oldWins) {
-                    newResult = 'win'
+                    newResult = 'Win'
                   } else {
-                    newResult = 'lost'
+                    newResult = 'Lose'
                   }
-                  console.log(`Result for ${player}: Player ${newResult} the bet!`)
+                  console.log(`Result for ${player}: Player ${newResult}!`)
                   batchFunc({ status: newResult })
                   db.collection("players2").doc(playerTwitch).get().then(() => {
                     db.collection("players2").doc(playerTwitch).update(result)
