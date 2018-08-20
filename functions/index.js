@@ -9,10 +9,10 @@ var db = admin.firestore();
 db.settings({ timestampsInSnapshots: true })
 
 exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
+
   const betId = context.params.betId
-  console.log('betId', betId);
-  const betInfo = snap.data();
-  // console.log('betInfo', betInfo);
+  const betInfo = snap.data()
+
   db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
     if (betInfo.epicUser.length) {
       request({
@@ -80,101 +80,106 @@ exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
     ]
   )
   const playerTwitch = req.query.player
-  // console.log('playerTwitch', playerTwitch);
 
   db.collection("players2").doc(playerTwitch).get().then(playerInfo => {
     const playerStatus = playerInfo.data()
     db.collection("twitch").doc(playerTwitch).get().then(epicInfo => {
       const betsBatch = db.batch()
-      const epicPlayerName = epicInfo.data().epicName
-      const batchFunc = (toUpdateStats) => {
-        db.collection("bets").where("epicUser", "==", playerTwitch).where("status", "==", "watching").get().then((snap) => {
-          snap.forEach(doc => {
-            betsBatch.update(doc.ref, toUpdateStats)
-          })
-          return betsBatch.commit()
-        }).catch(e => console.error(e))
-      }
-
-
-      if (!playerInfo.exists || playerStatus.status !== 'watching' || req.query.status === 'continue') {
-        fortniteAPI.login().then(() => {
-          fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime")
-            .then(result => {
-              let oldMatchCount;
-              let oldWins;
-              player = result.info.username
-              const matchCount = result.lifetimeStats.matches
-              const wins = result.lifetimeStats.wins
-
-              if (playerInfo.exists) {
-                oldMatchCount = playerStatus.lifetimeStats.matches
-                oldWins = playerStatus.lifetimeStats.wins
-                if (!req.query.status) {
-                  console.log(`Watching ${player}`)
-                  db.collection("players2").doc(playerTwitch).update(result)
-                  db.collection("players2").doc(playerTwitch).update({ status: `watching` })
-                }
-              } else {
-                console.log(`Created and watching ${player}`)
-                db.collection("players2").doc(playerTwitch).set(result).then(() => {
-                  db.collection("players2").doc(playerTwitch).update({ status: `watching` })
-                })
-                oldMatchCount = matchCount
-                oldWins = wins
-              }
-
-              let betDate;
-              if (req.query.time) {
-                betDate = new Date(req.query.time)
-              } else {
-                betDate = new Date()
-              }
-              const nowDate = new Date()
-              if (nowDate - betDate >= 20 * 60 * 1000) {
-                console.log("Bet Expired")
-                batchFunc({ status: "Expired" })
-                db.collection("players2").doc(playerTwitch).update({ status: `expired` })
-                res.status(200).end()
-              } else {
-
-                if (matchCount > oldMatchCount) {
-                  let newResult;
-
-
-                  if (wins > oldWins) {
-                    newResult = 'Win'
-                  } else {
-                    newResult = 'Lose'
-                  }
-                  console.log(`Result for ${player}: Player ${newResult}!`)
-                  batchFunc({ status: newResult })
-                  db.collection("players2").doc(playerTwitch).get().then(() => {
-                    db.collection("players2").doc(playerTwitch).update(result)
-                    db.collection("players2").doc(playerTwitch).update({ status: `finished`, lastResult: newResult })
-                    res.status(204).end()
-                  })
-
-                } else {
-                  setTimeout(() => {
-
-                    request({
-                      method: "GET",
-                      url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${playerTwitch}&time=${betDate}&status=continue`,
-                    })
-                    res.status(201).end()
-                  }, 8000)
-                }
-              }
-            }).catch(e => {
-              console.error(e)
-              batchFunc({ status: "Player not found" })
-              res.send("Player doesn't Exist")
-            })
-        }).catch(e => console.error(e))
+      let epicPlayerName;
+      if (!epicInfo.data()) {
+        console.log(`Add user: ${playerTwitch}`)
+        res.status(404).send("User doesnt exist")
       } else {
-        // console.log(`Already watching`)
-        res.send(`Already watching`)
+        epicPlayerName = epicInfo.data().epicName
+
+        const batchFunc = (toUpdateStats) => {
+          db.collection("bets").where("epicUser", "==", playerTwitch).where("status", "==", "watching").get().then((snap) => {
+            snap.forEach(doc => {
+              betsBatch.update(doc.ref, toUpdateStats)
+            })
+            return betsBatch.commit()
+          }).catch(e => console.error(e))
+        }
+
+
+        if (!playerInfo.exists || playerStatus.status !== 'watching' || req.query.status === 'continue') {
+          fortniteAPI.login().then(() => {
+            fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime")
+              .then(result => {
+                let oldMatchCount;
+                let oldWins;
+                player = result.info.username
+                const matchCount = result.lifetimeStats.matches
+                const wins = result.lifetimeStats.wins
+
+                if (playerInfo.exists) {
+                  oldMatchCount = playerStatus.lifetimeStats.matches
+                  oldWins = playerStatus.lifetimeStats.wins
+                  if (!req.query.status) {
+                    console.log(`Watching ${player}`)
+                    db.collection("players2").doc(playerTwitch).update(result)
+                    db.collection("players2").doc(playerTwitch).update({ status: `watching` })
+                  }
+                } else {
+                  console.log(`Created and watching ${player}`)
+                  db.collection("players2").doc(playerTwitch).set(result).then(() => {
+                    db.collection("players2").doc(playerTwitch).update({ status: `watching` })
+                  })
+                  oldMatchCount = matchCount
+                  oldWins = wins
+                }
+
+                let betDate;
+                if (req.query.time) {
+                  betDate = new Date(req.query.time)
+                } else {
+                  betDate = new Date()
+                }
+                const nowDate = new Date()
+                if (nowDate - betDate >= 20 * 60 * 1000) {
+                  console.log("Bet Expired")
+                  batchFunc({ status: "Expired" })
+                  db.collection("players2").doc(playerTwitch).update({ status: `expired` })
+                  res.status(200).end()
+                } else {
+
+                  if (matchCount > oldMatchCount) {
+                    let newResult;
+
+
+                    if (wins > oldWins) {
+                      newResult = 'Win'
+                    } else {
+                      newResult = 'Lose'
+                    }
+                    console.log(`Result for ${player}: Player ${newResult}!`)
+                    batchFunc({ status: newResult })
+                    db.collection("players2").doc(playerTwitch).get().then(() => {
+                      db.collection("players2").doc(playerTwitch).update(result)
+                      db.collection("players2").doc(playerTwitch).update({ status: `finished`, lastResult: newResult })
+                      res.status(204).end()
+                    })
+
+                  } else {
+                    setTimeout(() => {
+
+                      request({
+                        method: "GET",
+                        url: `https://us-central1-molli-e1c3f.cloudfunctions.net/betaConFetFortniteAPI?player=${playerTwitch}&time=${betDate}&status=continue`,
+                      })
+                      res.status(201).end()
+                    }, 8000)
+                  }
+                }
+              }).catch(e => {
+                console.error(e)
+                batchFunc({ status: "Player not found" })
+                res.send("Player doesn't Exist")
+              })
+          }).catch(e => console.error(e))
+        } else {
+          res.send(`Already watching`)
+        }
       }
     }).catch(e => console.error(e))
   }).catch(e => console.error(e))

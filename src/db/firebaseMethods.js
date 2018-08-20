@@ -32,23 +32,6 @@ async function listenForBets() {
             }
         })
     })
-    // await firestore.collection("bets").where("takerId", "==", userId).onSnapshot(snap => {
-    //     snap.forEach((s) => {
-    //         const bet = s.data()
-    //         if (bet.betType !== bet.status) {
-    //             Alert.alert(
-    //                 'You won a bet!',
-    //                 'Press OK to dismiss',
-    //                 [
-    //                     { text: 'OK', onPress: () => values = {} },
-    //                 ],
-    //                 { cancelable: false }
-    //             )
-    //         } else {
-
-    //         }
-    //     })
-    // })
     await firestore.collection("bets").where("takerId", "==", userId).onSnapshot(snap => {
         snap.forEach(async (s) => {
             const betYours = s.data()
@@ -126,9 +109,24 @@ function createNewBet(obj) {
     return firestore.collection('bets').add(obj)
 }
 
-async function updateCurrentStats(user) {
-    firestore.collection("players2").doc(playerTwitch).update(result)
-}
+// async function updateCurrentStats(user) {
+//     const beta = functions.config().betafortniteapi
+//     let fortniteAPI = new Fortnite(
+//         [
+//             beta.user,
+//             beta.password,
+//             beta.clienttoken,
+//             beta.gametoken
+//         ]
+//     )
+//     const epicUser = await firestore.collection("twitch").doc(user).get().then(epicInfo => epicInfo.data().epicName)
+//     console.log('epicUser', epicUser);
+//     fortniteAPI.login().then(() => {
+//         fortniteAPI.getStatsBR(epicUser, "pc", "alltime").then(result => {
+//             firestore.collection("players2").doc(user).update(result)
+//         })
+//     })
+// }
 
 function takeBet(betObj, userId) {
     let db = firebase.firestore();

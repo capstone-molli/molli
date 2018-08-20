@@ -6,7 +6,6 @@ import resolveAssetSource from 'resolveAssetSource';
 import Carousel from "./subComponents/Carousel"
 import Cards from "./subComponents/Cards"
 
-
 // import { access } from 'fs';
 //import ReactPlayer from 'react-player'
 
@@ -50,7 +49,7 @@ export default class SingleStreamView extends Component {
         setTimeout(() => this.setState({ loading: false }), 1000);
     }
     render() {
-
+        // updateCurrentStats(this.props.navigation.state.params.login)
         return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
