@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     popupContainer: {
         right: 0,
         left: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: '#FFF',
         marginHorizontal: 20,
         borderRadius: 5,
         padding: 20,
