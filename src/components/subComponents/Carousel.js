@@ -55,6 +55,6 @@ export default class MyCarousel extends Component {
                 scrollEnabled={false}
                 firstItem={1}
             />
-        );
+        )
     }
 }

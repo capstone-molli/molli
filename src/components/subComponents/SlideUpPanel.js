@@ -41,7 +41,7 @@ export default class BetForm extends Component {
                 showBackdrop={true}
                 draggableRange={{ top: 750, bottom: 0 }}
                 onRequestClose={this.props.contract}
-                style={{ backgroundColor: "#FFF" }}>
+                style={{ backgroundColor: "#FFF", zIndex: 2 }}>
                 <View style={{ flex: 1, backgroundColor: "#FFF", borderTopLeftRadius: 15, borderTopRightRadius: 15, justifyContent: "center" }}>
                     <TouchableOpacity onPress={this.submit}>
                         <Image source={require("../../assets/down.png")} style={{ top: 3, alignSelf: "center", width: 50, height: 50 }} />

@@ -29,9 +29,9 @@ export default class SettingsView extends Component {
             <View style={{ flex: 1, backgroundColor: "#FFF" }}>
                 <View style={{ flex: 2 / 20, backgroundColor: "#FFF" }}>
                     <View style={{ flexDirection: "row", flex: 1 }}>
-                        <View style={{ flex: 2 / 10, flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}>
+                        <View style={{ flex: 2 / 10, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                             <TouchableOpacity onPress={this.expandProfileCard}>
-                                <Image style={{ width: 30, height: 30, bottom: 20 }} source={require("../assets/settings.png")} />
+                                <Image style={{ width: 30, height: 30, left: 20 }} source={require("../assets/settingsBlack.png")} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 8 / 10 }}>
