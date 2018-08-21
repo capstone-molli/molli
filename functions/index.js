@@ -8,7 +8,6 @@ admin.initializeApp(functions.config().firebase);
 var db = admin.firestore();
 db.settings({ timestampsInSnapshots: true })
 
-
 const express = require('express');
 const cors = require('cors')({ origin: true });
 const app = express();
@@ -62,6 +61,7 @@ app.post('/', (req, res) => {
     });
   }
 });
+
 
 exports.charge = functions.https.onRequest(app);
 
