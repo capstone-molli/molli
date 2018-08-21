@@ -25,36 +25,36 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
 });
 
 
-// exports.importCSV = functions.https.onRequest((req, res) => {
-//   const fs = require('fs')
-//   const csvSync = require('csv-parse/lib/sync')
-//   const file = './FortNiteLeaderboard.csv'
-//   let data = fs.readFileSync(file)
-//   let responses = csvSync(data)
+exports.importCSV = functions.https.onRequest((req, res) => {
+  const fs = require('fs')
+  const csvSync = require('csv-parse/lib/sync')
+  const file = './secondImport.csv'
+  let data = fs.readFileSync(file)
+  let responses = csvSync(data)
 
-//   // convert CSV data into objects
-//   let objects = []
+  // convert CSV data into objects
+  let objects = []
 
-//   responses.forEach(function (response) {
-//     objects.push({
-//       twitchName: response[0],
-//       epicName: response[1],
-//     })
-//   }, this)
+  responses.forEach(function (response) {
+    objects.push({
+      twitchName: response[0],
+      epicName: response[1],
+    })
+  }, this)
 
-//   // set the data from objects
-//   return db.runTransaction(function (transaction) {
-//     return transaction.get(db.collection(`twitch`)).then(doc => {
-//       objects.forEach(function (object) {
-//         transaction.set(db.collection(`twitch`).doc(object.twitchName), { epicName: object.epicName })
-//       }, this)
-//     })
-//   }).then(function () {
-//     console.log('Success!')
-//   }).catch(function (error) {
-//     console.log('Failed', error)
-//   })
-// })
+  // set the data from objects
+  return db.runTransaction(function (transaction) {
+    return transaction.get(db.collection(`twitch`)).then(doc => {
+      objects.forEach(function (object) {
+        transaction.set(db.collection(`twitch`).doc(object.twitchName), { epicName: object.epicName })
+      }, this)
+    })
+  }).then(function () {
+    console.log('Success! added ', objects.length)
+  }).catch(function (error) {
+    console.log('Failed', error)
+  })
+})
 exports.testDBAPI = functions.https.onRequest((req, res) => {
   const betsBatch = db.batch()
   const batchFunc = (toUpdateStats) => {
