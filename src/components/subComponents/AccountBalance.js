@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Alert, ActivityIndicator, Keyboard } from 'react-native';
 import { Button } from 'native-base'
 import * as firebase from "firebase"
 import { getUser, updateUserCredits, chargeUser } from "../../db/firebaseMethods"
@@ -73,6 +73,7 @@ class AccountBalance extends Component {
             console.log("obj:", obj)
             const card = await stripe.createToken(obj)
             console.log("Card info", card)
+            Keyboard.dismiss()
             this.setState({ paymentSubmitted: true })
             const charge = await chargeUser(card, Number(this.state.credit.slice(1)))
             console.log("charge:", charge)
