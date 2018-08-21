@@ -6,6 +6,7 @@ import { getUser, updateUserCredits, chargeUser } from "../../db/firebaseMethods
 import PaymentPopup from "./PaymentPopup"
 import { LiteCreditCardInput } from "react-native-credit-card-input";
 import AddCreditsForm from "./AddCreditsForm"
+import firestore from "../../db/firebase"
 var stripe = require("stripe-client")("sk_test_4o5DHY7OSc9FDGaStd5DRKA2");
 
 class AccountBalance extends Component {
@@ -23,12 +24,20 @@ class AccountBalance extends Component {
             isPaying: false,
 
         }
+        this.listen = this.listen.bind(this)
         this._openPopUp = this._openPopUp.bind(this)
         this._closePopUp = this._closePopUp.bind(this)
         this._onChange = this._onChange.bind(this)
         this._onFocus = this._onFocus.bind(this)
         this.addCredit = this.addCredit.bind(this)
     };
+    async listen() {
+        await firestore.collection('users')
+            .doc(this.state.user.id)
+            .onSnapshot(snap => {
+                this.setState({ user: snap.data() })
+            })
+    }
 
     async componentDidMount() {
         var user = firebase.auth().currentUser
@@ -39,6 +48,7 @@ class AccountBalance extends Component {
             userId,
             isPaying: false
         })
+        this.listen()
         console.log("user:", newUser)
     }
     addCredit(credit) {
