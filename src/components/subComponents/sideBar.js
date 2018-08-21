@@ -3,6 +3,7 @@ import { AuthenticateAccountView, AccountSetupView, AllStreamView, SingleStreamV
 import { SafeAreaView, createDrawerNavigator, createStackNavigator, DrawerItems, Dimensions, NavigationActions } from "react-navigation"
 import styles from "../styles"
 import * as firebase from "firebase"
+import firestore from "../../db/firebase"
 import { getUser } from "../../db/firebaseMethods"
 import {
     TouchableOpacity,
@@ -18,7 +19,10 @@ import { logOut } from "../../db/firebaseMethods"
 class CustomDrawerContentComponent extends Component {
     constructor() {
         super()
-        this.state = {}
+        this.state = {
+            user: null
+        }
+        this.listen = this.listen.bind(this)
     }
     navigateToScreen = (route) => () => {
         const Action = NavigationActions.navigate({
@@ -34,6 +38,14 @@ class CustomDrawerContentComponent extends Component {
         const newUser = await getUser(userId)
         this.setState({ user: newUser })
         // console.log("user:", newUser)
+        this.listen()
+    }
+    async listen() {
+        await firestore.collection('users')
+            .doc(this.state.user.id)
+            .onSnapshot(snap => {
+                this.setState({ user: snap.data() })
+            })
     }
     render() {
         return this.state.user ? (
