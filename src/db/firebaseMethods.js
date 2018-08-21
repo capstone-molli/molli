@@ -101,8 +101,8 @@ function updateUser(obj) {
 }
 
 async function updateUserCredits(id, amount) {
-    const currentBalance = await getUser(id).balance
-    console.log("balance:", currentBalance)
+    // const currentBalance = await getUser(id).balance
+    // console.log("balance:", currentBalance)
     let db = firebase.firestore();
     firebase.firestore().collection("users")
         .where('id', '==', id)

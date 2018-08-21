@@ -20,7 +20,8 @@ class AccountBalance extends Component {
             expiry: "",
             type: "",
             credit: "",
-            isPaying: false
+            isPaying: false,
+
         }
         this._openPopUp = this._openPopUp.bind(this)
         this._closePopUp = this._closePopUp.bind(this)
@@ -54,6 +55,7 @@ class AccountBalance extends Component {
             console.log("state", this.state.number)
             formData.values.number = ""
         } else if (formData.status.cvc === "valid" && formData.status.cvc === "valid") {
+
             const [exp_month, exp_year] = await formData.values.expiry.split("/")
             const cvc = await formData.values.cvc
             const obj = { "card": { "cvc": cvc, "number": this.state.number, "exp_month": Number(exp_month), "exp_year": Number(exp_year) } }
@@ -61,6 +63,7 @@ class AccountBalance extends Component {
             const card = await stripe.createToken(obj)
             console.log("Card info", card)
             const charge = await chargeUser(card, Number(this.state.credit.slice(1)))
+            console.log("charge:", charge)
             if (charge.body.charge.failure_code === null) {
                 updateUserCredits(this.state.userId, this.state.credit)
             }
@@ -136,7 +139,7 @@ class AccountBalance extends Component {
                 <View style={{ flex: 1, backgroundColor: "#FFF", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                         <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
-                        <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
+                        <Text style={{ fontSize: 20 }}>Balance: {this.state.user.balance}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._openPopUp} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
