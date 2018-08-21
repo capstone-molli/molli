@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base'
 import * as firebase from "firebase"
 import { getUser, updateUserCredits, chargeUser } from "../../db/firebaseMethods"
@@ -22,6 +22,7 @@ class AccountBalance extends Component {
             type: "",
             credit: "",
             isPaying: false,
+            paymentSubmitted: false
 
         }
         this.listen = this.listen.bind(this)
@@ -72,6 +73,7 @@ class AccountBalance extends Component {
             console.log("obj:", obj)
             const card = await stripe.createToken(obj)
             console.log("Card info", card)
+            this.setState({ paymentSubmitted: true })
             const charge = await chargeUser(card, Number(this.state.credit.slice(1)))
             console.log("charge:", charge)
             if (charge.body.charge.failure_code === null) {
@@ -87,6 +89,7 @@ class AccountBalance extends Component {
             this.setState({ number: "", credit: "" })
             formData.values.cvc = ""
             formData.values.expiry = ""
+            this.setState({ paymentSubmitted: false })
             this._closePopUp()
         }
     }
@@ -165,6 +168,18 @@ class AccountBalance extends Component {
                 </View>
                 <PaymentPopup isVisible={this.state.isVisible} duration={600} entry={'bottom'} exit={'bottom'}>
                     {popupContent}
+                    {this.state.paymentSubmitted ? (
+                        <View style={[{
+                            flex: 1,
+                            justifyContent: 'center'
+                        }, {
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            padding: 10
+                        }]}>
+                            <ActivityIndicator size="large" color="#00aa9e" />
+                        </View>
+                    ) : <View></View>}
                     <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this.cancelBeforeSubmit()} buttonType='primary'>Cancel</Text>
                 </PaymentPopup>
             </View>
