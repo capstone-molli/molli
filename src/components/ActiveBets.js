@@ -21,14 +21,13 @@ export default class ActiveBets extends Component {
     async componentDidMount() {
         const user = firebase.auth().currentUser.uid
         const userData = await getUser(user)
-        console.log("user Data", userData)
         this.setState({
             user
         })
         this.setState({
             bets: await getAllBetsbyUser(user)
         })
-        console.log(this.state.bets)
+        // console.log(this.state.bets)
         setTimeout(() => this.setState({ loading: false }), 1000);
     }
 

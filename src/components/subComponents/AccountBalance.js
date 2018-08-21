@@ -37,7 +37,7 @@ class AccountBalance extends Component {
             userId,
             isPaying: false
         })
-        console.log("user:", newUser)
+        // console.log("user:", newUser)
     }
     addCredit(credit) {
         this._closePopUp()
@@ -129,7 +129,7 @@ class AccountBalance extends Component {
                 <View style={{ flex: 1, backgroundColor: "#FFF", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                         <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
-                        <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
+                        <Text style={{ fontSize: 20 }}>Balance: {this.state.user.balance}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._openPopUp} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>

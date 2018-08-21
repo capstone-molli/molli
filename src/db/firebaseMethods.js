@@ -97,7 +97,7 @@ function getUser(id) {
 }
 
 function updateUser(obj) {
-    return firestore.collection("users").doc(`${obj.id} `).set(obj)
+    return firestore.collection("users").doc(obj.id).set(obj)
 }
 
 async function updateUserCredits(id, amount) {
@@ -109,14 +109,14 @@ async function updateUserCredits(id, amount) {
         .get()
         .then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
-                console.log(doc)
+                // console.log(doc)
                 db.collection("users").doc(doc.id).update({ balance: amount })
             })
         })
 }
 
 function createNewUser(obj) {
-    return firestore.collection("users").doc(`${obj.id} `).set(obj)
+    return firestore.collection("users").doc(obj.id).set(obj)
 }
 
 function createNewBet(obj) {

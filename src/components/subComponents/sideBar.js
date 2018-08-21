@@ -33,7 +33,7 @@ class CustomDrawerContentComponent extends Component {
         const userId = user.uid
         const newUser = await getUser(userId)
         this.setState({ user: newUser })
-        console.log("user:", newUser)
+        // console.log("user:", newUser)
     }
     render() {
         return this.state.user ? (
@@ -48,7 +48,7 @@ class CustomDrawerContentComponent extends Component {
                         <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
                             <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
-                                <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
+                                <Text style={{ fontSize: 20 }}>Balance: {this.state.user.balance}</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.navigateToScreen('AllStreamView')} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20 }}>
