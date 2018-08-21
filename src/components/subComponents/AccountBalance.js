@@ -14,12 +14,13 @@ class AccountBalance extends Component {
         this.state = {
             user: {},
             userId: '',
-            visible: false,
+            isVisible: false,
             number: "",
             cvc: "",
             expiry: "",
             type: "",
-            credit: ""
+            credit: "",
+            isPaying: false
         }
         this._openPopUp = this._openPopUp.bind(this)
         this._closePopUp = this._closePopUp.bind(this)
@@ -37,7 +38,7 @@ class AccountBalance extends Component {
             userId,
             isPaying: false
         })
-        // console.log("user:", newUser)
+        console.log("user:", newUser)
     }
     addCredit(credit) {
         this._closePopUp()
@@ -101,6 +102,12 @@ class AccountBalance extends Component {
             isVisible: false
         });
     }
+    cancelBeforeSubmit() {
+        this.setState({
+            isPaying: false,
+            isVisible: false
+        })
+    }
 
     validate(field) {
         let error = false;
@@ -129,7 +136,7 @@ class AccountBalance extends Component {
                 <View style={{ flex: 1, backgroundColor: "#FFF", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                         <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
-                        <Text style={{ fontSize: 20 }}>Balance: {this.state.user.balance}</Text>
+                        <Text style={{ fontSize: 20 }}>Balance: ${this.state.user.balance}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._openPopUp} style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
@@ -145,7 +152,7 @@ class AccountBalance extends Component {
                 </View>
                 <PaymentPopup isVisible={this.state.isVisible} duration={600} entry={'bottom'} exit={'bottom'}>
                     {popupContent}
-                    <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this._closePopUp()} buttonType='primary'>Cancel</Text>
+                    <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this.cancelBeforeSubmit()} buttonType='primary'>Cancel</Text>
                 </PaymentPopup>
             </View>
 
