@@ -56,6 +56,7 @@ async function listenForNewChats() {
     await firestore.collection('chatRoom').onSnapshot(snap => {
         snap.forEach((s) => arr.push(s.data()))
         console.log("data", arr.sort(function (a, b) { return a.createdAt.seconds - b.createdAt.seconds }))
+
     })
     return arr.sort(function (a, b) { return a.createdAt.seconds - b.createdAt.seconds })
 }
@@ -99,17 +100,19 @@ function updateUser(obj) {
     return firestore.collection("users").doc(`${obj.id} `).set(obj)
 }
 
-function updateUserCredits(id, amount){
+async function updateUserCredits(id, amount) {
+    const currentBalance = await getUser(id).balance
+    console.log("balance:", currentBalance)
     let db = firebase.firestore();
     firebase.firestore().collection("users")
-    .where('id', '==', id)
-    .get()
-    .then(function(querySnapshot){
-        querySnapshot.forEach(function(doc) {
-            console.log(doc)
-            db.collection("users").doc(doc.id).update({balance: amount})
+        .where('id', '==', id)
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                console.log(doc)
+                db.collection("users").doc(doc.id).update({ balance: amount })
+            })
         })
-    })
 }
 
 function createNewUser(obj) {
@@ -217,11 +220,27 @@ async function logOut() {
     //create logic to prevent user from navigating to allstreams view without (1) facebook oath and (2) logged in property set to "true"
 }
 
+async function chargeUser(token, amount) {
+    const res = await fetch("https://us-central1-molli-e1c3f.cloudfunctions.net/charge/", {
+        method: 'POST',
+        body: JSON.stringify({
+            token,
+            charge: {
+                amount: amount * 100,
+                currency: "usd",
+            },
+        }),
+    });
+    const data = await res.json();
+    data.body = JSON.parse(data.body);
+    return data;
+}
 
 
 
 
-export { createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets, updateUserCredits }
+
+export { chargeUser, createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets, updateUserCredits }
 
 
 //Create User

@@ -137,7 +137,7 @@ const fields = [
             '$99']
     },
 ]
-export default class BetForm extends Component {
+export default class NewBetForm extends Component {
     submit() {
         const formValues = this.formGenerator.getValues();
         if (formValues.BetType === "???" || formValues.BetValue === "???") return

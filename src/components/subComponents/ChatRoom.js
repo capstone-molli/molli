@@ -36,7 +36,10 @@ export default class ChatRoom extends React.Component {
         await firestore.collection('chatRoom').onSnapshot(snap => {
             let arr = []
             snap.forEach((s) => arr.push(s.data()))
-            arr.forEach(val => val.createdAt = val.createdAt.seconds * 1000)
+            arr.forEach(val => {
+                console.log(val.createdAt)
+                return val.createdAt = val.createdAt.seconds * 1000
+            })
             if (!arr.length) {
                 arr.push({
                     _id: 1,

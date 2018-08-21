@@ -2,140 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { Button } from 'native-base'
 import * as firebase from "firebase"
-import { getUser, updateUserCredits } from "../../db/firebaseMethods"
-import GenerateForm from 'react-native-form-builder';
-import Popup from "./Popup"
-import CreditCard from 'react-native-credit-card';
-import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
-
-
-
-
-const styles = {
-    wrapper: {
-        flex: 1,
-        // marginTop: 200,
-        justifyContent: "flex-end",
-        marginBottom: 450
-    },
-    submitButton: {
-        paddingHorizontal: 10,
-        paddingTop: 10,
-    },
-};
-
-const fields = [
-    {
-        type: 'picker',
-        name: 'Credits',
-        mode: 'dropdown',
-        label: 'How many credits would you like to add?',
-        defaultValue: '???',
-        options: [
-            "???",
-            '$0',
-            '$1',
-            '$2',
-            '$3',
-            '$4',
-            '$5',
-            '$6',
-            '$7',
-            '$8',
-            '$9',
-            '$10',
-            '$11',
-            '$12',
-            '$13',
-            '$14',
-            '$15',
-            '$16',
-            '$17',
-            '$18',
-            '$19',
-            '$20',
-            '$21',
-            '$22',
-            '$23',
-            '$24',
-            '$25',
-            '$26',
-            '$27',
-            '$28',
-            '$29',
-            '$30',
-            '$31',
-            '$32',
-            '$33',
-            '$34',
-            '$35',
-            '$36',
-            '$37',
-            '$38',
-            '$39',
-            '$40',
-            '$41',
-            '$42',
-            '$43',
-            '$44',
-            '$45',
-            '$46',
-            '$47',
-            '$48',
-            '$49',
-            '$50',
-            '$51',
-            '$52',
-            '$53',
-            '$54',
-            '$55',
-            '$56',
-            '$57',
-            '$58',
-            '$59',
-            '$60',
-            '$61',
-            '$62',
-            '$63',
-            '$64',
-            '$65',
-            '$66',
-            '$67',
-            '$68',
-            '$69',
-            '$70',
-            '$71',
-            '$72',
-            '$73',
-            '$74',
-            '$75',
-            '$76',
-            '$77',
-            '$78',
-            '$79',
-            '$80',
-            '$81',
-            '$82',
-            '$83',
-            '$84',
-            '$85',
-            '$86',
-            '$87',
-            '$88',
-            '$89',
-            '$90',
-            '$91',
-            '$92',
-            '$93',
-            '$94',
-            '$95',
-            '$96',
-            '$97',
-            '$98',
-            '$99'],
-        props: { mode: "dropdown" }
-    }
-]
+import { getUser, updateUserCredits, chargeUser } from "../../db/firebaseMethods"
+import PaymentPopup from "./PaymentPopup"
+import { LiteCreditCardInput } from "react-native-credit-card-input";
+import AddCreditsForm from "./AddCreditsForm"
+var stripe = require("stripe-client")("sk_test_4o5DHY7OSc9FDGaStd5DRKA2");
 
 class AccountBalance extends Component {
     constructor() {
@@ -143,11 +14,18 @@ class AccountBalance extends Component {
         this.state = {
             user: {},
             userId: '',
-            visible: false
+            visible: false,
+            number: "",
+            cvc: "",
+            expiry: "",
+            type: "",
+            credit: ""
         }
         this._openPopUp = this._openPopUp.bind(this)
         this._closePopUp = this._closePopUp.bind(this)
         this._onChange = this._onChange.bind(this)
+        this._onFocus = this._onFocus.bind(this)
+        this.addCredit = this.addCredit.bind(this)
     };
 
     async componentDidMount() {
@@ -156,17 +34,53 @@ class AccountBalance extends Component {
         const newUser = await getUser(userId)
         this.setState({
             user: newUser,
-            userId
+            userId,
+            isPaying: false
         })
         console.log("user:", newUser)
     }
-    _onChange = form => console.log(form);
+    addCredit(credit) {
+        this._closePopUp()
+        this.setState({ credit, isPaying: true })
+        this._openPopUp()
 
+
+    }
+
+    _onChange = async (formData) => {
+        if (formData.status.number === "valid") {
+            this.setState({ number: await formData.values.number })
+            console.log("state", this.state.number)
+            formData.values.number = ""
+        } else if (formData.status.cvc === "valid" && formData.status.cvc === "valid") {
+            const [exp_month, exp_year] = await formData.values.expiry.split("/")
+            const cvc = await formData.values.cvc
+            const obj = { "card": { "cvc": cvc, "number": this.state.number, "exp_month": Number(exp_month), "exp_year": Number(exp_year) } }
+            console.log("obj:", obj)
+            const card = await stripe.createToken(obj)
+            console.log("Card info", card)
+            const charge = await chargeUser(card, Number(this.state.credit.slice(1)))
+            if (charge.body.charge.failure_code === null) {
+                updateUserCredits(this.state.userId, this.state.credit)
+            }
+            console.log("charge", charge)
+            this.setState({ isPaying: false })
+            //send card to backend for processing
+
+
+
+            //clear trace of credit card info 
+            this.setState({ number: "", credit: "" })
+            formData.values.cvc = ""
+            formData.values.expiry = ""
+            this._closePopUp()
+        }
+    }
+    _onFocus = (field) => console.log("focusing", field);
 
     submit = () => {
         const formValues = this.formGenerator.getValues();
         if (formValues.Credits === "???") return
-        updateUserCredits(this.state.userId, formValues.Credits)
         Alert.alert(
             'Credits Added',
             'Press OK to dismiss',
@@ -199,8 +113,19 @@ class AccountBalance extends Component {
     }
 
     render() {
+        const popupContent = !this.state.isPaying ? <AddCreditsForm addCredit={this.addCredit} /> : <LiteCreditCardInput
+            autoFocus
+            inputStyle={{
+                fontSize: 16,
+                color: "black",
+            }}
+            validColor={"black"}
+            invalidColor={"red"}
+            placeholderColor={"darkgray"}
+            onChange={this._onChange}
+        />
         return (
-            <View style={{ flex: 1, backgroundColor: "#FFF", justifyContent: "center", alignItems: "center" }}>
+            <View style={{ flex: 1, backgroundColor: "#FFF" }}>
                 <View style={{ flex: 1, backgroundColor: "#FFF", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     <TouchableOpacity style={{ borderBottomColor: "#000000", borderWidth: 2, borderColor: "#fff", padding: 20, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                         <Image style={{ width: 25, height: 25 }} source={require("../../assets/blueBill.png")} />
@@ -218,10 +143,10 @@ class AccountBalance extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <Popup style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center" }} isVisible={this.state.isVisible} duration={400} entry={'bottom'} exit={'top'}>
-                    <CreditCardInput onChange={this._onChange} />
-                    <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this._closePopUp()} buttonType='primary'>Close</Text>
-                </Popup>
+                <PaymentPopup isVisible={this.state.isVisible} duration={600} entry={'bottom'} exit={'bottom'}>
+                    {popupContent}
+                    <Text style={{ textAlign: 'center', alignItems: "center" }} onPress={() => this._closePopUp()} buttonType='primary'>Cancel</Text>
+                </PaymentPopup>
             </View>
 
         )
