@@ -20,15 +20,18 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "cors": "^2.8.4",
     "create-react-class": "^15.6.3",
     "emoji-utils": "^1.0.1",
     "eslint": "^5.3.0",
     "expo": "^27.1.1",
+    "express": "^4.16.3",
     "firebase": "^5.3.1",
     "firebase-functions": "^2.0.0",
     "fortnite-api": "^2.12.2",
     "native-base": "^2.7.2",
     "react": "16.3.1",
+    "react-credit-card-input": "^1.0.13",
     "react-native": "~0.55.2",
     "react-native-credit-card": "^0.1.9",
     "react-native-credit-card-input": "^0.4.1",
@@ -45,6 +48,7 @@
     "react-player": "^1.6.4",
     "rn-popup": "^1.0.4",
     "rn-sliding-up-panel": "^1.2.1",
+    "stripe": "^6.7.0",
     "stripe-client": "^1.1.5"
   }
 }
