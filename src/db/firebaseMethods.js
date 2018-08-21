@@ -91,14 +91,25 @@ async function retrieveUserInfo() {
     return newUser
 }
 
-
-
 function getUser(id) {
     return firestore.collection("users").doc(id).get().then(user => user.data())
 }
 
 function updateUser(obj) {
     return firestore.collection("users").doc(`${obj.id} `).set(obj)
+}
+
+function updateUserCredits(id, amount){
+    let db = firebase.firestore();
+    firebase.firestore().collection("users")
+    .where('id', '==', id)
+    .get()
+    .then(function(querySnapshot){
+        querySnapshot.forEach(function(doc) {
+            console.log(doc)
+            db.collection("users").doc(doc.id).update({balance: amount})
+        })
+    })
 }
 
 function createNewUser(obj) {
@@ -209,7 +220,8 @@ async function logOut() {
 
 
 
-export { createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets }
+
+export { createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets, updateUserCredits }
 
 
 //Create User
