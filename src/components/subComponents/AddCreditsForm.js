@@ -1,41 +1,33 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
-import { createNewBet } from "../../db/firebaseMethods"
-import { Alert } from "react-native"
+import { Alert, Dimensions } from "react-native"
 
 
 const styles = {
     wrapper: {
-        flex: 1,
-        // marginTop: 200,
-        justifyContent: "flex-end",
-        marginBottom: 450
+        // position: 'absolute',
+        // left: 0,
+        // right: 0,
+        // top: 70,
+        // bottom: 0,
+        // justifyContent: 'flex-start'
+        flex: 1
     },
     submitButton: {
         paddingHorizontal: 10,
-        paddingTop: 10,
+        // paddingTop: 10,
     },
 };
 const fields = [
     {
         type: 'picker',
-        name: 'BetType',
+        name: 'CreditValue',
         mode: 'dropdown',
-        label: 'The streamer is going to...',
-        defaultValue: '???',
-        options: ['???', 'Win', 'Lose'],
-        props: { mode: "dropdown" }
-    },
-    {
-        type: 'picker',
-        name: 'BetValue',
-        mode: 'dropdown',
-        label: 'How much do you wanna bet?',
+        label: 'Amount to add:',
         defaultValue: "???",
         options: [
             "???",
-            '$0',
             '$1',
             '$2',
             '$3',
@@ -137,43 +129,19 @@ const fields = [
             '$99']
     },
 ]
-export default class NewBetForm extends Component {
+
+export default class AddCreditsForm extends Component {
     submit() {
         const formValues = this.formGenerator.getValues();
-        if (formValues.BetType === "???" || formValues.BetValue === "???") return
-        createNewBet({
-            'betType': `${formValues.BetType}`,
-            "userId": `${this.props.user}`,
-            "epicUser": `${this.props.epicUser}`,
-            "description": `loss`,
-            'betAmount': `${formValues.BetValue}`,
-            'takerId': '',
-            'timeOfCreation': new Date(),
-            'timeOfMatch': '',
-            'timeOfCompletion': '',
-            'winnerId': null,
-            'loserId': null
-        })
-        Alert.alert(
-            'Bet Created!',
-            'Press OK to dismiss',
-            [
-                { text: 'OK', onPress: () => values = {} },
-            ],
-            { cancelable: false }
-        )
-        this.props.toggleView()
+        if (formValues.CreditValue === "???") return
+        this.props.addCredit(formValues.CreditValue)
     }
     validate(field) {
         let error = false;
         let errorMsg = '';
-        if (field.name === 'BetType' && (field.value === "???")) {
+        if (field.name === 'CreditValue' && (field.value === "???")) {
             error = true;
-            errorMsg = 'select a bet type';
-        }
-        if (field.name === 'BetValue' && (field.value === "???")) {
-            error = true;
-            errorMsg = 'select a bet amount';
+            errorMsg = 'select an amount';
         }
         return { error, errorMsg };
     }
@@ -181,20 +149,24 @@ export default class NewBetForm extends Component {
     render() {
         return (
             <View style={styles.wrapper}>
-                <View>
+                <View style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: "white",
+                    height: Dimensions.get("window").height / 3
+                }}>
                     <GenerateForm
                         ref={(c) => {
                             this.formGenerator = c;
                         }}
                         fields={fields}
+                        style={{ fontSize: "40" }}
                         scrollViewProps={{ scrollEnabled: false, bounces: false }}
                         customValidation={this.validate}
-
                     />
                 </View>
                 <View style={styles.submitButton}>
                     <Button block onPress={() => this.submit()} style={{ backgroundColor: "#00aa9e" }}>
-                        <Text style={{ color: 'white', fontWeight: '800', fontSize: 18 }}>Submit Bet</Text>;
+                        <Text style={{ color: 'white', fontWeight: '800', fontSize: 18 }}>Done</Text>;
                     </Button>
                 </View>
             </View>

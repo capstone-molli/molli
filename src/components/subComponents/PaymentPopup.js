@@ -14,7 +14,7 @@ import {
 
 var { height, width } = Dimensions.get('window');
 
-export default class Popup extends Component {
+export default class PaymentPopup extends Component {
 
     static propTypes = {
         isVisible: PropTypes.bool,
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        backgroundColor: '#000'
+        backgroundColor: '#FFF'
     },
     popupContainer: {
         right: 0,
         left: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: '#FFF',
         marginHorizontal: 20,
         borderRadius: 5,
         padding: 20,
@@ -189,9 +189,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 0,
+        top: 70,
         bottom: 0,
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     }
 });
 
