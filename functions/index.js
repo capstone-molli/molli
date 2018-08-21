@@ -14,15 +14,59 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
   console.log('betId: ', betId);
   const betInfo = snap.data()
 
-  db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
-    if (betInfo.epicUser.length) {
-      request({
-        method: "GET",
-        url: `https://us-central1-molli-e1c3f.cloudfunctions.net/scanInit?player=${betInfo.epicUser}`,
+  db.collection("bets").doc(betId).update({ status: `watching` })
+  const beta = functions.config().betafortniteapi
+  let fortniteAPI = new Fortnite(
+    [
+      beta.user,
+      beta.password,
+      beta.clienttoken,
+      beta.gametoken
+    ]
+  )
+  const twitchName = betInfo.epicName
+  db.collection("twitchPlayers").doc(twitchName).get().then(playerInfo => {
+    if (!playerInfo.exists || playerInfo.data().status !== "watching") {
+      db.collection("twitch").doc(twitchName).get().then(epicInfo => {
+        if (!epicInfo.data()) {
+          console.log(`Add user: ${twitchName}`)
+          res.status(404).send("User doesnt exist")
+        } else {
+          const epicPlayerName = epicInfo.data().epicName
+          const playerBatch = db.batch()
+          const playerRef = db.collection("twitchPlayers").doc(twitchName)
+
+          fortniteAPI.login().then(() => {
+            fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime")
+              .then(result => {
+
+                player = result.info.username
+
+                if (playerInfo.exists) {
+                  console.log(`Watching ${player}`)
+                  playerBatch.update(playerRef, result)
+                  playerBatch.update(playerRef, { status: `watching` })
+                } else {
+                  console.log(`Created and watching ${player}`)
+                  playerBatch.set(playerRef, result)
+                  playerBatch.update(playerRef, { twitchName: player })
+                  playerBatch.update(playerRef, { status: `watching` })
+                }
+                playerBatch.commit()
+                res.status(201).send()
+              }).catch(e => {
+                console.error(e)
+                batchFunc({ status: "Player not found" })
+                res.send("Player doesn't Exist")
+              })
+          }).catch(e => console.error(e))
+        }
       }).catch(e => console.error(e))
+    } else {
+      console.log("Already Watching")
+      res.send("Already Watching")
     }
-  }).catch(e => console.error(e))
-  return null
+  })
 });
 
 
@@ -103,43 +147,43 @@ exports.cronScan = functions.https.onRequest((req, res) => {
           const player = doc.data()
           const playerStats = player.lifetimeStats
           const epicName = player.info.username
-          setTimeout(() => {
-            fortniteAPI.getStatsBR(epicName, "pc", "alltime")
-              .then(result => {
+          // setTimeout(() => {
+          fortniteAPI.getStatsBR(epicName, "pc", "alltime")
+            .then(result => {
 
-                const oldMatchCount = playerStats.matches
-                const oldWins = playerStats.wins
+              const oldMatchCount = playerStats.matches
+              const oldWins = playerStats.wins
 
-                const matchCount = result.lifetimeStats.matches
-                const wins = result.lifetimeStats.wins
+              const matchCount = result.lifetimeStats.matches
+              const wins = result.lifetimeStats.wins
 
-                const nowDate = new Date()
-                if (nowDate - player.watchTimeStart >= 20 * 60 * 1000) {
-                  console.log("Bet Expired")
-                  batchFunc({ status: "Expired", player: player.twitchName })
-                  batch.update(doc.ref, { status: "Expired" })
-                } else {
-                  if (matchCount > oldMatchCount) {
-                    let newResult;
-                    if (wins > oldWins) {
-                      newResult = 'Win'
-                    } else {
-                      newResult = 'Lose'
-                    }
-                    console.log(`Result for ${epicName}: Player ${newResult}!`)
-                    batchFunc({ status: newResult, player: player.twitchName })
-                    batch.update(doc.ref, result)
-                    batch.update(doc.ref, { status: `finished`, lastResult: newResult })
+              const nowDate = new Date()
+              if (nowDate - player.watchTimeStart >= 20 * 60 * 1000) {
+                console.log("Bet Expired")
+                batchFunc({ status: "Expired", player: player.twitchName })
+                batch.update(doc.ref, { status: "Expired" })
+              } else {
+                if (matchCount > oldMatchCount) {
+                  let newResult;
+                  if (wins > oldWins) {
+                    newResult = 'Win'
+                  } else {
+                    newResult = 'Lose'
                   }
+                  console.log(`Result for ${epicName}: Player ${newResult}!`)
+                  batchFunc({ status: newResult, player: player.twitchName })
+                  batch.update(doc.ref, result)
+                  batch.update(doc.ref, { status: `finished`, lastResult: newResult })
                 }
-                batch.commit()
-                request({
-                  method: "GET",
-                  url: `https://us-central1-molli-e1c3f.cloudfunctions.net/cronScan?counter=${counter}`,
-                })
-                res.status(204).end()
-              }).catch(e => console.error(e))
-          }, 2000)
+              }
+              batch.commit()
+              request({
+                method: "GET",
+                url: `https://us-central1-molli-e1c3f.cloudfunctions.net/cronScan?counter=${counter}`,
+              })
+              res.status(204).end()
+            }).catch(e => console.error(e))
+          // }, 2000)
 
         }).catch(e => console.error(e))
       }).catch(e => res.status(200).end())
@@ -151,58 +195,7 @@ exports.cronScan = functions.https.onRequest((req, res) => {
 })
 
 exports.scanInit = functions.https.onRequest((req, res) => {
-  const beta = functions.config().betafortniteapi
-  let fortniteAPI = new Fortnite(
-    [
-      beta.user,
-      beta.password,
-      beta.clienttoken,
-      beta.gametoken
-    ]
-  )
-  const twitchName = req.query.player
-  db.collection("twitchPlayers").doc(twitchName).get().then(playerInfo => {
-    if (!playerInfo.exists || playerInfo.data().status !== "watching") {
-      db.collection("twitch").doc(twitchName).get().then(epicInfo => {
-        if (!epicInfo.data()) {
-          console.log(`Add user: ${twitchName}`)
-          res.status(404).send("User doesnt exist")
-        } else {
-          const epicPlayerName = epicInfo.data().epicName
-          const playerBatch = db.batch()
-          const playerRef = db.collection("twitchPlayers").doc(twitchName)
 
-          fortniteAPI.login().then(() => {
-            fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime")
-              .then(result => {
-
-                player = result.info.username
-
-                if (playerInfo.exists) {
-                  console.log(`Watching ${player}`)
-                  playerBatch.update(playerRef, result)
-                  playerBatch.update(playerRef, { status: `watching` })
-                } else {
-                  console.log(`Created and watching ${player}`)
-                  playerBatch.set(playerRef, result)
-                  playerBatch.update(playerRef, { twitchName: player })
-                  playerBatch.update(playerRef, { status: `watching` })
-                }
-                playerBatch.commit()
-                res.status(201).send()
-              }).catch(e => {
-                console.error(e)
-                batchFunc({ status: "Player not found" })
-                res.send("Player doesn't Exist")
-              })
-          }).catch(e => console.error(e))
-        }
-      }).catch(e => console.error(e))
-    } else {
-      console.log("Already Watching")
-      res.send("Already Watching")
-    }
-  })
 })
 
 exports.betaConFetFortniteAPI = functions.https.onRequest((req, res) => {
