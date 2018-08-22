@@ -19,6 +19,7 @@ export default class MyCarousel extends Component {
                 {
                     value: < TinderCards />,
 
+
                 },
                 {
                     // title: 'White Pocket Sunset',
@@ -31,7 +32,7 @@ export default class MyCarousel extends Component {
     }
     _renderItem({ item, index }) {
         return (
-            <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, backgroundColor: '#FFF', justifyContent: "center", flexDirection: "row", alignItems: "center" }} >
                 <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
                     {index === 1 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/chatBlueInverted.png")} />)}
                     {index === 2 && (<Image style={{ height: 30, width: 30 }} source={require("../../assets/cardsBlueInverted.png")} />)}

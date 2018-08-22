@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, WebView } from 'react-native';
+import { View, Image, TouchableOpacity, WebView, Text } from 'react-native';
 import Swiper from "./subComponents/SwiperComponent"
 import SlideUpPanel from "./subComponents/SlideUpPanel"
 import resolveAssetSource from 'resolveAssetSource';
@@ -60,7 +60,13 @@ export default class SingleStreamView extends Component {
                                 <Image style={{ width: 40, height: 40, left: 10 }} source={require("../assets/back.png")} />
                             </TouchableOpacity>
                         </View>
-
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingBottom: 10
+                        }}> <Text style={{
+                            fontSize: 30, color: "#00aa9e", fontFamily: 'SUPRRG'
+                        }}>Molli</Text></View>
                         <View style={{ flex: 8 / 10 }}>
                             <WebView
                                 allowsInlineMediaPlayback={true}

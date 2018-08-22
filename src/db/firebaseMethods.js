@@ -56,7 +56,7 @@ async function listenForNewChats() {
     let arr = []
     await firestore.collection('chatRoom').onSnapshot(snap => {
         snap.forEach((s) => arr.push(s.data()))
-        console.log("data", arr.sort(function (a, b) { return a.createdAt.seconds - b.createdAt.seconds }))
+        // console.log("data", arr.sort(function (a, b) { return a.createdAt.seconds - b.createdAt.seconds }))
 
     })
     return arr.sort(function (a, b) { return a.createdAt.seconds - b.createdAt.seconds })
@@ -91,6 +91,16 @@ async function retrieveUserInfo() {
     const userId = user.uid
     const newUser = await getUser(userId)
     return newUser
+}
+async function setUserCurrentStreamer(streamer) {
+    const user = firebase.auth().currentUser
+    const userId = user.uid
+    firestore.collection("users").doc(userId).update({ currStreamer: streamer })
+}
+async function getUserCurrentStreamer() {
+    const user = firebase.auth().currentUser
+    const userId = user.uid
+    return firestore.collection("users").doc(userId).get().then(user => user.data().currStreamer)
 }
 
 function getUser(id) {
@@ -161,7 +171,16 @@ function takeBet(betObj, userId) {
             });
         })
 }
-
+async function getAllBetsByStreamer(userId, streamer) {
+    const arr = []
+    const bets = await firestore.collection('bets').where("userId", "==", userId).where("epicUser", "==", streamer).get()
+        .then(allBets =>
+            allBets.forEach(bet =>
+                arr.push(bet.data())
+            )
+        ).catch(err => console.log(err, 'err getting the data'))
+    return arr
+}
 async function getAllBets(id) {
     const arr = []
     const bets = await firestore.collection('bets').get()
@@ -176,12 +195,11 @@ async function getAllBets(id) {
 
 async function getAllBetsbyUser(id) {
     const arr = []
-    const bets = await firestore.collection('bets').get()
-        .then(allBets =>
-            allBets.forEach(bet =>
-                arr.push(bet.data())
-            )
-        ).catch(err => console.log(err, 'err getting the data'))
+    const bets = await firestore.collection('bets').get().then(allBets =>
+        allBets.forEach(bet =>
+            arr.push(bet.data())
+        )
+    ).catch(err => console.log(err, 'err getting the data'))
     const openBetsNoTaker = arr.filter(element => {
         if ((element.takerId === '') &&
             (element.userId === id)) {
@@ -198,6 +216,7 @@ async function getAllBetsbyUser(id) {
             return false
         }
     })
+
     const closedBets = arr.filter(element => {
         if ((element.takerId !== '') &&
             (element.userId === id || element.takerId === id) && (element.timeOfCompletion !== '')) {
@@ -243,7 +262,7 @@ async function chargeUser(token, amount) {
 
 
 
-export { chargeUser, createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets, updateUserCredits }
+export { chargeUser, createNewUser, getUser, updateUser, takeBet, createNewBet, getAllBets, getAllBetsbyUser, logOut, addNewChat, listenForNewChats, retrieveUserInfo, retrieveAllChats, listenForBets, updateUserCredits, getAllBetsByStreamer, setUserCurrentStreamer, getUserCurrentStreamer }
 
 
 //Create User

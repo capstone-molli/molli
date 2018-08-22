@@ -5,7 +5,8 @@ import axios from 'axios'
 import { twitchData } from "../db/twitchData"
 import * as firebase from "firebase"
 import CardModal from './card-modal';
-import { getAllBets, listenForBets } from "../db/firebaseMethods"
+import { getAllBets, listenForBets, setUserCurrentStreamer } from "../db/firebaseMethods"
+import styles from './styles'
 
 export default class AllStreamView extends Component {
     constructor() {
@@ -35,8 +36,9 @@ export default class AllStreamView extends Component {
     expandProfileCard() {
         this.props.navigation.openDrawer()
     }
-    navigateToSingleStream(stream) {
+    navigateToSingleStream = async (stream) => {
         const { navigate } = this.props.navigation
+        await setUserCurrentStreamer(stream.user.login)
         navigate("SingleStreamView", { display: stream.user.display_name, login: stream.user.login })
     }
 
@@ -45,18 +47,23 @@ export default class AllStreamView extends Component {
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
                 <View style={{ flex: 1 }}>
-                    <View style={{ flex: 2 / 20, backgroundColor: "#FFF" }}>
+                    <View style={{ flex: 2 / 20, backgroundColor: "#FFF", flexDirection: "row" }}>
                         <View style={{ flexDirection: "row", flex: 1 }}>
                             <View style={{ flex: 2 / 10, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                                 <TouchableOpacity onPress={this.expandProfileCard}>
                                     <Image style={{ width: 30, height: 30, left: 20 }} source={require("../assets/settingsBlack.png")} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ flex: 8 / 10 }}>
-                                <View>
-                                </View>
+                            <View style={{ flex: 6 / 10, justifyContent: "center" }}>
+                                <Text style={{
+                                    paddingTop: 20,
+                                    alignSelf: "center",
+                                    fontSize: 30, color: "#00aa9e", fontFamily: 'SUPRRG'
+                                }}>Molli</Text>
                             </View>
+                            <View style={{ flex: 2 / 10 }} />
                         </View>
+
                     </View>
                     <ScrollView scrollEnabled={this.state.scroll} style={{
                         flex: 1,
@@ -80,7 +87,7 @@ export default class AllStreamView extends Component {
                             )
                         })}
                     </ScrollView>
-                </View>
+                </View >
             )
     }
 

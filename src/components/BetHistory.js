@@ -22,9 +22,6 @@ export default class BetHistory extends Component {
         const user = firebase.auth().currentUser.uid
         this.setState({
             user: firebase.auth().currentUser.uid,
-
-        })
-        this.setState({
             bets: await getAllBetsbyUser(user)
         })
         setTimeout(() => this.setState({ loading: false }), 1000);
@@ -36,6 +33,7 @@ export default class BetHistory extends Component {
 
 
     render() {
+        console.log("hit")
         return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
@@ -69,6 +67,21 @@ export default class BetHistory extends Component {
                                     )
 
                                 }) : <Text>No closed bets right now</Text>}
+                            </View>
+                            <View > <Text style={styles.titleText} onPress={this.onPressTitle}>
+                                Open Bets
+                                </Text>
+                                {this.state.bets.openBetsNoTaker.length !== 0 ? this.state.bets.openBetsNoTaker.map(bet => {
+                                    return (
+                                        <Card key={bet.timeOfCreation}
+                                            title={`${new Date().toLocaleString()}`}>
+                                            <Text style={{ marginBottom: 10 }}>
+                                                {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
+                                            </Text>
+                                        </Card>
+                                    )
+
+                                }) : <Text>No ope  bets right now</Text>}
                             </View>
                         </ScrollView>
                     </View>

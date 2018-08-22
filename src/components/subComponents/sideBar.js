@@ -51,6 +51,13 @@ class CustomDrawerContentComponent extends Component {
         return this.state.user ? (
             <ScrollView style={{ borderBottomRightRadius: 30, borderTopRightRadius: 30, backgroundColor: "#fff" }}>
                 <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
+                    <View style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingBottom: 10
+                    }}> <Text style={{
+                        fontSize: 30, color: "#00aa9e", fontFamily: 'SUPRRG'
+                    }}>Profile</Text></View>
                     <View style={{ flex: 3 / 10, alignItems: "center" }}>
                         <TouchableOpacity onPress={this.navigateToScreen('SettingsView')}>
                             <Image style={styles.avatar} source={{ uri: this.state.user.picture || "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Default_profile_picture_%28male%29_on_Facebook.jpg/600px-Default_profile_picture_%28male%29_on_Facebook.jpg" }} />

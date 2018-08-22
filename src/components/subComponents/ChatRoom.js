@@ -37,7 +37,7 @@ export default class ChatRoom extends React.Component {
             let arr = []
             snap.forEach((s) => arr.push(s.data()))
             arr.forEach(val => {
-                console.log(val.createdAt)
+                // console.log(val.createdAt)
                 return val.createdAt = val.createdAt.seconds * 1000
             })
             if (!arr.length) {
@@ -54,7 +54,7 @@ export default class ChatRoom extends React.Component {
                 })
             }
             this.setState({ messages: arr.sort(function (a, b) { return b.createdAt - a.createdAt }) })
-            console.log("data", arr)
+            // console.log("data", arr)
         })
     }
     onSend(messages = []) {
@@ -86,7 +86,7 @@ export default class ChatRoom extends React.Component {
         );
     }
     handleKeyDown(e) {
-        console.log("send pressed")
+        // console.log("send pressed")
 
     }
     renderInputToolbar(props) {

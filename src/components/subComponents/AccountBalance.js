@@ -50,7 +50,7 @@ class AccountBalance extends Component {
             isPaying: false
         })
         this.listen()
-        console.log("user:", newUser)
+        // console.log("user:", newUser)
     }
     addCredit(credit) {
         this._closePopUp()
@@ -63,24 +63,24 @@ class AccountBalance extends Component {
     _onChange = async (formData) => {
         if (formData.status.number === "valid") {
             this.setState({ number: await formData.values.number })
-            console.log("state", this.state.number)
+            // console.log("state", this.state.number)
             formData.values.number = ""
         } else if (formData.status.cvc === "valid" && formData.status.cvc === "valid") {
 
             const [exp_month, exp_year] = await formData.values.expiry.split("/")
             const cvc = await formData.values.cvc
             const obj = { "card": { "cvc": cvc, "number": this.state.number, "exp_month": Number(exp_month), "exp_year": Number(exp_year) } }
-            console.log("obj:", obj)
+            // console.log("obj:", obj)
             const card = await stripe.createToken(obj)
-            console.log("Card info", card)
+            // console.log("Card info", card)
             Keyboard.dismiss()
             this.setState({ paymentSubmitted: true })
             const charge = await chargeUser(card, Number(this.state.credit.slice(1)))
-            console.log("charge:", charge)
+            // console.log("charge:", charge)
             if (charge.body.charge.failure_code === null) {
                 updateUserCredits(this.state.userId, this.state.credit)
             }
-            console.log("charge", charge)
+            // console.log("charge", charge)
             this.setState({ isPaying: false })
             //send card to backend for processing
 

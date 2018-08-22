@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Swiper from 'react-native-deck-swiper'
 import { Button, StyleSheet, Text, View, Dimensions, Platform } from 'react-native'
 import * as firebase from "firebase"
-import { getAllBets, takeBet } from "../../db/firebaseMethods"
+import { getAllBetsByStreamer, takeBet, getUserCurrentStreamer } from "../../db/firebaseMethods"
 
 
 export default class TinderCards extends Component {
@@ -21,7 +21,8 @@ export default class TinderCards extends Component {
     async componentDidMount() {
         let user = firebase.auth().currentUser
         const userId = user.uid
-        const bets = await getAllBets(userId)
+        const streamer = await getUserCurrentStreamer()
+        const bets = await getAllBetsByStreamer(userId, streamer)
         this.setState({ cards: bets, user: user })
     }
 
