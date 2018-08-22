@@ -41,20 +41,6 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
               json: true
             }).then(result => {
 
-              // console.log('result', result);
-              /*"accountId",
-              "platformId",
-              "platformName",
-              "platformNameLong",
-              "epicUserHandle",
-              "stats",
-              "lifeTimeStats",
-              "recentMatches",*/
-              // lifeTimeStats ->7: Matches Played , 8: Wins
-              // const matchCount = result.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
-              // const wins = result.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
-              // let oldMatchCount;
-              // let oldWins;
               const playerBatch = db.batch()
               const playerRef = db.collection("twitchPlayers").doc(twitchName)
               // player = result.info.username
@@ -95,6 +81,108 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
     })
   })
 })
+
+exports.queueCheckOn = functions.https.onRequest((req, res) => {
+  const batch = db.batch()
+  const beta = functions.config().betafortniteapi
+  const fortniteAPI = new Fortnite(
+    [
+      beta.user,
+      beta.password,
+      beta.clienttoken,
+      beta.gametoken
+    ]
+  )
+  fortniteAPI.login().then(() => {
+    const batchFunc = ({ status, player }) => {
+      const betsBatch = db.batch()
+      return db.collection("bets").where("epicUser", "==", player).where("status", "==", "watching").get().then((snap) => {
+        snap.forEach(doc => {
+          betsBatch.update(doc.ref, status)
+        })
+        return betsBatch.commit()
+      }).catch(e => console.error(e))
+    }
+    const player = req.query.player
+    db.collection("twitchPlayers").doc(player).get().then(playerRef => {
+      const twitchPlayer = playerRef.data()
+      const epicName = player.info.username
+
+      const oldMatchCount = twitchPlayer.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
+      const oldWins = twitchPlayer.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
+
+      fortniteAPI.getStatsBR(epicName, "pc", "alltime").then(result => {
+        const matchCount = result.lifetimeStats.matches
+        const wins = result.lifetimeStats.wins
+
+        db.collection("twitchPlayers").doc('queue').get().then(queueRef => {
+          const currQueue = queueRef.data().queue
+          const nowDate = Date.now()
+          if (nowDate - Date(player.watchTimeStart) >= 20 * 60 * 1000) {
+
+            console.log("Bet Expired")
+            batchFunc({ status: { status: "Expired" }, player: player.twitchName })
+            batch.update(doc.ref, { status: "Expired" })
+            batch.commit()
+            currQueue.splice(currQueue.indexOf(player), 1)
+            db.collection("twitchPlayers").doc("queue").update({ queue: currQueue })
+          } else {
+            if (matchCount > oldMatchCount) {
+              let newResult;
+              if (wins > oldWins) {
+                newResult = 'Win'
+              } else {
+                newResult = 'Lose'
+              }
+              console.log(`Result for ${epicName}: Player ${newResult}!`)
+              batchFunc({ status: { status: newResult }, player: player.twitchName })
+              // batch.update(doc.ref, result)
+              batch.update(doc.ref, {
+                status: `finished`, lastResult: newResult
+              })
+              currQueue.splice(currQueue.indexOf(player), 1)
+              db.collection("twitchPlayers").doc("queue").update({ queue: currQueue })
+              batch.commit()
+            }
+          }
+        }).catch(e => console.error(e))
+      })
+    })
+  }).catch(e => {
+    // console.error(e)
+    res.status(200).end()
+  })
+})
+
+exports.queueCheck = functions.https.onRequest((req, res) => {
+  const player = req.query.player
+  return db.collection("twitchPlayers").doc('queue').get().then(result => {
+    const currQueue = result.data().queue
+    const nextIdx = currQueue.indexOf(player) + 1
+    setTimeout(() => {
+      if (nextIdx < currQueue.length) {
+        const next = currQueue[nextIdx]
+        request({
+          method: "GET",
+          url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=${next}`
+        })
+      } else {
+        request({
+          method: "GET",
+          url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=head`
+        })
+      }
+    }, 5000)
+    if (currQueue.length > 1 && player !== "head") {
+      request({
+        method: "GET",
+        url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheckOn?player=${player}`
+      })
+      res.status(204).end()
+    }
+  })
+})
+
 exports.cronScan = functions.https.onRequest((req, res) => {
   let counter = 1
   if (req.query.counter) {
