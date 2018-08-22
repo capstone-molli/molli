@@ -7,7 +7,8 @@ function addNewChat(obj) {
     return firestore.collection("chatRoom").doc(`${obj._id}`).set(obj)
 }
 async function listenForBets() {
-    const userId = firebase.auth().currentUser.uid
+    const user = firebase.auth().currentUser
+    const userId = user.uid
     await firestore.collection("bets").where("userId", "==", userId).onSnapshot(snap => {
         snap.forEach(async (s) => {
             const betYours = s.data()

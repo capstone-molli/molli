@@ -23,7 +23,15 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
   const betInfo = snap.data()
 
   return db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
-
+    const beta = functions.config().betafortniteapi
+    let fortniteAPI = new Fortnite(
+      [
+        beta.user,
+        beta.password,
+        beta.clienttoken,
+        beta.gametoken
+      ]
+    )
     const twitchName = betInfo.epicUser
     return db.collection("twitchPlayers").doc(twitchName).get().then(playerInfo => {
       if (!playerInfo.exists || playerInfo.data().status !== "watching") {
@@ -32,60 +40,34 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
             console.log(`Add user: ${twitchName}`)
           } else {
             const epicPlayerName = epicInfo.data().epicName
-            return request({
-              method: "GET",
-              url: `https://api.fortnitetracker.com/v1/profile/pc/${epicPlayerName}`,
-              headers: {
-                "TRN-Api-Key": functions.config().fortniteapi.key
-              },
-              json: true
-            }).then(result => {
+            return fortniteAPI.login().then(() => {
+              return fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime")
+                .then(result => {
+                  const playerBatch = db.batch()
+                  const playerRef = db.collection("twitchPlayers").doc(twitchName)
+                  player = result.info.username
+                  if (playerInfo.exists) {
+                    console.log(`Watching ${player}`)
+                    playerBatch.update(playerRef, result)
+                    playerBatch.update(playerRef, { status: `watching`, checkHere: `${Date.now()}` })
+                  } else {
+                    console.log(`Created and watching ${player}`)
+                    playerBatch.set(playerRef, result)
+                    playerBatch.update(playerRef, { twitchName, status: `watching`, checkHere: `${Date.now()}` })
+                  }
+                  return playerBatch.commit()
 
-              // console.log('result', result);
-              /*"accountId",
-              "platformId",
-              "platformName",
-              "platformNameLong",
-              "epicUserHandle",
-              "stats",
-              "lifeTimeStats",
-              "recentMatches",*/
-              // lifeTimeStats ->7: Matches Played , 8: Wins
-              // const matchCount = result.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
-              // const wins = result.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
-              // let oldMatchCount;
-              // let oldWins;
-              const playerBatch = db.batch()
-              const playerRef = db.collection("twitchPlayers").doc(twitchName)
-              // player = result.info.username
-              player = result.epicUserHandle
-              return db.collection("twitchPlayers").doc("queue").get().then(preQueueData => {
-                const currQueue = preQueueData.data().queue
-                currQueue.push(twitchName)
-                playerBatch.update(preQueueData.ref, { queue: currQueue })
-                if (playerInfo.exists) {
-                  console.log(`Watching ${player}`)
-                  playerBatch.update(playerRef, result)
-                  playerBatch.update(playerRef, { status: `watching`, checkHere: `${Date.now()}`, queue: currQueue.length - 1 })
-                } else {
-                  console.log(`Created and watching ${player}`)
-                  playerBatch.set(playerRef, result)
-                  playerBatch.update(playerRef, { twitchName, status: `watching`, checkHere: `${Date.now()}`, queue: currQueue.length - 1 })
-                }
-                return playerBatch.commit()
-
-
-              }).catch(e => {
-                console.error(e)
-                const betsBatch = db.batch()
-                return db.collection("bets").where("epicUser", "==", epicPlayerName).where("status", "==", "watching").get().then((snap) => {
-                  snap.forEach(doc => {
-                    betsBatch.update(doc.ref, { status: "Player not found" })
+                }).catch(e => {
+                  console.error(e)
+                  const betsBatch = db.batch()
+                  return db.collection("bets").where("epicUser", "==", epicPlayerName).where("status", "==", "watching").get().then((snap) => {
+                    snap.forEach(doc => {
+                      betsBatch.update(doc.ref, { status: "Player not found" })
+                    })
+                    return betsBatch.commit()
                   })
-                  return betsBatch.commit()
-                })
 
-              })
+                })
             }).catch(e => console.error(e))
           }
         }).catch(e => console.error(e))
