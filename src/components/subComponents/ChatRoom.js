@@ -56,13 +56,6 @@ export default class ChatRoom extends React.Component {
             this.setState({ messages: arr.sort(function (a, b) { return b.createdAt - a.createdAt }) })
             console.log("data", arr)
         })
-        //listen to bets collection
-        //if it increases in size, create a new chat object with data and add it to the messages array
-        //set state to reflect changes
-        // await firestore.collection('bets').onSnapshot(snap => {
-
-        // })
-
     }
     onSend(messages = []) {
         addNewChat(messages[messages.length - 1])

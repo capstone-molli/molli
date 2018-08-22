@@ -102,8 +102,10 @@ function updateUser(obj) {
 }
 
 async function updateUserCredits(id, amount) {
-    const currentBalance = await getUser(id).balance
+    const bal = await getUser(id)
+    const currentBalance = bal.balance
     console.log("balance:", currentBalance)
+    const amt = Number(currentBalance.slice(1)) + Number(amount.slice(1))
     let db = firebase.firestore();
     firebase.firestore().collection("users")
         .where('id', '==', id)
@@ -111,7 +113,7 @@ async function updateUserCredits(id, amount) {
         .then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
                 // console.log(doc)
-                db.collection("users").doc(doc.id).update({ balance: amount })
+                db.collection("users").doc(doc.id).update({ balance: "$" + `${amt}` })
             })
         })
 }
