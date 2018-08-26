@@ -29,6 +29,7 @@
     "firebase": "^5.3.1",
     "firebase-functions": "^2.0.0",
     "fortnite-api": "^2.12.2",
+    "moment": "^2.22.2",
     "native-base": "^2.7.2",
     "react": "16.3.1",
     "react-credit-card-input": "^1.0.13",

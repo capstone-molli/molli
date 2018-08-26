@@ -1,13 +1,14 @@
 {
   "expo": {
     "sdkVersion": "27.0.0",
-    "name": "molli",
+    "name": "Molli",
     "slug": "molli",
     "version": "0.1.0",
-    "description": "",
+    "description": "Molli is a betting platform that leverages the viewership of some of the world’s most popular professional E-Sports players. This platform provides a way for the viewers to invest in the success of their favorite players. We do this by providing micro transaction bets under $100 and present them in a swipeable cards format. In other words “Gambling at your fingertips.” View the source at: https://github.com/capstone-molli/molli",
     "facebookScheme": "fb1926350514326999",
     "facebookAppId": "1926350514326999",
-    "facebookDisplayName": "molli",
-    "orientation": "portrait"
+    "facebookDisplayName": "Molli",
+    "orientation": "portrait",
+    "icon": "https://i.imgur.com/xVcqHua.png"
   }
 }

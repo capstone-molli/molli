@@ -6,6 +6,7 @@ import axios from 'axios'
 import { twitchData } from "../db/twitchData"
 import { getAllBetsbyUser } from '../db/firebaseMethods'
 import * as firebase from "firebase"
+import { moment } from 'moment';
 
 export default class BetHistory extends Component {
     constructor() {
@@ -33,7 +34,7 @@ export default class BetHistory extends Component {
 
 
     render() {
-        console.log("hit")
+
         return this.state.loading ? (<View style={{ flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}>
             <Image style={{ width: 300, height: 300 }} source={require("../assets/loading-1.gif")} />
         </View>) : (
@@ -74,7 +75,7 @@ export default class BetHistory extends Component {
                                 {this.state.bets.openBetsNoTaker.length !== 0 ? this.state.bets.openBetsNoTaker.map(bet => {
                                     return (
                                         <Card key={bet.timeOfCreation}
-                                            title={`${new Date().toLocaleString()}`}>
+                                            title={Date(bet.timeOfCreation.seconds * 1000)}>
                                             <Text style={{ marginBottom: 10 }}>
                                                 {bet.betAmount} on {bet.epicUser} {bet.betType === "Win" ? "winning" : "losing"}
                                             </Text>

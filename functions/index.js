@@ -16,19 +16,19 @@ db.settings({ timestampsInSnapshots: true })
 
 // })
 
-exports.updateDB = functions.https.onRequest((req, res) => {
-  const batch = db.batch()
-  db.collection("bets").where("userId", "==", "T3uUSc1e9waYZGnTB6fXUHsVWO93").get().then((snap) => {
-    snap.forEach(doc => {
-      batch.update(doc.ref, { userId: "4ZJSr34c4JMeuRtuQBxJrFBNzse2" })
-    })
-    batch.commit()
-  })
-})
 exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap, context) => {
 
   const betId = context.params.betId
   const betInfo = snap.data()
+  const beta = functions.config().betafortniteapi
+  const fortniteAPI = new Fortnite(
+    [
+      beta.user,
+      beta.password,
+      beta.clienttoken,
+      beta.gametoken
+    ]
+  )
 
   return db.collection("bets").doc(betId).update({ status: `watching` }).then(() => {
 
@@ -40,44 +40,48 @@ exports.betCreate = functions.firestore.document(`bets/{betId}`).onCreate((snap,
             console.log(`Add user: ${twitchName}`)
           } else {
             const epicPlayerName = epicInfo.data().epicName
-            return request({
-              method: "GET",
-              url: `https://api.fortnitetracker.com/v1/profile/pc/${epicPlayerName}`,
-              headers: {
-                "TRN-Api-Key": functions.config().fortniteapi.key
-              },
-              json: true
-            }).then(result => {
-
-              const playerBatch = db.batch()
-              const playerRef = db.collection("twitchPlayers").doc(twitchName)
-              // player = result.info.username
-              player = result.epicUserHandle
-              return db.collection("twitchPlayers").doc("queue").get().then(preQueueData => {
-                const currQueue = preQueueData.data().queue
-                currQueue.push(twitchName)
-                playerBatch.update(preQueueData.ref, { queue: currQueue })
-                if (playerInfo.exists) {
-                  console.log(`Watching ${player}`)
-                  playerBatch.update(playerRef, result)
-                  playerBatch.update(playerRef, { status: `watching`, checkHere: `${Date.now()}`, queue: currQueue.length - 1 })
-                } else {
-                  console.log(`Created and watching ${player}`)
-                  playerBatch.set(playerRef, result)
-                  playerBatch.update(playerRef, { twitchName, status: `watching`, checkHere: `${Date.now()}`, queue: currQueue.length - 1 })
-                }
-                return playerBatch.commit()
-              }).catch(e => {
-                console.error(e)
-                const betsBatch = db.batch()
-                return db.collection("bets").where("epicUser", "==", epicPlayerName).where("status", "==", "watching").get().then((snap) => {
-                  snap.forEach(doc => {
-                    betsBatch.update(doc.ref, { status: "Player not found" })
+            // return request({
+            //   method: "GET",
+            //   url: `https://api.fortnitetracker.com/v1/profile/pc/${epicPlayerName}`,
+            //   headers: {
+            //     "TRN-Api-Key": functions.config().fortniteapi.key
+            //   },
+            //   json: true
+            // }).then(result => {
+            fortniteAPI.login().then(() => {
+              fortniteAPI.getStatsBR(epicPlayerName, "pc", "alltime").then(result => {
+                const playerBatch = db.batch()
+                const playerRef = db.collection("twitchPlayers").doc(twitchName)
+                player = result.info.username
+                // player = result.epicUserHandle
+                return db.collection("twitchPlayers").doc("queue").get().then(preQueueData => {
+                  const currQueue = preQueueData.data().queue
+                  currQueue.push(twitchName)
+                  playerBatch.update(preQueueData.ref, { queue: currQueue })
+                  if (playerInfo.exists) {
+                    console.log(`Watching ${player}`)
+                    playerBatch.update(playerRef, result)
+                    playerBatch.update(playerRef, { status: `watching`, checkHere: `${Date.now()}` })
+                  } else {
+                    console.log(`Created and watching ${player}`)
+                    playerBatch.set(playerRef, result)
+                    playerBatch.update(playerRef, { twitchName, status: `watching`, checkHere: `${Date.now()}` })
+                  }
+                  return playerBatch.commit()
+                }).catch(e => {
+                  console.error(e)
+                  const betsBatch = db.batch()
+                  return db.collection("bets").where("epicUser", "==", epicPlayerName).where("status", "==", "watching").get().then((snap) => {
+                    snap.forEach(doc => {
+                      betsBatch.update(doc.ref, { status: "Player not found" })
+                    })
+                    return betsBatch.commit()
                   })
-                  return betsBatch.commit()
-                })
 
+                })
               })
+
+
             }).catch(e => console.error(e))
           }
         }).catch(e => console.error(e))
@@ -93,29 +97,31 @@ exports.queueCheck = functions.https.onRequest((req, res) => {
   if (req.query.counter) {
     counter += Number(req.query.counter)
   }
-  if (counter < 9) {
+  if (counter < 6) {
     const player = req.query.player
     db.collection("twitchPlayers").doc('queue').get().then(result => {
       const currQueue = result.data().queue
       const nextIdx = currQueue.indexOf(player) + 1
-      setTimeout(() => {
-        if (nextIdx < currQueue.length) {
-          const next = currQueue[nextIdx]
-          request({
-            method: "GET",
-            url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=${next}&counter=${counter}`
-          })
-          res.status(203).end()
-        } else if (currQueue.length === 1) {
-          res.status(202).send("Finished")
-        } else {
-          request({
-            method: "GET",
-            url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=head&counter=${counter}`
-          })
-          res.status(203).end()
-        }
-      }, 5000)
+      if (currQueue.length === 1) {
+        res.status(202).send("Finished")
+      } else {
+        setTimeout(() => {
+          if (nextIdx < currQueue.length) {
+            const next = currQueue[nextIdx]
+            request({
+              method: "GET",
+              url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=${next}&counter=${counter}`
+            })
+            res.status(203).end()
+          } else {
+            request({
+              method: "GET",
+              url: `https://us-central1-molli-e1c3f.cloudfunctions.net/queueCheck?player=head&counter=${counter}`
+            })
+            res.status(203).end()
+          }
+        }, 10000)
+      }
       if (currQueue.length > 1 && player !== "head") {
         request({
           method: "GET",
@@ -153,12 +159,22 @@ exports.queueCheckOn = functions.https.onRequest((req, res) => {
     const player = req.query.player
     db.collection("twitchPlayers").doc(player).get().then(playerRef => {
       const twitchPlayerData = playerRef.data()
-      const epicName = twitchPlayerData.epicUserHandle
-
-      const oldMatchCount = twitchPlayerData.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
-      const oldWins = twitchPlayerData.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
-
+      const epicName = twitchPlayerData.info.username
+      const oldMatchCount = twitchPlayerData.lifetimeStats.matches
+      const oldWins = twitchPlayerData.lifetimeStats.wins
+      // const oldMatchCount = twitchPlayerData.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
+      // const oldWins = twitchPlayerData.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
+      // request({
+      //   method: "GET",
+      //   url: `https://api.fortnitetracker.com/v1/profile/pc/${epicName}`,
+      //   headers: {
+      //     "TRN-Api-Key": functions.config().fortniteapi.key
+      //   },
+      //   json: true
+      // }).then(result => {
       fortniteAPI.getStatsBR(epicName, "pc", "alltime").then(result => {
+        // const matchCount = result.lifeTimeStats.filter(ele => ele.key === "Matches Played")[0].value
+        // const wins = result.lifeTimeStats.filter(ele => ele.key === "Wins")[0].value
         const matchCount = result.lifetimeStats.matches
         const wins = result.lifetimeStats.wins
 
