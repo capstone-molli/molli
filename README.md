@@ -14,5 +14,5 @@ Molli is a betting platform that leverages the viewership of some of the worldâ€
 ## Developers
 * **Kenneth Lai** - *Backend, Firestore Cloud Functions, Epic Games API* - [KnthSLai](https://github.com/knthslai)
 * **Alan Yoho** - [alandyoho](https://github.com/alandyoho)
-* **Daniel Chen** - [DanielChen1234](https://github.com/DanielChen1234)
+* **Daniel Chen** - *Swiper Cards, Forms, Firestore Cloud Functions, O-Auth* - [DanielChen1234](https://github.com/DanielChen1234)
 * **Dominic Smorra** - [dominicsmorra](https://github.com/dominicsmorra)
