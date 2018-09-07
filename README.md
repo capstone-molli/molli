@@ -1,9 +1,6 @@
-# Space Pirate - A basic arcade game written in Swift
-![Alt Text](https://github.com/alandyoho/space-pirate/blob/master/assets/startScreen.GIF)
-![Alt Text](https://github.com/alandyoho/space-pirate/blob/master/assets/gamePlay.GIF)
-![Alt Text](https://github.com/alandyoho/space-pirate/blob/master/assets/gameOver.GIF)
-
-
+# Molli - A mobile only E-Sports gambling application
+![Alt Text](https://github.com/capstone-molli/molli/blob/master/src/assets/gifMolliDemoAllStream.gif)
+![Alt Text](https://github.com/capstone-molli/molli/blob/master/src/assets/gifMolliDemoMainSwipe.gif)
 
 Molli is a betting platform that leverages the viewership of some of the world’s most popular professional E-Sports players. This platform provides a way for the viewers to invest in the success of their favorite players. We do this by providing micro transaction bets under $100 and present them in a swipeable cards format. In other words “Gambling at your fingertips.”
 
